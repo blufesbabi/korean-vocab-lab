@@ -588,122 +588,130 @@ function speakKoreanOnline(koreanText,triggerButton=null){
   const mySequence=audioSequence;
   const rate=Math.min(1.25,Math.max(0.7,Number(settings.rate)||1));
   const q=encodeURIComponent(koreanText);
-  // Beberapa endpoint + client biar lolos di MI Browser / Android WebView
+  // Google langsung + proxy CORS (sering lolos di MI Browser)
   const urls=[
+    'https://tts-api.netlify.app/?lang=ko&text='+q,
     'https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ko&q='+q,
-    'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q='+q,
-    'https://translate.google.com/translate_tts?ie=UTF-8&client=gtx&tl=ko&q='+q
+    'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q='+q
   ];
   let urlIndex=0;
+  let lastErr='';
 
-  const finishError=function(msg){
-    if(mySequence!==audioSequence)return;
-    activeAudio=null;
+  const clearPlaying=function(){
     document.querySelectorAll('button.is-playing').forEach(btn=>{
       btn.classList.remove('is-playing');
       btn.setAttribute('aria-pressed','false');
     });
-    setAudioStatus(msg,'error');
   };
 
-  const playBlob=function(blob){
+  const finishError=function(msg){
     if(mySequence!==audioSequence)return;
-    const objectUrl=URL.createObjectURL(blob);
-    const audio=new Audio();
-    activeAudio=audio;
+    activeAudio=null;
+    clearPlaying();
+    setAudioStatus(msg,'error');
+    // biar kelihatan di HP tanpa DevTools
+    try{toast(msg,'bad',6000);}catch(_){}
+  };
+
+  const makeAudioEl=function(){
+    const audio=document.createElement('audio');
+    audio.setAttribute('playsinline','');
+    audio.setAttribute('webkit-playsinline','');
     audio.preload='auto';
     try{audio.playbackRate=rate;}catch(_){}
+    // tempel ke DOM — penting di MI Browser / WebView
+    audio.style.cssText='position:fixed;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none';
+    document.body.appendChild(audio);
+    return audio;
+  };
+
+  const cleanupAudio=function(audio,objectUrl){
+    try{if(objectUrl)URL.revokeObjectURL(objectUrl);}catch(_){}
+    try{audio.pause();audio.removeAttribute('src');audio.load();audio.remove();}catch(_){}
+  };
+
+  const playFromSrc=function(src,isObjectUrl){
+    if(mySequence!==audioSequence)return;
+    const audio=makeAudioEl();
+    activeAudio=audio;
     if(triggerButton){
       triggerButton.classList.add('is-playing');
       triggerButton.setAttribute('aria-pressed','true');
     }
     setAudioStatus('Memutar · Online Korea','playing');
+
     audio.onended=function(){
       if(mySequence!==audioSequence)return;
-      try{URL.revokeObjectURL(objectUrl);}catch(_){}
+      cleanupAudio(audio,isObjectUrl?src:null);
       activeAudio=null;
-      document.querySelectorAll('button.is-playing').forEach(btn=>{
-        btn.classList.remove('is-playing');
-        btn.setAttribute('aria-pressed','false');
-      });
+      clearPlaying();
       setAudioStatus('Pelafalan selesai','done');
       setTimeout(function(){
         if(mySequence===audioSequence&&!activeAudio&&!activeUtterance)updateTtsReadyStatus();
       },900);
     };
     audio.onerror=function(){
-      try{URL.revokeObjectURL(objectUrl);}catch(_){}
+      lastErr='audio element error';
+      cleanupAudio(audio,isObjectUrl?src:null);
       tryNext();
     };
-    audio.src=objectUrl;
+    audio.src=src;
     const p=audio.play();
     if(p&&typeof p.then==='function'){
-      p.catch(function(){
-        try{URL.revokeObjectURL(objectUrl);}catch(_){}
-        // play() ditolak → coba endpoint berikutnya, atau kasih pesan jelas
-        if(urlIndex<urls.length){tryNext();return;}
-        finishError('MI Browser memblokir audio. Izinkan suara / coba Chrome di HP.');
+      p.catch(function(err){
+        lastErr=String(err&&err.message||err||'play rejected');
+        cleanupAudio(audio,isObjectUrl?src:null);
+        tryNext();
       });
-    }
-  };
-
-  const tryDirectAudio=function(url){
-    if(mySequence!==audioSequence)return;
-    const audio=new Audio();
-    activeAudio=audio;
-    audio.preload='auto';
-    try{audio.playbackRate=rate;}catch(_){}
-    if(triggerButton){
-      triggerButton.classList.add('is-playing');
-      triggerButton.setAttribute('aria-pressed','true');
-    }
-    setAudioStatus('Memutar · Online Korea','playing');
-    audio.onended=function(){
-      if(mySequence!==audioSequence)return;
-      activeAudio=null;
-      document.querySelectorAll('button.is-playing').forEach(btn=>{
-        btn.classList.remove('is-playing');
-        btn.setAttribute('aria-pressed','false');
-      });
-      setAudioStatus('Pelafalan selesai','done');
-      setTimeout(function(){
-        if(mySequence===audioSequence&&!activeAudio&&!activeUtterance)updateTtsReadyStatus();
-      },900);
-    };
-    audio.onerror=function(){tryNext();};
-    audio.src=url;
-    const p=audio.play();
-    if(p&&typeof p.then==='function'){
-      p.catch(function(){tryNext();});
     }
   };
 
   const tryNext=function(){
     if(mySequence!==audioSequence)return;
     if(urlIndex>=urls.length){
-      finishError('Audio online gagal di browser ini. Cek internet / buka di Chrome Android.');
+      finishError('Audio gagal di MI Browser. Coba Chrome di HP yang sama. ('+(lastErr||'blocked')+')');
       return;
     }
     const url=urls[urlIndex++];
-    // 1) Coba fetch→blob dulu (lebih stabil di MI Browser)
+
+    // fetch → blob dulu (lebih sering lolos)
     if(typeof fetch==='function'){
       fetch(url,{mode:'cors',credentials:'omit',cache:'no-store'})
         .then(function(res){
           if(!res.ok)throw new Error('http '+res.status);
+          const ct=(res.headers.get('content-type')||'');
+          // proxy kadang balikin JSON error
+          if(ct.indexOf('json')!==-1)throw new Error('json response');
           return res.blob();
         })
         .then(function(blob){
-          if(!blob||blob.size<100)throw new Error('empty');
-          playBlob(blob);
+          if(!blob||blob.size<80)throw new Error('empty audio');
+          // pastikan tipe audio
+          if(blob.type&&blob.type.indexOf('audio')===-1&&blob.type.indexOf('octet')===-1){
+            // tetap coba
+          }
+          const objectUrl=URL.createObjectURL(blob);
+          playFromSrc(objectUrl,true);
         })
-        .catch(function(){
-          // 2) Fallback: Audio langsung
-          tryDirectAudio(url);
+        .catch(function(err){
+          lastErr=String(err&&err.message||err||'fetch fail');
+          // fallback: src langsung
+          playFromSrc(url,false);
         });
     }else{
-      tryDirectAudio(url);
+      playFromSrc(url,false);
     }
   };
+
+  // unlock AudioContext (beberapa Android butuh ini)
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(AC){
+      const ctx=new AC();
+      if(ctx.state==='suspended')ctx.resume();
+      setTimeout(function(){try{ctx.close();}catch(_){}},2000);
+    }
+  }catch(_){}
 
   tryNext();
   return true;
