@@ -588,49 +588,125 @@ function speakKoreanOnline(koreanText,triggerButton=null){
   const mySequence=audioSequence;
   const rate=Math.min(1.25,Math.max(0.7,Number(settings.rate)||1));
   const q=encodeURIComponent(koreanText);
+  // Beberapa endpoint + client biar lolos di MI Browser / Android WebView
   const urls=[
     'https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ko&q='+q,
-    'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q='+q
+    'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q='+q,
+    'https://translate.google.com/translate_tts?ie=UTF-8&client=gtx&tl=ko&q='+q
   ];
   let urlIndex=0;
-  const tryPlay=()=>{
-    if(mySequence!==audioSequence)return false;
+
+  const finishError=function(msg){
+    if(mySequence!==audioSequence)return;
+    activeAudio=null;
+    document.querySelectorAll('button.is-playing').forEach(btn=>{
+      btn.classList.remove('is-playing');
+      btn.setAttribute('aria-pressed','false');
+    });
+    setAudioStatus(msg,'error');
+  };
+
+  const playBlob=function(blob){
+    if(mySequence!==audioSequence)return;
+    const objectUrl=URL.createObjectURL(blob);
     const audio=new Audio();
     activeAudio=audio;
     audio.preload='auto';
     try{audio.playbackRate=rate;}catch(_){}
-    if(triggerButton){triggerButton.classList.add('is-playing');triggerButton.setAttribute('aria-pressed','true');}
+    if(triggerButton){
+      triggerButton.classList.add('is-playing');
+      triggerButton.setAttribute('aria-pressed','true');
+    }
     setAudioStatus('Memutar · Online Korea','playing');
-    audio.onended=()=>{
+    audio.onended=function(){
       if(mySequence!==audioSequence)return;
+      try{URL.revokeObjectURL(objectUrl);}catch(_){}
       activeAudio=null;
-      document.querySelectorAll('button.is-playing').forEach(btn=>{btn.classList.remove('is-playing');btn.setAttribute('aria-pressed','false');});
+      document.querySelectorAll('button.is-playing').forEach(btn=>{
+        btn.classList.remove('is-playing');
+        btn.setAttribute('aria-pressed','false');
+      });
       setAudioStatus('Pelafalan selesai','done');
-      setTimeout(()=>{if(mySequence===audioSequence&&!activeAudio&&!activeUtterance)updateTtsReadyStatus();},900);
+      setTimeout(function(){
+        if(mySequence===audioSequence&&!activeAudio&&!activeUtterance)updateTtsReadyStatus();
+      },900);
     };
-    audio.onerror=()=>{
-      if(mySequence!==audioSequence)return;
-      urlIndex++;
-      if(urlIndex<urls.length){tryPlay();return;}
-      activeAudio=null;
-      document.querySelectorAll('button.is-playing').forEach(btn=>{btn.classList.remove('is-playing');btn.setAttribute('aria-pressed','false');});
-      setAudioStatus('Audio online gagal. Cek koneksi internet.','error');
+    audio.onerror=function(){
+      try{URL.revokeObjectURL(objectUrl);}catch(_){}
+      tryNext();
     };
-    audio.src=urls[urlIndex];
+    audio.src=objectUrl;
     const p=audio.play();
     if(p&&typeof p.then==='function'){
-      p.catch(()=>{
-        if(mySequence!==audioSequence)return;
-        urlIndex++;
-        if(urlIndex<urls.length){tryPlay();return;}
-        activeAudio=null;
-        document.querySelectorAll('button.is-playing').forEach(btn=>{btn.classList.remove('is-playing');btn.setAttribute('aria-pressed','false');});
-        setAudioStatus('Browser memblokir audio online. Izinkan suara / cek jaringan.','error');
+      p.catch(function(){
+        try{URL.revokeObjectURL(objectUrl);}catch(_){}
+        // play() ditolak → coba endpoint berikutnya, atau kasih pesan jelas
+        if(urlIndex<urls.length){tryNext();return;}
+        finishError('MI Browser memblokir audio. Izinkan suara / coba Chrome di HP.');
       });
     }
-    return true;
   };
-  return tryPlay();
+
+  const tryDirectAudio=function(url){
+    if(mySequence!==audioSequence)return;
+    const audio=new Audio();
+    activeAudio=audio;
+    audio.preload='auto';
+    try{audio.playbackRate=rate;}catch(_){}
+    if(triggerButton){
+      triggerButton.classList.add('is-playing');
+      triggerButton.setAttribute('aria-pressed','true');
+    }
+    setAudioStatus('Memutar · Online Korea','playing');
+    audio.onended=function(){
+      if(mySequence!==audioSequence)return;
+      activeAudio=null;
+      document.querySelectorAll('button.is-playing').forEach(btn=>{
+        btn.classList.remove('is-playing');
+        btn.setAttribute('aria-pressed','false');
+      });
+      setAudioStatus('Pelafalan selesai','done');
+      setTimeout(function(){
+        if(mySequence===audioSequence&&!activeAudio&&!activeUtterance)updateTtsReadyStatus();
+      },900);
+    };
+    audio.onerror=function(){tryNext();};
+    audio.src=url;
+    const p=audio.play();
+    if(p&&typeof p.then==='function'){
+      p.catch(function(){tryNext();});
+    }
+  };
+
+  const tryNext=function(){
+    if(mySequence!==audioSequence)return;
+    if(urlIndex>=urls.length){
+      finishError('Audio online gagal di browser ini. Cek internet / buka di Chrome Android.');
+      return;
+    }
+    const url=urls[urlIndex++];
+    // 1) Coba fetch→blob dulu (lebih stabil di MI Browser)
+    if(typeof fetch==='function'){
+      fetch(url,{mode:'cors',credentials:'omit',cache:'no-store'})
+        .then(function(res){
+          if(!res.ok)throw new Error('http '+res.status);
+          return res.blob();
+        })
+        .then(function(blob){
+          if(!blob||blob.size<100)throw new Error('empty');
+          playBlob(blob);
+        })
+        .catch(function(){
+          // 2) Fallback: Audio langsung
+          tryDirectAudio(url);
+        });
+    }else{
+      tryDirectAudio(url);
+    }
+  };
+
+  tryNext();
+  return true;
 }
 function speakKoreanNative(koreanText,triggerButton=null){
   const selectedVoice=getChosenVoice();
