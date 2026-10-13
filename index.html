@@ -102,6 +102,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <section class="card">
         <div class="form-grid">
           <div class="field"><label for="questionCount">Jumlah soal</label><select class="control" id="questionCount"><option value="20">20 soal</option><option value="40">40 soal</option><option value="60">60 soal</option><option value="all">Semua kosakata dalam rentang</option></select><span class="hint" id="countHint">Pilihan menyesuaikan jumlah kata pada rentang.</span></div>
+          <div class="field"><label for="quizChapter">Materi / Bab</label><select class="control" id="quizChapter"><option value="all">Semua bab</option><option value="Bab 1">Bab 1</option><option value="Bab 2">Bab 2</option></select><span class="hint">Bab 2 memakai nomor 1, 2, 3… sendiri. Semua bab = nomor urut gabungan.</span></div>
           <div class="field"><span class="field-label">Rentang nomor kosakata</span><div class="range-row"><div><label for="rangeStart">Dari nomor</label><input class="control" id="rangeStart" type="number" min="1" value="1" inputmode="numeric"></div><div><label for="rangeEnd">Sampai nomor</label><input class="control" id="rangeEnd" type="number" min="1" inputmode="numeric"></div></div><span class="hint" id="rangeHint">Rentang mengikuti jumlah kosakata yang tersedia.</span></div>
           <div class="field"><span class="field-label">Arah pertanyaan</span><div class="segmented"><label><input type="radio" name="direction" value="ko-id" checked> Korea → Indonesia</label><label><input type="radio" name="direction" value="id-ko"> Indonesia → Korea</label></div><span class="hint">Mode Korea→Indonesia menampilkan speaker di soal. Mode sebaliknya menampilkan speaker di tiap pilihan Korea.</span></div>
         </div>
@@ -142,7 +143,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
     <section id="reviewView" class="view" aria-labelledby="reviewTitle">
       <div class="quiz-top"><div class="quiz-status"><span class="pill">DAFTAR MATERI</span><span class="pill" id="reviewTotalPill">Kosakata lokal</span></div><button type="button" class="btn btn-ghost" id="closeReview">← Kembali</button></div>
       <div class="section-heading"><div><h1 id="reviewTitle" style="font-size:clamp(28px,5vw,40px);letter-spacing:-.05em;margin:0">Daftar kosakata Bab 1</h1><p>Cari kata, cek artinya, lalu dengarkan pelafalan Korea.</p></div></div>
-      <section class="card"><div class="list-tools"><input class="control" id="reviewSearch" type="search" placeholder="Cari Korea, arti, atau nomor…" aria-label="Cari kosakata"><span class="pill" id="reviewCount">0 kata</span></div><div id="vocabularyList" class="vocab-list"></div></section>
+      <section class="card"><div class="list-tools"><select class="control" id="chapterFilter" aria-label="Pilih bab" style="flex:0 0 auto;min-width:140px;width:auto"><option value="all">Semua bab</option><option value="Bab 1">Bab 1</option><option value="Bab 2">Bab 2</option></select><input class="control" id="reviewSearch" type="search" placeholder="Cari Korea, arti, atau nomor…" aria-label="Cari kosakata"><span class="pill" id="reviewCount">0 kata</span></div><div id="vocabularyList" class="vocab-list"></div></section>
     </section>
     <section id="addView" class="view" aria-labelledby="addTitle">
       <div class="section-heading"><div><div class="kicker">Koleksi milik lu</div><h1 id="addTitle" class="page-title" data-i18n="vocab.title">Vocab</h1><p class="page-lead">Masukin kata baru dari kelas. Begitu tersimpan, kata itu langsung ikut ke Quiz, Typing, Listening, dan Memory Lab.</p></div><span class="pill" id="addTotal">0 kata buatan lu</span></div>
@@ -152,7 +153,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
           <div class="form-grid">
             <div class="field"><label for="vocabKorean">Kosakata Korea · Hangeul</label><input id="vocabKorean" class="control" required maxlength="180" lang="ko" placeholder="Contoh: 학교"><span class="hint">Tulis persis seperti yang lu pelajari.</span></div>
             <div class="field"><label for="vocabMeaning">Arti bahasa Indonesia</label><input id="vocabMeaning" class="control" required maxlength="240" placeholder="Contoh: Sekolah"></div>
-            <div class="field"><label for="vocabCategory">Kategori / materi</label><input id="vocabCategory" class="control" required maxlength="80" value="Kosakata Kelas" placeholder="Bab 2, Percakapan, Kosakata Kelas"></div>
+            <div class="field"><label for="vocabCategory">Kategori / materi</label>
+              <select id="vocabCategory" class="control" required>
+                <option value="Bab 1">Bab 1</option>
+                <option value="Bab 2">Bab 2</option>
+                <option value="Kosakata Kelas" selected>Kosakata Kelas</option>
+                <option value="Percakapan">Percakapan</option>
+              </select></div>
             <div class="field"><label for="vocabAliases">Jawaban alternatif (opsional)</label><input id="vocabAliases" class="control" maxlength="300" placeholder="Pisahkan dengan koma atau titik koma"><span class="hint">Dipakai Typing untuk bentuk jawaban lain yang memang valid.</span></div>
             <div class="field" style="grid-column:1/-1"><label for="vocabNote">Catatan tambahan (opsional)</label><textarea id="vocabNote" class="control" maxlength="1000" placeholder="Contoh penggunaan, catatan dari guru, atau konteks kata."></textarea></div>
           </div>
@@ -163,7 +170,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <section class="card">
         <h2 class="section-title" data-i18n="vocab.bulk">Input massal</h2><p class="tiny" style="margin-top:-5px;margin-bottom:14px">Satu kata per baris dengan format <strong>Hangeul | arti</strong>. Periksa dan edit hasil parsing sebelum disimpan.</p>
         <div class="field"><label for="bulkInput">Tempel daftar kosakata</label><textarea id="bulkInput" class="control control-area" placeholder="안녕하세요 | Halo&#10;감사합니다 | Terima kasih&#10;학교 | Sekolah&#10;친구 | Teman"></textarea></div>
-        <div class="inline-fields" style="margin-top:12px"><div class="field"><label for="bulkCategory">Kategori untuk batch ini</label><input id="bulkCategory" class="control" value="Kosakata Kelas" maxlength="80"></div><div class="field"><label for="bulkDefaultNote">Catatan batch (opsional)</label><input id="bulkDefaultNote" class="control" maxlength="300" placeholder="Catatan untuk semua kata"></div></div>
+        <div class="inline-fields" style="margin-top:12px"><div class="field"><label for="bulkCategory">Kategori untuk batch ini</label>
+            <select id="bulkCategory" class="control">
+              <option value="Bab 1">Bab 1</option>
+              <option value="Bab 2">Bab 2</option>
+              <option value="Kosakata Kelas" selected>Kosakata Kelas</option>
+              <option value="Percakapan">Percakapan</option>
+            </select></div><div class="field"><label for="bulkDefaultNote">Catatan batch (opsional)</label><input id="bulkDefaultNote" class="control" maxlength="300" placeholder="Catatan untuk semua kata"></div></div>
         <div class="form-footer"><button type="button" class="btn btn-secondary" id="parseBulkBtn">Periksa daftar</button><button type="button" class="btn btn-ghost" id="clearBulkBtn">Bersihkan</button></div>
         <div id="bulkPreviewWrap" class="hidden" style="margin-top:17px"><div class="table-wrap"><table class="bulk-table"><thead><tr><th>Hangeul</th><th>Arti Indonesia</th><th>Kategori</th><th></th></tr></thead><tbody id="bulkPreviewBody"></tbody></table></div><div class="form-footer"><button type="button" class="btn btn-primary" id="saveBulkBtn">Simpan yang valid</button><span class="tiny" id="bulkSummary" aria-live="polite"></span></div></div>
         <div id="bulkNotice" class="status-message hidden" role="status"></div>
@@ -183,6 +196,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <section class="card" id="writeSettingsCard">
         <div class="form-grid">
           <div class="field"><label for="writeCount">Jumlah soal</label><select id="writeCount" class="control"><option value="20">20 soal</option><option value="40">40 soal</option><option value="60">60 soal</option><option value="all">Semua kosakata dalam rentang</option></select><span class="hint" id="writeCountHint">Jumlah menyesuaikan kosakata yang tersedia.</span></div>
+          <div class="field"><label for="writeChapter">Materi / Bab</label><select class="control" id="writeChapter"><option value="all">Semua bab</option><option value="Bab 1">Bab 1</option><option value="Bab 2">Bab 2</option></select></div>
           <div class="field"><span class="field-label">Rentang Nomor Kosakata</span><div class="range-row"><div><label for="writeRangeStart">Dari nomor</label><input class="control" id="writeRangeStart" type="number" min="1" value="1" inputmode="numeric"></div><div><label for="writeRangeEnd">Sampai nomor</label><input class="control" id="writeRangeEnd" type="number" min="1" inputmode="numeric"></div></div><span class="hint" id="writeRangeHint">Rentang mengikuti kosakata yang tersedia.</span></div>
           <div class="field"><label for="writeScope">Prioritas materi</label><select id="writeScope" class="control"><option value="all">Semua kosakata</option><option value="new">Belum dipelajari</option><option value="weak">Sering salah / perlu latihan</option></select><span class="hint">Pilihan ini menyaring kata di dalam rentang aktif.</span></div>
         </div>
@@ -200,6 +214,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <section class="card" id="listenSettingsCard">
         <div class="form-grid">
           <div class="field"><label for="listenCount">Jumlah soal</label><select id="listenCount" class="control"><option value="20">20 soal</option><option value="40">40 soal</option><option value="60">60 soal</option><option value="all">Semua kosakata dalam rentang</option></select><span class="hint" id="listenCountHint">Jumlah menyesuaikan kosakata yang tersedia.</span></div>
+          <div class="field"><label for="listenChapter">Materi / Bab</label><select class="control" id="listenChapter"><option value="all">Semua bab</option><option value="Bab 1">Bab 1</option><option value="Bab 2">Bab 2</option></select></div>
           <div class="field"><span class="field-label">Rentang Nomor Kosakata</span><div class="range-row"><div><label for="listenRangeStart">Dari nomor</label><input class="control" id="listenRangeStart" type="number" min="1" value="1" inputmode="numeric"></div><div><label for="listenRangeEnd">Sampai nomor</label><input class="control" id="listenRangeEnd" type="number" min="1" inputmode="numeric"></div></div><span class="hint" id="listenRangeHint">Rentang mengikuti kosakata yang tersedia.</span></div>
           <div class="field"><label for="listenReplayLimit">Batas pemutaran per soal</label><select id="listenReplayLimit" class="control"><option value="1">Tantangan · 1 kali</option><option value="2">Sulit · 2 kali</option><option value="3" selected>Normal · 3 kali</option><option value="0">Bebas putar ulang</option></select></div>
           <div class="field"><label for="listenDifficulty">Tingkat kesulitan</label><select id="listenDifficulty" class="control"><option value="easy">Pemanasan · 3 pilihan</option><option value="normal" selected>Normal · 4 pilihan</option><option value="hard">Tantangan · 5 pilihan</option></select></div>
@@ -223,7 +238,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
       <div class="section-heading"><div><div class="kicker">Mode guru · hafalan sampai nempel</div><h1 id="memoryTitle" class="page-title" data-i18n="mem.title">Memory Lab</h1><p class="page-lead">Di sini aku jadi guru Korea-mu. Kita bahas kata pelan-pelan, ada penjelasan lengkap, dan yang belum hafal bakal diulang sampai benar-benar nempel. Tanpa makian — fokus belajar.</p></div><span class="pill xp-chip" id="memoryLevelBadge">Level 1 · Pemula</span></div>
       <section class="card"><div class="memory-status-grid"><div class="memory-status-card"><span>Belum dipelajari</span><strong id="memNewCount">0</strong><div class="metric-sub">Kata baru</div></div><div class="memory-status-card"><span>Ulangi hari ini</span><strong id="memDueCount">0</strong><div class="metric-sub">Termasuk yang salah</div></div><div class="memory-status-card"><span>Lagi diperkuat</span><strong id="memLearningCount">0</strong><div class="metric-sub">Masih perlu latihan</div></div><div class="memory-status-card"><span>Sudah kuat</span><strong id="memStrongCount">0</strong><div class="metric-sub">Tetap akan diulang</div></div></div>
         <div style="margin-top:20px"><div class="bar-label"><strong>Penguasaan keseluruhan</strong><span id="memOverallLabel">0%</span></div><div class="thin-track"><div class="thin-fill" id="memOverallBar"></div></div><p class="small-caption" id="memOverallDetail">Belum cukup data untuk menyebut kata benar-benar dikuasai.</p></div>
-        <section class="card" style="margin:18px 0 0;background:rgba(10,17,28,.42);box-shadow:none;padding:18px" aria-labelledby="memoryRangeTitle"><div class="section-heading" style="margin:0 0 14px"><div><h2 class="section-title" id="memoryRangeTitle">Rentang Nomor Kosakata</h2><p class="tiny">Fokus ke urutan yang lu pilih. Biar belajar nggak loncat-loncat kayak tab browser yang kebanyakan.</p></div><button type="button" id="memoryRangeReset" class="btn btn-ghost btn-sm">Pulihkan Rentang</button></div><div class="form-grid"><div class="field"><label for="memoryRangeStart">Dari nomor</label><input class="control" id="memoryRangeStart" type="number" min="1" step="1" inputmode="numeric" value="1"></div><div class="field"><label for="memoryRangeEnd">Sampai nomor</label><input class="control" id="memoryRangeEnd" type="number" min="1" step="1" inputmode="numeric"></div></div><div class="notice" id="memoryRangeInfo" style="margin-top:12px">Menghitung rentang kosakata...</div><p class="hint" id="memoryRangeHelp">Memory Lab hanya akan memilih kata di rentang ini. Jadwal pengulangan dan kata sulit tetap diprioritaskan di dalam rentang.</p></section>
+        <section class="card" style="margin:18px 0 0;background:rgba(10,17,28,.42);box-shadow:none;padding:18px" aria-labelledby="memoryRangeTitle"><div class="section-heading" style="margin:0 0 14px"><div><h2 class="section-title" id="memoryRangeTitle">Rentang Nomor Kosakata</h2><p class="tiny">Fokus ke urutan yang lu pilih. Biar belajar nggak loncat-loncat kayak tab browser yang kebanyakan.</p></div><button type="button" id="memoryRangeReset" class="btn btn-ghost btn-sm">Pulihkan Rentang</button></div><div class="form-grid"><div class="field"><label for="memoryChapter">Materi / Bab</label><select class="control" id="memoryChapter"><option value="all">Semua bab</option><option value="Bab 1">Bab 1</option><option value="Bab 2">Bab 2</option></select></div><div class="field"><label for="memoryRangeStart">Dari nomor</label><input class="control" id="memoryRangeStart" type="number" min="1" step="1" inputmode="numeric" value="1"></div><div class="field"><label for="memoryRangeEnd">Sampai nomor</label><input class="control" id="memoryRangeEnd" type="number" min="1" step="1" inputmode="numeric"></div></div><div class="notice" id="memoryRangeInfo" style="margin-top:12px">Menghitung rentang kosakata...</div><p class="hint" id="memoryRangeHelp">Memory Lab hanya akan memilih kata di rentang ini. Jadwal pengulangan dan kata sulit tetap diprioritaskan di dalam rentang.</p></section>
         <div class="form-grid" style="margin-top:18px">
           <div class="field"><label for="memoryCount">Jumlah kosakata per sesi</label><select id="memoryCount" class="control"><option value="5">5 kosakata</option><option value="10" selected>10 kosakata</option><option value="20">20 kosakata</option><option value="all">Semua dalam filter</option></select><span class="hint" id="memoryCountHint">Jumlah menyesuaikan kosakata yang tersedia dalam rentang.</span></div>
           <div class="field"><label for="memorySessionMode">Prioritas materi</label><select id="memorySessionMode" class="control"><option value="mixed" selected>Otomatis (rekomendasi sistem)</option><option value="new">Hanya kata baru</option><option value="due">Hanya yang perlu diulang hari ini</option><option value="weak">Hanya yang sering salah</option></select><span class="hint">Filter kata mana yang masuk sesi. Bukan cara menjawabnya.</span></div>
@@ -341,137 +356,204 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <script>
 'use strict';
 const builtinVocabulary = [
-  {no:1,korean:'자기소개',meaning:'Perkenalan diri'},
-  {no:2,korean:'어느',meaning:'Mana'},
-  {no:3,korean:'나라',meaning:'Negara'},
-  {no:4,korean:'사람',meaning:'orang'},
-  {no:5,korean:'입니다',meaning:'Pernyataan'},
-  {no:6,korean:'입니까?',meaning:'Pertanyaan'},
-  {no:7,korean:'저',meaning:'Saya'},
-  {no:8,korean:'문법',meaning:'tata bahasa'},
-  {no:9,korean:'어휘',meaning:'kosa kata'},
-  {no:10,korean:'문화',meaning:'budaya'},
-  {no:11,korean:'정보',meaning:'Informasi'},
-  {no:12,korean:'학습',meaning:'Pembelajaran'},
-  {no:13,korean:'목표',meaning:'tujuan'},
-  {no:14,korean:'대화',meaning:'Percakapan'},
-  {no:15,korean:'이름',meaning:'Nama'},
-  {no:16,korean:'직업명',meaning:'Nama profesi'},
-  {no:17,korean:'인사',meaning:'Salam'},
-  {no:18,korean:'예절',meaning:'etika'},
-  {no:19,korean:'인지',meaning:'apakah'},
-  {no:20,korean:'묻다',meaning:'bertanya'},
-  {no:21,korean:'대답하다',meaning:'menjawab'},
-  {no:22,korean:'직업',meaning:'Profesi'},
-  {no:23,korean:'무엇',meaning:'apa'},
-  {no:24,korean:'한국',meaning:'Korea'},
-  {no:25,korean:'네팔',meaning:'Nepal'},
-  {no:26,korean:'동티모르',meaning:'timur leste'},
-  {no:27,korean:'라오스',meaning:'Laos'},
-  {no:28,korean:'몽골',meaning:'Mongolia'},
-  {no:29,korean:'미얀마',meaning:'Myanmar'},
-  {no:30,korean:'방글라데시',meaning:'Banglades'},
-  {no:31,korean:'베트남',meaning:'Vietnam'},
-  {no:32,korean:'스리랑카',meaning:'Srilangka'},
-  {no:33,korean:'우즈베키스탄',meaning:'Uzbekistan'},
-  {no:34,korean:'인도네시아',meaning:'Indonesia'},
-  {no:35,korean:'중국',meaning:'Cina'},
-  {no:36,korean:'캄보디아',meaning:'Kamboja'},
-  {no:37,korean:'키르기스스탄',meaning:'Kirgizstan'},
-  {no:38,korean:'타지키스탄',meaning:'Tajikistan'},
-  {no:39,korean:'태국',meaning:'thailand'},
-  {no:40,korean:'파키스탄',meaning:'Pakistan'},
-  {no:41,korean:'필리핀',meaning:'Philipina'},
-  {no:42,korean:'국적',meaning:'Negara asal'},
-  {no:43,korean:'누구',meaning:'Siapa'},
-  {no:44,korean:'관계',meaning:'berhubungan, berkaitan'},
-  {no:45,korean:'있다',meaning:'ada'},
-  {no:46,korean:'것',meaning:'hal, suatu, benda'},
-  {no:47,korean:'끼리',meaning:'antara, sesama'},
-  {no:48,korean:'연결하다',meaning:'menghubungkan'},
-  {no:49,korean:'보기',meaning:'contoh'},
-  {no:50,korean:'같이',meaning:'Seperti, bersama'},
-  {no:51,korean:'쓰다',meaning:'menulis'},
-  {no:52,korean:'하다',meaning:'melakukan'},
-  {no:53,korean:'자기소개를 하다',meaning:'memperkenalkan diri'},
-  {no:54,korean:'안녕하세요 / 안녕하십니까 / 안녕',meaning:'Halo'},
-  {no:55,korean:'대화하다',meaning:'melakukan percakapan'},
-  {no:56,korean:'제시되다',meaning:'disediakan'},
-  {no:57,korean:'표현',meaning:'ekspresi'},
-  {no:58,korean:'활용하다',meaning:'menggunakan, memanfaatkan'},
-  {no:59,korean:'여',meaning:'dengan'},
-  {no:60,korean:'학생',meaning:'siswa'},
-  {no:61,korean:'선생님',meaning:'guru'},
-  {no:62,korean:'회사원',meaning:'karyawan'},
-  {no:63,korean:'근로자',meaning:'Pekerja'},
-  {no:64,korean:'경찰관',meaning:'Polisi'},
-  {no:65,korean:'소방관',meaning:'Pemadam Kebakaran'},
-  {no:66,korean:'공무원',meaning:'PNS'},
-  {no:67,korean:'점원',meaning:'Pegawai toko'},
-  {no:68,korean:'의사',meaning:'dokter'},
-  {no:69,korean:'간호사',meaning:'Perawat'},
-  {no:70,korean:'요리사',meaning:'juru masak'},
-  {no:71,korean:'운전기사',meaning:'Supir'},
-  {no:72,korean:'기술자',meaning:'teknisi'},
-  {no:73,korean:'목수',meaning:'tukang kayu'},
-  {no:74,korean:'농부',meaning:'Petani'},
-  {no:75,korean:'어부',meaning:'Nelayan'},
-  {no:76,korean:'씨',meaning:'Sadara'},
-  {no:77,korean:'아니요',meaning:'tidak'},
-  {no:78,korean:'네',meaning:'iya'},
-  {no:79,korean:'맞다',meaning:'benar, tepat'},
-  {no:80,korean:'말하다',meaning:'berbicara'},
-  {no:81,korean:'유용하다',meaning:'Penting, berguna'},
-  {no:82,korean:'잘 부탁드립니다',meaning:'Mohon bantuannya dg baik'},
-  {no:83,korean:'처음 뵙겠습니다',meaning:'bertemu pertama kali'},
-  {no:84,korean:'상대',meaning:'lawan bicara'},
-  {no:85,korean:'따라',meaning:'mengikuti, menurut'},
-  {no:86,korean:'인사하다',meaning:'melakukan salam'},
-  {no:87,korean:'방식',meaning:'cara, metode'},
-  {no:88,korean:'다르다',meaning:'berbeda'},
-  {no:89,korean:'자신',meaning:'diri sendiri'},
-  {no:90,korean:'나이',meaning:'umur'},
-  {no:91,korean:'지위',meaning:'status, jabatan'},
-  {no:92,korean:'높다',meaning:'tinggi'},
-  {no:93,korean:'에게',meaning:'kepada'},
-  {no:94,korean:'또는',meaning:'dan, atau'},
-  {no:95,korean:'라고/이라고',meaning:'disebut, menyebut'},
-  {no:96,korean:'며',meaning:'lalu (dari depan); dengan (dari belakang)'},
-  {no:97,korean:'고개를 숙이다',meaning:'menundukkan kepala'},
-  {no:98,korean:'허리를 굽히다',meaning:'membungkukkan pinggang'},
-  {no:99,korean:'상대방',meaning:'lawan bicara'},
-  {no:100,korean:'대한',meaning:'tentang'},
-  {no:101,korean:'존경',meaning:'penghormatan'},
-  {no:102,korean:'나타내다',meaning:'menunjukkan'},
-  {no:103,korean:'제스처',meaning:'gestur tubuh, isyarat'},
-  {no:104,korean:'한편',meaning:'di sisi lain, sementara itu'},
-  {no:105,korean:'어리다',meaning:'muda'},
-  {no:106,korean:'친하다',meaning:'akrab'},
-  {no:107,korean:'손',meaning:'tangan'},
-  {no:108,korean:'가볍다',meaning:'ringan'},
-  {no:109,korean:'게',meaning:'dengan'},
-  {no:110,korean:'들다',meaning:'mengangkat'},
-  {no:111,korean:'흔들다',meaning:'melambaikan'},
-  {no:112,korean:'반가움 (반갑다)',meaning:'kesenangan, senang'},
-  {no:113,korean:'시간',meaning:'waktu'},
-  {no:114,korean:'상관 없이',meaning:'tanpa peduli'},
-  {no:115,korean:'아침',meaning:'pagi'},
-  {no:116,korean:'점심',meaning:'siang'},
-  {no:117,korean:'저녁',meaning:'petang'},
-  {no:118,korean:'언제든지',meaning:'kapanpun'},
-  {no:119,korean:'사용하다',meaning:'menggunakan'},
-  {no:120,korean:'공적인',meaning:'secara formal, resmi'},
-  {no:121,korean:'상황',meaning:'kondisi, situasi'},
-  {no:122,korean:'주로',meaning:'biasanya'},
-  {no:123,korean:'악수를 하다',meaning:'berjabat tangan'},
-  {no:124,korean:'다만',meaning:'namun'},
-  {no:125,korean:'훨씬',meaning:'jauh lebih'},
-  {no:126,korean:'왼손',meaning:'tangan kiri'},
-  {no:127,korean:'오른 팔',meaning:'lengan kanan'},
-  {no:128,korean:'오른 손',meaning:'tangan kanan'},
-  {no:129,korean:'받치다',meaning:'menumpang, menyanggah'},
-  {no:130,korean:'예의',meaning:'sopan santun, etika'}
-  
+  {no:1,korean:'자기소개',meaning:'Perkenalan diri',category:'Bab 1'},
+  {no:2,korean:'어느',meaning:'Mana',category:'Bab 1'},
+  {no:3,korean:'나라',meaning:'Negara',category:'Bab 1'},
+  {no:4,korean:'사람',meaning:'orang',category:'Bab 1'},
+  {no:5,korean:'입니다',meaning:'Pernyataan',category:'Bab 1'},
+  {no:6,korean:'입니까?',meaning:'Pertanyaan',category:'Bab 1'},
+  {no:7,korean:'저',meaning:'Saya',category:'Bab 1'},
+  {no:8,korean:'문법',meaning:'tata bahasa',category:'Bab 1'},
+  {no:9,korean:'어휘',meaning:'kosa kata',category:'Bab 1'},
+  {no:10,korean:'문화',meaning:'budaya',category:'Bab 1'},
+  {no:11,korean:'정보',meaning:'Informasi',category:'Bab 1'},
+  {no:12,korean:'학습',meaning:'Pembelajaran',category:'Bab 1'},
+  {no:13,korean:'목표',meaning:'tujuan',category:'Bab 1'},
+  {no:14,korean:'대화',meaning:'Percakapan',category:'Bab 1'},
+  {no:15,korean:'이름',meaning:'Nama',category:'Bab 1'},
+  {no:16,korean:'직업명',meaning:'Nama profesi',category:'Bab 1'},
+  {no:17,korean:'인사',meaning:'Salam',category:'Bab 1'},
+  {no:18,korean:'예절',meaning:'etika',category:'Bab 1'},
+  {no:19,korean:'인지',meaning:'apakah',category:'Bab 1'},
+  {no:20,korean:'묻다',meaning:'bertanya',category:'Bab 1'},
+  {no:21,korean:'대답하다',meaning:'menjawab',category:'Bab 1'},
+  {no:22,korean:'직업',meaning:'Profesi',category:'Bab 1'},
+  {no:23,korean:'무엇',meaning:'apa',category:'Bab 1'},
+  {no:24,korean:'한국',meaning:'Korea',category:'Bab 1'},
+  {no:25,korean:'네팔',meaning:'Nepal',category:'Bab 1'},
+  {no:26,korean:'동티모르',meaning:'timur leste',category:'Bab 1'},
+  {no:27,korean:'라오스',meaning:'Laos',category:'Bab 1'},
+  {no:28,korean:'몽골',meaning:'Mongolia',category:'Bab 1'},
+  {no:29,korean:'미얀마',meaning:'Myanmar',category:'Bab 1'},
+  {no:30,korean:'방글라데시',meaning:'Banglades',category:'Bab 1'},
+  {no:31,korean:'베트남',meaning:'Vietnam',category:'Bab 1'},
+  {no:32,korean:'스리랑카',meaning:'Srilangka',category:'Bab 1'},
+  {no:33,korean:'우즈베키스탄',meaning:'Uzbekistan',category:'Bab 1'},
+  {no:34,korean:'인도네시아',meaning:'Indonesia',category:'Bab 1'},
+  {no:35,korean:'중국',meaning:'Cina',category:'Bab 1'},
+  {no:36,korean:'캄보디아',meaning:'Kamboja',category:'Bab 1'},
+  {no:37,korean:'키르기스스탄',meaning:'Kirgizstan',category:'Bab 1'},
+  {no:38,korean:'타지키스탄',meaning:'Tajikistan',category:'Bab 1'},
+  {no:39,korean:'태국',meaning:'thailand',category:'Bab 1'},
+  {no:40,korean:'파키스탄',meaning:'Pakistan',category:'Bab 1'},
+  {no:41,korean:'필리핀',meaning:'Philipina',category:'Bab 1'},
+  {no:42,korean:'국적',meaning:'Negara asal',category:'Bab 1'},
+  {no:43,korean:'누구',meaning:'Siapa',category:'Bab 1'},
+  {no:44,korean:'관계',meaning:'berhubungan, berkaitan',category:'Bab 1'},
+  {no:45,korean:'있다',meaning:'ada',category:'Bab 1'},
+  {no:46,korean:'것',meaning:'hal, suatu, benda',category:'Bab 1'},
+  {no:47,korean:'끼리',meaning:'antara, sesama',category:'Bab 1'},
+  {no:48,korean:'연결하다',meaning:'menghubungkan',category:'Bab 1'},
+  {no:49,korean:'보기',meaning:'contoh',category:'Bab 1'},
+  {no:50,korean:'같이',meaning:'Seperti, bersama',category:'Bab 1'},
+  {no:51,korean:'쓰다',meaning:'menulis',category:'Bab 1'},
+  {no:52,korean:'하다',meaning:'melakukan',category:'Bab 1'},
+  {no:53,korean:'자기소개를 하다',meaning:'memperkenalkan diri',category:'Bab 1'},
+  {no:54,korean:'안녕하세요 / 안녕하십니까 / 안녕',meaning:'Halo',category:'Bab 1'},
+  {no:55,korean:'대화하다',meaning:'melakukan percakapan',category:'Bab 1'},
+  {no:56,korean:'제시되다',meaning:'disediakan',category:'Bab 1'},
+  {no:57,korean:'표현',meaning:'ekspresi',category:'Bab 1'},
+  {no:58,korean:'활용하다',meaning:'menggunakan, memanfaatkan',category:'Bab 1'},
+  {no:59,korean:'여',meaning:'dengan',category:'Bab 1'},
+  {no:60,korean:'학생',meaning:'siswa',category:'Bab 1'},
+  {no:61,korean:'선생님',meaning:'guru',category:'Bab 1'},
+  {no:62,korean:'회사원',meaning:'karyawan',category:'Bab 1'},
+  {no:63,korean:'근로자',meaning:'Pekerja',category:'Bab 1'},
+  {no:64,korean:'경찰관',meaning:'Polisi',category:'Bab 1'},
+  {no:65,korean:'소방관',meaning:'Pemadam Kebakaran',category:'Bab 1'},
+  {no:66,korean:'공무원',meaning:'PNS',category:'Bab 1'},
+  {no:67,korean:'점원',meaning:'Pegawai toko',category:'Bab 1'},
+  {no:68,korean:'의사',meaning:'dokter',category:'Bab 1'},
+  {no:69,korean:'간호사',meaning:'Perawat',category:'Bab 1'},
+  {no:70,korean:'요리사',meaning:'juru masak',category:'Bab 1'},
+  {no:71,korean:'운전기사',meaning:'Supir',category:'Bab 1'},
+  {no:72,korean:'기술자',meaning:'teknisi',category:'Bab 1'},
+  {no:73,korean:'목수',meaning:'tukang kayu',category:'Bab 1'},
+  {no:74,korean:'농부',meaning:'Petani',category:'Bab 1'},
+  {no:75,korean:'어부',meaning:'Nelayan',category:'Bab 1'},
+  {no:76,korean:'씨',meaning:'Sadara',category:'Bab 1'},
+  {no:77,korean:'아니요',meaning:'tidak',category:'Bab 1'},
+  {no:78,korean:'네',meaning:'iya',category:'Bab 1'},
+  {no:79,korean:'맞다',meaning:'benar, tepat',category:'Bab 1'},
+  {no:80,korean:'말하다',meaning:'berbicara',category:'Bab 1'},
+  {no:81,korean:'유용하다',meaning:'Penting, berguna',category:'Bab 1'},
+  {no:82,korean:'잘 부탁드립니다',meaning:'Mohon bantuannya dg baik',category:'Bab 1'},
+  {no:83,korean:'처음 뵙겠습니다',meaning:'bertemu pertama kali',category:'Bab 1'},
+  {no:84,korean:'상대',meaning:'lawan bicara',category:'Bab 1'},
+  {no:85,korean:'따라',meaning:'mengikuti, menurut',category:'Bab 1'},
+  {no:86,korean:'인사하다',meaning:'melakukan salam',category:'Bab 1'},
+  {no:87,korean:'방식',meaning:'cara, metode',category:'Bab 1'},
+  {no:88,korean:'다르다',meaning:'berbeda',category:'Bab 1'},
+  {no:89,korean:'자신',meaning:'diri sendiri',category:'Bab 1'},
+  {no:90,korean:'나이',meaning:'umur',category:'Bab 1'},
+  {no:91,korean:'지위',meaning:'status, jabatan',category:'Bab 1'},
+  {no:92,korean:'높다',meaning:'tinggi',category:'Bab 1'},
+  {no:93,korean:'에게',meaning:'kepada',category:'Bab 1'},
+  {no:94,korean:'또는',meaning:'dan, atau',category:'Bab 1'},
+  {no:95,korean:'라고/이라고',meaning:'disebut, menyebut',category:'Bab 1'},
+  {no:96,korean:'며',meaning:'lalu (dari depan); dengan (dari belakang)',category:'Bab 1'},
+  {no:97,korean:'고개를 숙이다',meaning:'menundukkan kepala',category:'Bab 1'},
+  {no:98,korean:'허리를 굽히다',meaning:'membungkukkan pinggang',category:'Bab 1'},
+  {no:99,korean:'상대방',meaning:'lawan bicara',category:'Bab 1'},
+  {no:100,korean:'대한',meaning:'tentang',category:'Bab 1'},
+  {no:101,korean:'존경',meaning:'penghormatan',category:'Bab 1'},
+  {no:102,korean:'나타내다',meaning:'menunjukkan',category:'Bab 1'},
+  {no:103,korean:'제스처',meaning:'gestur tubuh, isyarat',category:'Bab 1'},
+  {no:104,korean:'한편',meaning:'di sisi lain, sementara itu',category:'Bab 1'},
+  {no:105,korean:'어리다',meaning:'muda',category:'Bab 1'},
+  {no:106,korean:'친하다',meaning:'akrab',category:'Bab 1'},
+  {no:107,korean:'손',meaning:'tangan',category:'Bab 1'},
+  {no:108,korean:'가볍다',meaning:'ringan',category:'Bab 1'},
+  {no:109,korean:'게',meaning:'dengan',category:'Bab 1'},
+  {no:110,korean:'들다',meaning:'mengangkat',category:'Bab 1'},
+  {no:111,korean:'흔들다',meaning:'melambaikan',category:'Bab 1'},
+  {no:112,korean:'반가움 (반갑다)',meaning:'kesenangan, senang',category:'Bab 1'},
+  {no:113,korean:'시간',meaning:'waktu',category:'Bab 1'},
+  {no:114,korean:'상관 없이',meaning:'tanpa peduli',category:'Bab 1'},
+  {no:115,korean:'아침',meaning:'pagi',category:'Bab 1'},
+  {no:116,korean:'점심',meaning:'siang',category:'Bab 1'},
+  {no:117,korean:'저녁',meaning:'petang',category:'Bab 1'},
+  {no:118,korean:'언제든지',meaning:'kapanpun',category:'Bab 1'},
+  {no:119,korean:'사용하다',meaning:'menggunakan',category:'Bab 1'},
+  {no:120,korean:'공적인',meaning:'secara formal, resmi',category:'Bab 1'},
+  {no:121,korean:'상황',meaning:'kondisi, situasi',category:'Bab 1'},
+  {no:122,korean:'주로',meaning:'biasanya',category:'Bab 1'},
+  {no:123,korean:'악수를 하다',meaning:'berjabat tangan',category:'Bab 1'},
+  {no:124,korean:'다만',meaning:'namun',category:'Bab 1'},
+  {no:125,korean:'훨씬',meaning:'jauh lebih',category:'Bab 1'},
+  {no:126,korean:'왼손',meaning:'tangan kiri',category:'Bab 1'},
+  {no:127,korean:'오른 팔',meaning:'lengan kanan',category:'Bab 1'},
+  {no:128,korean:'오른 손',meaning:'tangan kanan',category:'Bab 1'},
+  {no:129,korean:'받치다',meaning:'menumpang, menyanggah',category:'Bab 1'},
+  {no:130,korean:'예의',meaning:'sopan santun, etika',category:'Bab 1'},
+  {no:1,korean:'생활용품',meaning:'Barang kebutuhan sehari-hari',category:'Bab 2'},
+  {no:2,korean:'뭐',meaning:'Apa',category:'Bab 2'},
+  {no:3,korean:'시계',meaning:'Jam',category:'Bab 2'},
+  {no:4,korean:'문법',meaning:'Tata bahasa',category:'Bab 2'},
+  {no:5,korean:'어휘',meaning:'Kosa kata',category:'Bab 2'},
+  {no:6,korean:'문화',meaning:'Budaya',category:'Bab 2'},
+  {no:7,korean:'정보',meaning:'Informasi',category:'Bab 2'},
+  {no:8,korean:'사무실',meaning:'Kantor',category:'Bab 2'},
+  {no:9,korean:'물건',meaning:'Barang',category:'Bab 2'},
+  {no:10,korean:'알뜰하다',meaning:'Hemat',category:'Bab 2'},
+  {no:11,korean:'게',meaning:'Dengan',category:'Bab 2'},
+  {no:12,korean:'구입하다',meaning:'Membeli',category:'Bab 2'},
+  {no:13,korean:'팁',meaning:'Tips, cara',category:'Bab 2'},
+  {no:14,korean:'학습',meaning:'Pembelajaran',category:'Bab 2'},
+  {no:15,korean:'목표',meaning:'Tujuan',category:'Bab 2'},
+  {no:16,korean:'이름',meaning:'Nama',category:'Bab 2'},
+  {no:17,korean:'묻다',meaning:'Bertanya',category:'Bab 2'},
+  {no:18,korean:'대답하다',meaning:'Menjawab',category:'Bab 2'},
+  {no:19,korean:'지시어',meaning:'Instruksi',category:'Bab 2'},
+  {no:20,korean:'이건',meaning:'Ini',category:'Bab 2'},
+  {no:21,korean:'저건',meaning:'Itu',category:'Bab 2'},
+  {no:22,korean:'그건',meaning:'Itu',category:'Bab 2'},
+  {no:23,korean:'연필',meaning:'Pensil',category:'Bab 2'},
+  {no:24,korean:'볼펜',meaning:'Bulpen / Bolpen',category:'Bab 2'},
+  {no:25,korean:'가위',meaning:'Gunting',category:'Bab 2'},
+  {no:26,korean:'칼',meaning:'Pisau',category:'Bab 2'},
+  {no:27,korean:'달력',meaning:'Kalender',category:'Bab 2'},
+  {no:28,korean:'안경',meaning:'Kaca mata',category:'Bab 2'},
+  {no:29,korean:'휴대폰 / 휴대전화',meaning:'HP',category:'Bab 2'},
+  {no:30,korean:'계산기',meaning:'Kalkulator',category:'Bab 2'},
+  {no:31,korean:'컵',meaning:'Gelas',category:'Bab 2'},
+  {no:32,korean:'관계',meaning:'Berhubungan, berkaitan',category:'Bab 2'},
+  {no:33,korean:'있다',meaning:'Ada',category:'Bab 2'},
+  {no:34,korean:'것',meaning:'Hal, suatu benda',category:'Bab 2'},
+  {no:35,korean:'끼리',meaning:'Antara, sesama',category:'Bab 2'},
+  {no:36,korean:'연결하다',meaning:'Menghubungkan',category:'Bab 2'},
+  {no:37,korean:'그림',meaning:'Gambar',category:'Bab 2'},
+  {no:38,korean:'보다',meaning:'Melihat',category:'Bab 2'},
+  {no:39,korean:'대화',meaning:'Percakapan',category:'Bab 2'},
+  {no:40,korean:'완성하다',meaning:'Melengkapi',category:'Bab 2'},
+  {no:41,korean:'네',meaning:'Iya',category:'Bab 2'},
+  {no:42,korean:'아니요',meaning:'Tidak',category:'Bab 2'},
+  {no:43,korean:'보기',meaning:'Contoh',category:'Bab 2'},
+  {no:44,korean:'같이',meaning:'Sama, seperti',category:'Bab 2'},
+  {no:45,korean:'대화하다',meaning:'Melakukan percakapan',category:'Bab 2'},
+  {no:46,korean:'휴지',meaning:'Tisu',category:'Bab 2'},
+  {no:47,korean:'가족사진',meaning:'Foto keluarga',category:'Bab 2'},
+  {no:48,korean:'여권',meaning:'Paspor',category:'Bab 2'},
+  {no:49,korean:'지갑',meaning:'Dompet',category:'Bab 2'},
+  {no:50,korean:'열쇠',meaning:'Kunci',category:'Bab 2'},
+  {no:51,korean:'가방',meaning:'Tas',category:'Bab 2'},
+  {no:52,korean:'우산',meaning:'Payung',category:'Bab 2'},
+  {no:53,korean:'화장품',meaning:'Kosmetik',category:'Bab 2'},
+  {no:54,korean:'거울',meaning:'Cermin',category:'Bab 2'},
+  {no:55,korean:'빗',meaning:'Sisir',category:'Bab 2'},
+  {no:56,korean:'베개',meaning:'Bantal',category:'Bab 2'},
+  {no:57,korean:'이불',meaning:'Selimut',category:'Bab 2'},
+  {no:58,korean:'문장',meaning:'Kalimat',category:'Bab 2'},
+  {no:59,korean:'제시되다',meaning:'Disediakan',category:'Bab 2'},
+  {no:60,korean:'표현',meaning:'Ekspresi',category:'Bab 2'},
+  {no:61,korean:'활용하다',meaning:'Memanfaatkan, menggunakan',category:'Bab 2'},
+  {no:62,korean:'여',meaning:'Dengan',category:'Bab 2'},
+  {no:63,korean:'유용하다',meaning:'Berguna, penting',category:'Bab 2'},
+  {no:64,korean:'내일 뵙겠습니다',meaning:'Sampai bertemu besok',category:'Bab 2'},
+  {no:65,korean:'지금',meaning:'Sekarang',category:'Bab 2'},
+  {no:66,korean:'퇴근하다',meaning:'Pulang kerja',category:'Bab 2'},
+  {no:67,korean:'조심하다',meaning:'Hati-hati',category:'Bab 2'},
+  {no:68,korean:'반장님',meaning:'Mandor',category:'Bab 2'}
 ];
 
 
@@ -493,18 +575,40 @@ let appData = (function(){
 })();
 let vocabulary = [];
 function __kvlRebuildAtStartup(){
-  const base=builtinVocabulary.map(v=>({...v,uid:'base-'+v.no,category:'Bab 1',note:'',aliases:[],source:'bawaan'}));
-  const users=[];
-  (Array.isArray(appData.userVocab)?appData.userVocab:[]).forEach((v,i)=>users.push({no:base.length+i+1,uid:String(v.uid||('user-migrated-'+i+'-'+Date.now().toString(36))),korean:String(v.korean||'').trim(),meaning:String(v.meaning||'').trim(),category:String(v.category||'Kosakata Kelas').trim(),note:String(v.note||''),aliases:Array.isArray(v.aliases)?v.aliases.map(String):[],source:'pengguna'}));
-  appData.userVocab=users.map(({no,source,...v})=>v);
-  vocabulary=[...base,...users];
+  const base = builtinVocabulary.map(v=>{
+    const cat = String(v.category||'Bab 1').trim() || 'Bab 1';
+    const chapterNo = Number(v.no)||0;
+    const slug = cat.toLowerCase().replace(/[^a-z0-9]+/g,'');
+    const uid = (cat === 'Bab 1') ? ('base-'+chapterNo) : ('base-'+slug+'-'+chapterNo);
+    return {no:chapterNo,chapterNo,uid,korean:String(v.korean||'').trim(),meaning:String(v.meaning||'').trim(),category:cat,note:'',aliases:[],source:'bawaan'};
+  });
+  const usedUids = new Set(base.map(v=>v.uid));
+  const users = [];
+  (Array.isArray(appData.userVocab)?appData.userVocab:[]).forEach((v,i)=>{
+    const uid = typeof v.uid==='string' && v.uid ? v.uid : ('user-'+i+'-'+Date.now().toString(36));
+    if (usedUids.has(uid)) return;
+    usedUids.add(uid);
+    const cat = String(v.category||'Kosakata Kelas').trim() || 'Kosakata Kelas';
+    users.push({no:0,chapterNo:0,uid,korean:String(v.korean||'').trim(),meaning:String(v.meaning||'').trim(),category:cat,note:String(v.note||''),aliases:Array.isArray(v.aliases)?v.aliases.map(String):[],source:'pengguna'});
+  });
+  const byCat = {};
+  users.forEach(u=>{
+    if(!byCat[u.category]) byCat[u.category]=0;
+    byCat[u.category]++;
+    u.chapterNo = byCat[u.category];
+    u.no = u.chapterNo;
+  });
+  appData.userVocab = users.map(({no,chapterNo,source,...rest})=>rest);
+  const merged = [...base, ...users];
+  merged.forEach((v,i)=>{ v.globalNo = i+1; });
+  vocabulary = merged;
 }
 __kvlRebuildAtStartup();
 
 const $ = id => document.getElementById(id);
 const views = ['settingsView','quizSetupView','quizView','resultView','writeView','listenView','flashcardView','addView','memoryView','reviewView','statsView','prefsView'];
 const STORAGE = {settings:'koreanVocabLab.settings.v1',best:'koreanVocabLab.best.v1'};
-let settings = {count:'20',start:1,end:Math.max(1,...vocabulary.map(v=>v.no)),direction:'ko-id',rate:1,voiceURI:'',ttsEnabled:true,uiLang:'id',ttsEngine:'auto'};
+let settings = {count:'20',start:1,end:1,chapter:'all',direction:'ko-id',rate:1,voiceURI:'',ttsEnabled:true,uiLang:'id',ttsEngine:'auto'};
 let voices = [];
 let voiceDetectionDone = false;
 let voiceRetryTimer = null;
@@ -808,23 +912,93 @@ function loadSettings(){
   settings.start=Number.isInteger(Number(saved.start))?Math.max(1,Math.min(max,Number(saved.start))):1;
   settings.end=Number.isInteger(Number(saved.end))?Math.max(1,Math.min(max,Number(saved.end))):max;
   if(Number(saved.end)===83 && max>83)settings.end=max;
+  if(saved.chapter)settings.chapter=String(saved.chapter);
+  else if(!settings.chapter)settings.chapter='all';
   if(settings.start>settings.end)[settings.start,settings.end]=[settings.end,settings.start];
   settings.direction=saved.direction==='id-ko'?'id-ko':'ko-id';settings.rate=[0.7,0.85,1].includes(Number(saved.rate))?Number(saved.rate):1;settings.voiceURI=typeof saved.voiceURI==='string'?saved.voiceURI:'';settings.ttsEnabled=saved.ttsEnabled!==false;settings.uiLang=['id','en','ko','jv'].includes(saved.uiLang)?saved.uiLang:'id';settings.ttsEngine=['auto','native','online'].includes(saved.ttsEngine)?saved.ttsEngine:'auto';
 }
 function readSettingsFromUI(){
-  const max=Math.max(1,...vocabulary.map(v=>v.no));settings.start=Math.max(1,Math.min(max,parseInt($('rangeStart').value,10)||1));settings.end=Math.max(1,Math.min(max,parseInt($('rangeEnd').value,10)||max));
+  if($('quizChapter'))settings.chapter=$('quizChapter').value||settings.chapter||'all';
+  const chPool=(typeof poolByChapter==='function')?poolByChapter(settings.chapter||'all'):vocabulary;
+  const max=Math.max(1,chPool.length,...chPool.map(v=>Number(v.no)||0));
+  settings.start=Math.max(1,Math.min(max,parseInt($('rangeStart').value,10)||1));settings.end=Math.max(1,Math.min(max,parseInt($('rangeEnd').value,10)||max));
   if(settings.start>settings.end){const temp=settings.start;settings.start=settings.end;settings.end=temp;$('rangeStart').value=settings.start;$('rangeEnd').value=settings.end;}
   settings.count=$('questionCount').value;settings.ttsEnabled=$('ttsEnabled').checked;settings.direction=document.querySelector('input[name="direction"]:checked')?.value==='id-ko'?'id-ko':'ko-id';settings.rate=Number($('ttsRate').value)||1;settings.voiceURI=$('voiceSelect').value||settings.voiceURI;
 }
-function poolFromRange(){return vocabulary.filter(item=>item.no>=settings.start&&item.no<=settings.end);}
+function poolFromRange(){
+  const ch = settings.chapter || 'all';
+  const pool = (typeof poolByChapter === 'function') ? poolByChapter(ch) : vocabulary;
+  return pool.filter(item => Number(item.no) >= settings.start && Number(item.no) <= settings.end);
+}
+function syncChapterSelects(){
+  const cats = (typeof listCategories === 'function') ? listCategories() : ['Bab 1','Bab 2'];
+  const value = settings.chapter || 'all';
+  ['chapterFilter','quizChapter','memoryChapter','writeChapter','listenChapter'].forEach(id => {
+    const el = $(id); if(!el) return;
+    const prev = el.value || value;
+    el.replaceChildren();
+    const o0 = document.createElement('option'); o0.value = 'all'; o0.textContent = 'Semua bab'; el.append(o0);
+    cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; el.append(o); });
+    el.value = [...el.options].some(o => o.value === prev) ? prev : value;
+  });
+}
+function onChapterChange(sourceId){
+  const el = $(sourceId); if(!el) return;
+  settings.chapter = el.value || 'all';
+  // Samakan semua selector
+  ['chapterFilter','quizChapter','memoryChapter','writeChapter','listenChapter'].forEach(id => {
+    const x = $(id); if(x) x.value = settings.chapter;
+  });
+  const max = (typeof maxNoForChapter === 'function') ? maxNoForChapter(settings.chapter) : Math.max(1, vocabulary.length);
+  settings.start = 1;
+  settings.end = max;
+  if($('rangeStart')) { $('rangeStart').value = '1'; $('rangeStart').max = String(max); }
+  if($('rangeEnd')) { $('rangeEnd').value = String(max); $('rangeEnd').max = String(max); }
+  if($('memoryRangeStart')) { $('memoryRangeStart').value = '1'; $('memoryRangeStart').max = String(max); }
+  if($('memoryRangeEnd')) { $('memoryRangeEnd').value = String(max); $('memoryRangeEnd').max = String(max); }
+  if($('writeRangeStart')) { $('writeRangeStart').value = '1'; $('writeRangeStart').max = String(max); }
+  if($('writeRangeEnd')) { $('writeRangeEnd').value = String(max); $('writeRangeEnd').max = String(max); }
+  if($('listenRangeStart')) { $('listenRangeStart').value = '1'; $('listenRangeStart').max = String(max); }
+  if($('listenRangeEnd')) { $('listenRangeEnd').value = String(max); $('listenRangeEnd').max = String(max); }
+  if(typeof updateCountOptions === 'function') updateCountOptions();
+  if(typeof updateTypingOptions === 'function') updateTypingOptions();
+  if(typeof updateListeningOptions === 'function') updateListeningOptions();
+  if(typeof updateMemoryRangeUI === 'function') updateMemoryRangeUI();
+  if(typeof renderVocabularyList === 'function') renderVocabularyList(($('reviewSearch') && $('reviewSearch').value) || '');
+  if(typeof persistSettings === 'function') persistSettings();
+  const label = settings.chapter === 'all' ? 'Semua bab' : settings.chapter;
+  if(typeof toast === 'function') toast('Materi: ' + label + ' · nomor 1–' + max, 'good');
+}
 function updateCountOptions(){
-  const max=Math.max(1,...vocabulary.map(v=>Number(v.no)||0));$('rangeStart').max=String(max);$('rangeEnd').max=String(max);
-  let start=Math.max(1,Math.min(max,parseInt($('rangeStart').value,10)||1));let end=Math.max(1,Math.min(max,parseInt($('rangeEnd').value,10)||max));
-  if(start>end)end=start;$('rangeStart').value=String(start);$('rangeEnd').value=String(end);
-  const pool=vocabulary.filter(v=>v.no>=start&&v.no<=end);const count=pool.length;const select=$('questionCount');const previous=String(select.value||settings.count||'20');
-  const quantities=[20,40,60].filter(n=>n<=count);select.replaceChildren();quantities.forEach(n=>{const o=document.createElement('option');o.value=String(n);o.textContent=`${n} soal`;select.append(o);});const all=document.createElement('option');all.value='all';all.textContent='Semua kosakata dalam rentang';select.append(all);
-  let next=previous;if(previous!=='all'&&!quantities.includes(Number(previous)))next=String(quantities[0]||'all');select.value=next;settings.count=next;settings.start=start;settings.end=end;
-  $('rangeHint').textContent=`Rentang aktif: nomor ${start}–${end} · ${count} kosakata.`;$('countHint').textContent=`Maksimal ${count} soal tersedia. Pilihan di atas rentang otomatis dinonaktifkan atau dihilangkan.`;persistSettings();
+  const ch = settings.chapter || 'all';
+  const chapterPool = (typeof poolByChapter === 'function') ? poolByChapter(ch) : vocabulary;
+  const max = Math.max(1, chapterPool.length, ...chapterPool.map(v => Number(v.no) || 0));
+  if($('rangeStart')) $('rangeStart').max = String(max);
+  if($('rangeEnd')) $('rangeEnd').max = String(max);
+  let start = Math.max(1, Math.min(max, parseInt($('rangeStart')?.value, 10) || 1));
+  let end = Math.max(1, Math.min(max, parseInt($('rangeEnd')?.value, 10) || max));
+  if(start > end) end = start;
+  if($('rangeStart')) $('rangeStart').value = String(start);
+  if($('rangeEnd')) $('rangeEnd').value = String(end);
+  const pool = chapterPool.filter(v => Number(v.no) >= start && Number(v.no) <= end);
+  const count = pool.length;
+  const select = $('questionCount');
+  if(select){
+    const previous = String(select.value || settings.count || '20');
+    const quantities = [20,40,60].filter(n => n <= count);
+    select.replaceChildren();
+    quantities.forEach(n => { const o = document.createElement('option'); o.value = String(n); o.textContent = n + ' soal'; select.append(o); });
+    const all = document.createElement('option'); all.value = 'all'; all.textContent = 'Semua kosakata dalam rentang'; select.append(all);
+    let next = previous;
+    if(previous !== 'all' && !quantities.includes(Number(previous))) next = String(quantities[0] || 'all');
+    select.value = next;
+    settings.count = next;
+  }
+  settings.start = start; settings.end = end;
+  const babLabel = ch === 'all' ? 'Semua bab' : ch;
+  if($('rangeHint')) $('rangeHint').textContent = babLabel + ' · nomor ' + start + '–' + end + ' · ' + count + ' kosakata.';
+  if($('countHint')) $('countHint').textContent = 'Maksimal ' + count + ' soal tersedia untuk materi ini.';
+  if(typeof persistSettings === 'function') persistSettings();
 }
 function applySettingsToUI(){
   $('rangeStart').value=settings.start;$('rangeEnd').value=settings.end;$('ttsRate').value=String(settings.rate);$('ttsEnabled').checked=settings.ttsEnabled!==false;if($('ttsEngine'))$('ttsEngine').value=settings.ttsEngine||'auto';if($('appLang'))$('appLang').value=settings.uiLang||'id';
@@ -903,15 +1077,80 @@ function renderBest(){const best=safeParse(safeRead(STORAGE.best),null);if(!best
 function resetSameSession(){if(!lastBasePool.length&&sessionPool.length===0)return;const pool=sessionPool.length?sessionPool:lastBasePool;beginSession(pool,sessionDirection,sessionSource==='wrong'?'wrong':pool.length===vocabulary.length?'all':'normal',lastBasePool.length?lastBasePool:pool);}
 function retryWrong(){if(!lastWrongQuestions.length){$('noWrongNotice').classList.remove('hidden');return;}beginSession(lastWrongQuestions,lastDirection,'wrong',lastWrongQuestions);}
 function openReview(){stopSpeech(false);const active=views.find(viewId=>$(viewId)?.classList.contains('active'));reviewReturnView=active==='resultView'?'resultView':(['quizSetupView','quizView'].includes(active)?'quizSetupView':(active||'settingsView'));renderVocabularyList($('reviewSearch').value||'');showView('reviewView');}
-function renderVocabularyList(query=''){
-  const list=$('vocabularyList');list.replaceChildren();const term=normalizeText(query);const matches=vocabulary.filter(v=>!term||String(v.no).includes(term)||normalizeText(v.korean).includes(term)||normalizeText(v.meaning).includes(term));$('reviewCount').textContent=`${matches.length} dari ${vocabulary.length} kata`;
-  if(!matches.length){list.innerHTML='<div class="empty-state" style="grid-column:1/-1">Kosakata tidak ditemukan. Coba kata Korea, arti Indonesia, atau nomor asli.</div>';return;}
-  matches.forEach(item=>{const row=document.createElement('div');row.className='vocab-line';const main=document.createElement('div');main.className='vocab-line-main';const kr=document.createElement('div');kr.className='vocab-line-korean';kr.lang='ko';const no=document.createElement('span');no.className='vocab-no';no.textContent=`${item.no}.`;kr.append(no,document.createTextNode(item.korean));const meaning=document.createElement('div');meaning.className='vocab-line-meaning';meaning.textContent=item.meaning;main.append(kr,meaning);row.append(main,createSpeakerButton(item.korean,'Dengarkan '+item.korean));list.append(row);});
+function renderVocabularyList(query='') {
+  const list = document.getElementById('vocabularyList');
+  if (!list) return;
+  list.replaceChildren();
+  const term = (typeof normalizeText === 'function') ? normalizeText(query) : String(query || '').toLowerCase();
+  const ch = (window.settings && settings.chapter) ? settings.chapter : ((typeof settings !== 'undefined' && settings.chapter) ? settings.chapter : 'all');
+  let pool;
+  if (typeof poolByChapter === 'function') {
+    pool = poolByChapter(ch);
+  } else if (typeof vocabulary !== 'undefined') {
+    if (!ch || ch === 'all') {
+      pool = vocabulary.map((v, i) => Object.assign({}, v, { no: v.globalNo || (i + 1) }));
+    } else {
+      const filtered = vocabulary.filter(v => v.category === ch);
+      pool = filtered.map((v, i) => Object.assign({}, v, { no: v.chapterNo || (i + 1) }));
+    }
+  } else {
+    pool = [];
+  }
+  const matches = pool.filter(v => {
+    if (!term) return true;
+    return String(v.no).includes(term)
+      || ((typeof normalizeText === 'function') ? normalizeText(v.korean) : String(v.korean || '').toLowerCase()).includes(term)
+      || ((typeof normalizeText === 'function') ? normalizeText(v.meaning) : String(v.meaning || '').toLowerCase()).includes(term)
+      || ((typeof normalizeText === 'function') ? normalizeText(v.category || '') : String(v.category || '').toLowerCase()).includes(term);
+  });
+  const babLabel = (!ch || ch === 'all') ? 'Semua bab' : ch;
+  const countEl = document.getElementById('reviewCount');
+  if (countEl) countEl.textContent = matches.length + ' dari ' + pool.length + ' kata · ' + babLabel;
+  const titleEl = document.getElementById('reviewTitle');
+  if (titleEl) titleEl.textContent = (!ch || ch === 'all') ? 'Daftar semua kosakata' : ('Daftar kosakata ' + ch);
+  const pillEl = document.getElementById('reviewTotalPill');
+  if (pillEl) pillEl.textContent = babLabel;
+  if (!matches.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.style.gridColumn = '1/-1';
+    empty.textContent = 'Kosakata tidak ditemukan untuk filter ini.';
+    list.append(empty);
+    return;
+  }
+  matches.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'vocab-line';
+    const main = document.createElement('div');
+    main.className = 'vocab-line-main';
+    const kr = document.createElement('div');
+    kr.className = 'vocab-line-korean';
+    kr.lang = 'ko';
+    const no = document.createElement('span');
+    no.className = 'vocab-no';
+    no.textContent = '#' + item.no + ' ';
+    kr.append(no, document.createTextNode(item.korean));
+    const meaning = document.createElement('div');
+    meaning.className = 'vocab-line-meaning';
+    meaning.textContent = item.meaning + (item.category ? (' · ' + item.category) : '');
+    main.append(kr, meaning);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sound-button small';
+    btn.textContent = '🔊';
+    btn.title = 'Dengarkan';
+    btn.disabled = (typeof canPlayTts === 'function') ? !canPlayTts() : false;
+    btn.addEventListener('click', () => {
+      if (typeof speakKorean === 'function') speakKorean(item.korean, btn);
+    });
+    row.append(main, btn);
+    list.append(row);
+  });
 }
 
 // Settings and navigation handlers
-$('rangeStart').addEventListener('change',()=>{let n=Math.max(1,Math.min(Math.max(1,...vocabulary.map(v=>v.no)),parseInt($('rangeStart').value,10)||1));$('rangeStart').value=n;if(n>Number($('rangeEnd').value))$('rangeEnd').value=n;updateCountOptions();readSettingsFromUI();persistSettings();});
-$('rangeEnd').addEventListener('change',()=>{let n=Math.max(1,Math.min(Math.max(1,...vocabulary.map(v=>v.no)),parseInt($('rangeEnd').value,10)||Math.max(1,...vocabulary.map(v=>v.no))));$('rangeEnd').value=n;if(n<Number($('rangeStart').value))$('rangeStart').value=n;updateCountOptions();readSettingsFromUI();persistSettings();});
+$('rangeStart').addEventListener('change',()=>{const chPool=(typeof poolByChapter==='function')?poolByChapter(settings.chapter||'all'):vocabulary;const mx=Math.max(1,chPool.length,...chPool.map(v=>Number(v.no)||0));let n=Math.max(1,Math.min(mx,parseInt($('rangeStart').value,10)||1));$('rangeStart').value=n;if(n>Number($('rangeEnd').value))$('rangeEnd').value=n;updateCountOptions();readSettingsFromUI();persistSettings();});
+$('rangeEnd').addEventListener('change',()=>{const chPool=(typeof poolByChapter==='function')?poolByChapter(settings.chapter||'all'):vocabulary;const mx=Math.max(1,chPool.length,...chPool.map(v=>Number(v.no)||0));let n=Math.max(1,Math.min(mx,parseInt($('rangeEnd').value,10)||mx));$('rangeEnd').value=n;if(n<Number($('rangeStart').value))$('rangeStart').value=n;updateCountOptions();readSettingsFromUI();persistSettings();});
 $('questionCount').addEventListener('change',()=>{readSettingsFromUI();persistSettings();});
 document.querySelectorAll('input[name="direction"]').forEach(el=>el.addEventListener('change',()=>{readSettingsFromUI();persistSettings();}));
 $('ttsRate').addEventListener('change',()=>{settings.rate=Number($('ttsRate').value)||1;persistSettings();});
@@ -998,19 +1237,63 @@ function makeUid() {
   return 'user-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
 }
 function rebuildVocabulary() {
-  const base = builtinVocabulary.map(v=>({...v,uid:'base-'+v.no,category:'Bab 1',note:'',aliases:[],source:'bawaan'}));
+  const base = builtinVocabulary.map(v=>{
+    const cat = String(v.category||'Bab 1').trim() || 'Bab 1';
+    const chapterNo = Number(v.no)||0;
+    const slug = cat.toLowerCase().replace(/[^a-z0-9]+/g,'');
+    // Keep legacy uid for Bab 1 so progress tetap nempel: base-1 ... base-130
+    const uid = (cat === 'Bab 1') ? ('base-'+chapterNo) : ('base-'+slug+'-'+chapterNo);
+    return {no:chapterNo,chapterNo,uid,korean:String(v.korean||'').trim(),meaning:String(v.meaning||'').trim(),category:cat,note:'',aliases:[],source:'bawaan'};
+  });
   const usedUids = new Set(base.map(v=>v.uid));
   const users = [];
   appData.userVocab.forEach((v,i)=>{
     const uid = typeof v.uid==='string' && v.uid ? v.uid : makeUid();
     if (usedUids.has(uid)) return;
     usedUids.add(uid);
-    users.push({no:base.length+i+1,uid,korean:String(v.korean||'').trim(),meaning:String(v.meaning||'').trim(),category:String(v.category||'Kosakata Kelas').trim(),note:String(v.note||''),aliases:Array.isArray(v.aliases)?v.aliases.map(x=>String(x).trim()).filter(Boolean):[],source:'pengguna'});
+    const cat = String(v.category||'Kosakata Kelas').trim() || 'Kosakata Kelas';
+    users.push({no:0,chapterNo:0,uid,korean:String(v.korean||'').trim(),meaning:String(v.meaning||'').trim(),category:cat,note:String(v.note||''),aliases:Array.isArray(v.aliases)?v.aliases.map(x=>String(x).trim()).filter(Boolean):[],source:'pengguna'});
   });
-  appData.userVocab = users.map(({no,source,...v})=>v);
-  vocabulary = [...base,...users];
+  // Nomor lokal per kategori untuk user words
+  const byCat = {};
+  users.forEach(u=>{
+    if(!byCat[u.category]) byCat[u.category]=0;
+    byCat[u.category]++;
+    u.chapterNo = byCat[u.category];
+    u.no = u.chapterNo;
+  });
+  appData.userVocab = users.map(({no,chapterNo,source,...rest})=>rest);
+  const merged = [...base,...users];
+  // globalNo = urutan semua bab 1..N
+  merged.forEach((v,i)=>{ v.globalNo = i+1; });
+  vocabulary = merged;
 }
-function maxVocabularyNo(){ return Math.max(1,...vocabulary.map(v=>Number(v.no)||0)); }
+function maxVocabularyNo(){ return Math.max(1, vocabulary.length, ...vocabulary.map(v=>Number(v.globalNo||v.no)||0)); }
+
+function listCategories(){
+  const set = new Set();
+  vocabulary.forEach(v=>{ if(v.category) set.add(v.category); });
+  const preferred = ['Bab 1','Bab 2'];
+  const rest = [...set].filter(c=>!preferred.includes(c)).sort((a,b)=>a.localeCompare(b,'id'));
+  return [...preferred.filter(c=>set.has(c)), ...rest];
+}
+function getActiveChapter(){
+  return (settings && settings.chapter) ? settings.chapter : 'all';
+}
+/** Pool + nomor sesuai bab: Bab X → 1..n lokal; Semua → 1..total global */
+function poolByChapter(chapter){
+  const ch = chapter === undefined ? getActiveChapter() : chapter;
+  if(!ch || ch === 'all' || ch === 'Semua'){
+    return vocabulary.map(v=>({...v, no: v.globalNo || v.no}));
+  }
+  const list = vocabulary.filter(v=>v.category === ch);
+  return list.map((v,i)=>({...v, no: v.chapterNo || (i+1)}));
+}
+function maxNoForChapter(chapter){
+  const pool = poolByChapter(chapter);
+  return Math.max(1, pool.length, ...pool.map(v=>Number(v.no)||0));
+}
+
 function totalWords(){ return vocabulary.length; }
 function progressFor(item) {
   if (!appData.progress || typeof appData.progress!=='object' || Array.isArray(appData.progress)) appData.progress={};
@@ -1083,7 +1366,8 @@ function addActivityLog(kind,details='') {
   appData.recentActivities.unshift({kind,details,date:new Date().toISOString()});appData.recentActivities=appData.recentActivities.slice(0,50);
 }
 function completeActivity(kind,details='',perfect=false) {
-  const daily=ensureDaily();daily.activities[kind]=(Number(daily.activities[kind])||0)+1;
+  const daily=ensureDaily();
+  daily.activities[kind]=(Number(daily.activities[kind])||0)+1;
   appData.sessions[kind]=(Number(appData.sessions[kind])||0)+1;
   markStudyDay();awardSessionBonus(kind,5);addActivityLog(kind,details);
   if(perfect)unlockAchievement('perfect_round');
@@ -1341,10 +1625,74 @@ function saveBulk() {
 }
 
 function renderVocabularyList(query='') {
-  const list=$('vocabularyList');if(!list)return;list.replaceChildren();const term=normalizeText(query);const matches=vocabulary.filter(v=>!term||String(v.no).includes(term)||normalizeText(v.korean).includes(term)||normalizeText(v.meaning).includes(term)||normalizeText(v.category).includes(term));
-  $('reviewCount').textContent=`${matches.length} dari ${totalWords()} kata`;
-  if(!matches.length){const empty=document.createElement('div');empty.className='empty-state';empty.style.gridColumn='1/-1';empty.textContent='Kosakata tidak ditemukan. Coba kata Korea, arti, atau kategori.';list.append(empty);return;}
-  matches.forEach(item=>{const row=document.createElement('div');row.className='vocab-line';const main=document.createElement('div');main.className='vocab-line-main';const kr=document.createElement('div');kr.className='vocab-line-korean';kr.lang='ko';const no=document.createElement('span');no.className='vocab-no';no.textContent=`${item.no}.`;kr.append(no,document.createTextNode(item.korean));const meaning=document.createElement('div');meaning.className='vocab-line-meaning';meaning.textContent=item.meaning;const tags=document.createElement('div');tags.className='managed-meta';[item.category||'Bab 1',item.source==='bawaan'?'Bawaan':'Buatan lu'].forEach((txt,i)=>{const tag=document.createElement('span');tag.className='tag'+(i===1&&item.source==='pengguna'?' green':'');tag.textContent=txt;tags.append(tag);});main.append(kr,meaning,tags);row.append(main,createSpeakerButton(item.korean,'Dengarkan '+item.korean));list.append(row);});
+  const list = document.getElementById('vocabularyList');
+  if (!list) return;
+  list.replaceChildren();
+  const term = (typeof normalizeText === 'function') ? normalizeText(query) : String(query || '').toLowerCase();
+  const ch = (window.settings && settings.chapter) ? settings.chapter : ((typeof settings !== 'undefined' && settings.chapter) ? settings.chapter : 'all');
+  let pool;
+  if (typeof poolByChapter === 'function') {
+    pool = poolByChapter(ch);
+  } else if (typeof vocabulary !== 'undefined') {
+    if (!ch || ch === 'all') {
+      pool = vocabulary.map((v, i) => Object.assign({}, v, { no: v.globalNo || (i + 1) }));
+    } else {
+      const filtered = vocabulary.filter(v => v.category === ch);
+      pool = filtered.map((v, i) => Object.assign({}, v, { no: v.chapterNo || (i + 1) }));
+    }
+  } else {
+    pool = [];
+  }
+  const matches = pool.filter(v => {
+    if (!term) return true;
+    return String(v.no).includes(term)
+      || ((typeof normalizeText === 'function') ? normalizeText(v.korean) : String(v.korean || '').toLowerCase()).includes(term)
+      || ((typeof normalizeText === 'function') ? normalizeText(v.meaning) : String(v.meaning || '').toLowerCase()).includes(term)
+      || ((typeof normalizeText === 'function') ? normalizeText(v.category || '') : String(v.category || '').toLowerCase()).includes(term);
+  });
+  const babLabel = (!ch || ch === 'all') ? 'Semua bab' : ch;
+  const countEl = document.getElementById('reviewCount');
+  if (countEl) countEl.textContent = matches.length + ' dari ' + pool.length + ' kata · ' + babLabel;
+  const titleEl = document.getElementById('reviewTitle');
+  if (titleEl) titleEl.textContent = (!ch || ch === 'all') ? 'Daftar semua kosakata' : ('Daftar kosakata ' + ch);
+  const pillEl = document.getElementById('reviewTotalPill');
+  if (pillEl) pillEl.textContent = babLabel;
+  if (!matches.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.style.gridColumn = '1/-1';
+    empty.textContent = 'Kosakata tidak ditemukan untuk filter ini.';
+    list.append(empty);
+    return;
+  }
+  matches.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'vocab-line';
+    const main = document.createElement('div');
+    main.className = 'vocab-line-main';
+    const kr = document.createElement('div');
+    kr.className = 'vocab-line-korean';
+    kr.lang = 'ko';
+    const no = document.createElement('span');
+    no.className = 'vocab-no';
+    no.textContent = '#' + item.no + ' ';
+    kr.append(no, document.createTextNode(item.korean));
+    const meaning = document.createElement('div');
+    meaning.className = 'vocab-line-meaning';
+    meaning.textContent = item.meaning + (item.category ? (' · ' + item.category) : '');
+    main.append(kr, meaning);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sound-button small';
+    btn.textContent = '🔊';
+    btn.title = 'Dengarkan';
+    btn.disabled = (typeof canPlayTts === 'function') ? !canPlayTts() : false;
+    btn.addEventListener('click', () => {
+      if (typeof speakKorean === 'function') speakKorean(item.korean, btn);
+    });
+    row.append(main, btn);
+    list.append(row);
+  });
 }
 
 // Independent, persistent settings for Typing and Listening.
@@ -1354,12 +1702,18 @@ let typingKnownMax = 0;
 let listeningKnownMax = 0;
 function countDefaultFor(n){return Number(n)>=20?'20':'all';}
 function rangeValues(startId,endId){
-  const max=maxVocabularyNo();const startEl=$(startId),endEl=$(endId);if(!startEl||!endEl)return {start:1,end:max,pool:[...vocabulary]};
-  startEl.max=String(max);endEl.max=String(max);
-  let start=Math.max(1,Math.min(max,parseInt(startEl.value,10)||1));let end=Math.max(1,Math.min(max,parseInt(endEl.value,10)||max));
-  if(start>end)end=start;
-  startEl.value=String(start);endEl.value=String(end);
-  return {start,end,pool:vocabulary.filter(v=>Number(v.no)>=start&&Number(v.no)<=end)};
+  const ch = settings.chapter || 'all';
+  const chapterPool = (typeof poolByChapter === 'function') ? poolByChapter(ch) : vocabulary;
+  const max = Math.max(1, chapterPool.length, ...chapterPool.map(v => Number(v.no) || 0));
+  const startEl = $(startId), endEl = $(endId);
+  if(!startEl || !endEl) return {start:1, end:max, pool: chapterPool};
+  let start = Math.max(1, Math.min(max, parseInt(startEl.value,10) || 1));
+  let end = Math.max(1, Math.min(max, parseInt(endEl.value,10) || max));
+  if(start > end){ const t=start; start=end; end=t; }
+  startEl.value = String(start); endEl.value = String(end);
+  startEl.max = String(max); endEl.max = String(max);
+  const pool = chapterPool.filter(v => Number(v.no) >= start && Number(v.no) <= end);
+  return {start, end, pool};
 }
 function refreshCountSelect(selectId,poolSize,previous='20',hintId=null){
   const select=$(selectId);if(!select)return 'all';const old=String(previous||select.value||'20');const options=[20,40,60].filter(n=>n<=poolSize);select.replaceChildren();
@@ -1376,19 +1730,62 @@ function persistPracticePrefs(){
   if(!safeWrite(PRACTICE_PREF_STORAGE,JSON.stringify(practicePrefs)))toast('Pengaturan latihan tidak bisa disimpan oleh browser ini.','bad');
 }
 function updateTypingOptions(){
-  if(!$('writeCount'))return;const max=maxVocabularyNo();const previousMax=typingKnownMax;const rawEnd=Number($('writeRangeEnd').value);
-  if(previousMax>0&&rawEnd===previousMax&&max>previousMax)$('writeRangeEnd').value=String(max);
-  if(max<previousMax){$('writeRangeStart').value=String(Math.min(Number($('writeRangeStart').value)||1,max));$('writeRangeEnd').value=String(Math.min(Number($('writeRangeEnd').value)||max,max));}
-  const r=rangeValues('writeRangeStart','writeRangeEnd');const scope=$('writeScope')?.value||'all';const allowed=scope==='all'?r.pool:scopedVocabulary(scope).filter(v=>v.no>=r.start&&v.no<=r.end);const old=String($('writeCount').value||practicePrefs.typing.count||countDefaultFor(allowed.length));
-  const count=refreshCountSelect('writeCount',allowed.length,old,'writeCountHint');$('writeRangeHint').textContent=`Rentang aktif: nomor ${r.start}–${r.end} · ${r.pool.length} kosakata.`;typingKnownMax=max;
-  if(practicePrefs.typing)practicePrefs.typing.count=count;
+  if(!$('writeCount')) return;
+  const ch = settings.chapter || 'all';
+  const chapterPool = (typeof poolByChapter==='function') ? poolByChapter(ch) : vocabulary;
+  const max = Math.max(1, chapterPool.length, ...chapterPool.map(v=>Number(v.no)||0));
+  const previousMax = typeof typingKnownMax !== 'undefined' ? typingKnownMax : 0;
+  const rawEnd = Number($('writeRangeEnd').value);
+  if(previousMax>0 && rawEnd===previousMax && max>previousMax) $('writeRangeEnd').value = String(max);
+  if(max<previousMax){ $('writeRangeStart').value='1'; $('writeRangeEnd').value=String(max); }
+  $('writeRangeStart').max = String(max);
+  $('writeRangeEnd').max = String(max);
+  let start = Math.max(1, Math.min(max, parseInt($('writeRangeStart').value,10)||1));
+  let end = Math.max(1, Math.min(max, parseInt($('writeRangeEnd').value,10)||max));
+  if(start>end) end = start;
+  $('writeRangeStart').value = String(start);
+  $('writeRangeEnd').value = String(end);
+  if(typeof typingKnownMax !== 'undefined') typingKnownMax = max;
+  const poolLen = chapterPool.filter(v=>Number(v.no)>=start && Number(v.no)<=end).length;
+  const select = $('writeCount');
+  if(select){
+    const prev = String(select.value||'20');
+    const quantities = [10,20,40].filter(n=>n<=poolLen);
+    select.replaceChildren();
+    quantities.forEach(n=>{ const o=document.createElement('option'); o.value=String(n); o.textContent=n+' soal'; select.append(o); });
+    const all=document.createElement('option'); all.value='all'; all.textContent='Semua dalam filter'; select.append(all);
+    select.value = [...select.options].some(o=>o.value===prev) ? prev : String(quantities[0]||'all');
+  }
+  if($('writeCountHint')) $('writeCountHint').textContent = (ch==='all'?'Semua bab':ch) + ' · ' + poolLen + ' kosakata di rentang ' + start + '–' + end + '.';
 }
 function updateListeningOptions(){
-  if(!$('listenCount'))return;const max=maxVocabularyNo();const previousMax=listeningKnownMax;const rawEnd=Number($('listenRangeEnd').value);
-  if(previousMax>0&&rawEnd===previousMax&&max>previousMax)$('listenRangeEnd').value=String(max);
-  if(max<previousMax){$('listenRangeStart').value=String(Math.min(Number($('listenRangeStart').value)||1,max));$('listenRangeEnd').value=String(Math.min(Number($('listenRangeEnd').value)||max,max));}
-  const r=rangeValues('listenRangeStart','listenRangeEnd');const old=String($('listenCount').value||practicePrefs.listening.count||countDefaultFor(r.pool.length));const count=refreshCountSelect('listenCount',r.pool.length,old,'listenCountHint');$('listenRangeHint').textContent=`Rentang aktif: nomor ${r.start}–${r.end} · ${r.pool.length} kosakata.`;listeningKnownMax=max;
-  if(practicePrefs.listening)practicePrefs.listening.count=count;
+  if(!$('listenCount')) return;
+  const ch = settings.chapter || 'all';
+  const chapterPool = (typeof poolByChapter==='function') ? poolByChapter(ch) : vocabulary;
+  const max = Math.max(1, chapterPool.length, ...chapterPool.map(v=>Number(v.no)||0));
+  const previousMax = typeof listeningKnownMax !== 'undefined' ? listeningKnownMax : 0;
+  const rawEnd = Number($('listenRangeEnd').value);
+  if(previousMax>0 && rawEnd===previousMax && max>previousMax) $('listenRangeEnd').value = String(max);
+  if(max<previousMax){ $('listenRangeStart').value='1'; $('listenRangeEnd').value=String(max); }
+  $('listenRangeStart').max = String(max);
+  $('listenRangeEnd').max = String(max);
+  let start = Math.max(1, Math.min(max, parseInt($('listenRangeStart').value,10)||1));
+  let end = Math.max(1, Math.min(max, parseInt($('listenRangeEnd').value,10)||max));
+  if(start>end) end = start;
+  $('listenRangeStart').value = String(start);
+  $('listenRangeEnd').value = String(end);
+  if(typeof listeningKnownMax !== 'undefined') listeningKnownMax = max;
+  const poolLen = chapterPool.filter(v=>Number(v.no)>=start && Number(v.no)<=end).length;
+  const select = $('listenCount');
+  if(select){
+    const prev = String(select.value||'20');
+    const quantities = [10,20,40].filter(n=>n<=poolLen);
+    select.replaceChildren();
+    quantities.forEach(n=>{ const o=document.createElement('option'); o.value=String(n); o.textContent=n+' soal'; select.append(o); });
+    const all=document.createElement('option'); all.value='all'; all.textContent='Semua dalam filter'; select.append(all);
+    select.value = [...select.options].some(o=>o.value===prev) ? prev : String(quantities[0]||'all');
+  }
+  if($('listenCountHint')) $('listenCountHint').textContent = (ch==='all'?'Semua bab':ch) + ' · ' + poolLen + ' kosakata di rentang ' + start + '–' + end + '.';
 }
 function initPracticeSettings(){
   const max=maxVocabularyNo();const saved=safeParse(safeRead(PRACTICE_PREF_STORAGE),{});const t=saved.typing||{},l=saved.listening||{};
@@ -1400,11 +1797,15 @@ function initPracticeSettings(){
   typingKnownMax=max;listeningKnownMax=max;updateTypingOptions();updateListeningOptions();persistPracticePrefs();
 }
 function onPracticeRangeChange(kind,which){
-  const startId=kind==='typing'?'writeRangeStart':'listenRangeStart',endId=kind==='typing'?'writeRangeEnd':'listenRangeEnd',max=maxVocabularyNo();const a=$(startId),b=$(endId);let n=Math.max(1,Math.min(max,parseInt((which==='start'?a:b).value,10)||1));if(which==='start'){a.value=String(n);if(n>Number(b.value))b.value=String(n);}else{b.value=String(n);if(n<Number(a.value))a.value=String(n);}
+  const startId=kind==='typing'?'writeRangeStart':'listenRangeStart',endId=kind==='typing'?'writeRangeEnd':'listenRangeEnd';
+  const max=(typeof maxNoForChapter==='function')?maxNoForChapter(settings.chapter||'all'):maxVocabularyNo();
+  const a=$(startId),b=$(endId);let n=Math.max(1,Math.min(max,parseInt((which==='start'?a:b).value,10)||1));
+  if(which==='start'){a.value=String(n);if(n>Number(b.value))b.value=String(n);}else{b.value=String(n);if(n<Number(a.value))a.value=String(n);}
   if(kind==='typing')updateTypingOptions();else updateListeningOptions();persistPracticePrefs();
 }
 function resetPracticeSettings(kind){
-  const max=maxVocabularyNo();if(kind==='typing'){$('writeRangeStart').value='1';$('writeRangeEnd').value=String(max);$('writeScope').value='all';$('writeCount').value=countDefaultFor(max);updateTypingOptions();}
+  const max=(typeof maxNoForChapter==='function')?maxNoForChapter(settings.chapter||'all'):maxVocabularyNo();
+  if(kind==='typing'){$('writeRangeStart').value='1';$('writeRangeEnd').value=String(max);$('writeScope').value='all';$('writeCount').value=countDefaultFor(max);updateTypingOptions();}
   else{$('listenRangeStart').value='1';$('listenRangeEnd').value=String(max);$('listenCount').value=countDefaultFor(max);$('listenReplayLimit').value='3';$('listenDifficulty').value='normal';$('listenSpeed').value='1';updateListeningOptions();}
   persistPracticePrefs();toast(`Pengaturan ${kind==='typing'?'Typing':'Listening'} dipulihkan. Data dan progres tetap aman.`,'good');
 }
@@ -1420,7 +1821,8 @@ function limitedPool(list,countValue) {const n=countValue==='all'?list.length:Ma
 function startWriting(scopeOverride=null,wrongOnly=false) {
   stopSpeech(false);updateTypingOptions();persistPracticePrefs();$('writeResultPanel').classList.add('hidden');$('writeSessionPanel').classList.remove('hidden');
   const r=rangeValues('writeRangeStart','writeRangeEnd');const scope=scopeOverride||$('writeScope').value;
-  let pool=(wrongOnly?scopedVocabulary('weak'):scopedVocabulary(scope)).filter(v=>v.no>=r.start&&v.no<=r.end);
+  const chapterPool = (r && Array.isArray(r.pool)) ? r.pool : ((typeof poolByChapter==='function')?poolByChapter(settings.chapter||'all'):vocabulary);
+  let pool=(wrongOnly?scopedVocabulary('weak'):scopedVocabulary(scope)).filter(v=> chapterPool.some(c=>c.uid===v.uid));
   if(!pool.length){$('writeSessionPanel').classList.add('hidden');toast(wrongOnly?'Belum ada kata lemah di rentang ini. Ubah rentang atau kerjakan beberapa soal dulu.':'Tidak ada kosakata yang cocok dengan rentang dan prioritas ini. Pilih pengaturan lain.','warning');return;}
   const queue=limitedPool(pool,wrongOnly?'all':$('writeCount').value);if(!queue.length){$('writeSessionPanel').classList.add('hidden');toast('Tidak ada kosakata yang dapat dimasukkan ke sesi ini.','warning');return;}
   resetRoastSession();writeState={queue,index:0,correct:0,wrong:0,answers:[],hintUsed:false,checked:false,current:null};
@@ -1502,15 +1904,17 @@ function renderListeningDifficultWords() {
 }
 
 // Memory Lab: spaced repetition queue + skill-specific recall.
-function memoryRangeValues() {
-  const max=Math.max(1,...vocabulary.map(v=>Number(v.no)||0));
-  const stored=safeParse(safeRead('kvl.memoryRange.v1'),{});
-  let start=Number($('memoryRangeStart')?.value ?? stored.start ?? 1);
-  let end=Number($('memoryRangeEnd')?.value ?? stored.end ?? max);
-  if(!Number.isFinite(start)||start<1)start=1;if(!Number.isFinite(end)||end<1)end=max;
-  start=Math.min(max,Math.floor(start));end=Math.min(max,Math.floor(end));
-  if(start>end)[start,end]=[end,start];
-  return {start,end,max};
+function memoryRangeValues(){
+  const ch = settings.chapter || 'all';
+  const chapterPool = (typeof poolByChapter==='function') ? poolByChapter(ch) : vocabulary;
+  const max = Math.max(1, chapterPool.length, ...chapterPool.map(v=>Number(v.no)||0));
+  const stored = safeParse(safeRead('kvl.memoryRange.v1'), {});
+  let start = Number($('memoryRangeStart')?.value ?? stored.start ?? 1);
+  let end = Number($('memoryRangeEnd')?.value ?? stored.end ?? max);
+  start = Math.max(1, Math.min(max, start||1));
+  end = Math.max(1, Math.min(max, end||max));
+  if(start>end){ const t=start; start=end; end=t; }
+  return {start, end, pool: chapterPool.filter(v=>Number(v.no)>=start && Number(v.no)<=end)};
 }
 function renderMemoryRangeInfo() {
   if(!$('memoryRangeStart')||!$('memoryRangeEnd'))return;
@@ -1527,12 +1931,14 @@ function renderMemoryRangeInfo() {
   $('startMemory').disabled=count===0;$('startNewWords').disabled=count===0;
   $('memoryCountHint').textContent=`Maksimal ${count} kosakata unik tersedia. Kata tidak akan digandakan untuk memenuhi target.`;
   const countSel=$('memoryCount');Array.from(countSel.options).forEach(o=>{if(o.value==='all')o.disabled=count===0;else o.disabled=Number(o.value)>count;});
-  if(countSel.selectedOptions[0]?.disabled)countSel.value='all';
+  if(countSel&&countSel.selectedOptions&&countSel.selectedOptions[0]&&countSel.selectedOptions[0].disabled)countSel.value='all';
   try{localStorage.setItem('kvl.memoryRange.v1',JSON.stringify({start,end}));}catch(e){}
 }
 function memoryPriorityList(mode='mixed') {
   const range=memoryRangeValues();
-  let list=vocabulary.filter(v=>v.no>=range.start&&v.no<=range.end);
+  let list = (range && Array.isArray(range.pool) && range.pool.length)
+    ? range.pool.slice()
+    : ((typeof poolByChapter==='function') ? poolByChapter(settings.chapter||'all') : vocabulary.slice());
   if(mode==='new')return list.filter(v=>itemStatus(v)==='new');
   if(mode==='due')return list.filter(v=>isDue(v)&&!isStrong(v)).sort((a,b)=>new Date(appData.progress[a.uid]?.dueAt||0)-new Date(appData.progress[b.uid]?.dueAt||0));
   if(mode==='weak')return list.filter(isWeakItem).sort((a,b)=>{const pa=appData.progress[a.uid]||{},pb=appData.progress[b.uid]||{};return ((pb.skillStats?.write?.wrong||0)-(pa.skillStats?.write?.wrong||0))||(Number(pb.needsSoon)-Number(pa.needsSoon))||((pb.wrong||0)-(pa.wrong||0))||((pa.mastery||0)-(pb.mastery||0));});
@@ -1720,10 +2126,14 @@ function finishMemory(completed=true) {
   renderMemoryDashboard();renderStatsDashboard();
 }
 function pickFlashcardPool() {
-  // Semua kosakata dalam rentang Memory Lab, diacak. Tidak dibatasi 5 kartu.
-  const range=typeof memoryRangeValues==='function'?memoryRangeValues():{start:1,end:99999};
-  let list=vocabulary.filter(v=>Number(v.no)>=range.start&&Number(v.no)<=range.end);
-  if(!list.length)list=[...vocabulary];
+  // Pool dari bab aktif + rentang Memory Lab, diacak.
+  const range = typeof memoryRangeValues==='function' ? memoryRangeValues() : null;
+  let list = range && Array.isArray(range.pool) ? range.pool.slice() : null;
+  if(!list || !list.length){
+    const ch = (settings && settings.chapter) || 'all';
+    list = (typeof poolByChapter==='function') ? poolByChapter(ch) : vocabulary.slice();
+  }
+  if(!list.length) list = vocabulary.slice();
   return shuffle(list);
 }
 let flashcardReturnView='flashcardView';
@@ -1888,7 +2298,20 @@ $('listenRangeStart').addEventListener('change',()=>onPracticeRangeChange('liste
 $('startWrite').addEventListener('click',()=>startWriting());$('repeatWriteMistakes').addEventListener('click',()=>startWriting(null,true));$('checkWrite').addEventListener('click',()=>checkWriteAnswer(false));$('skipWrite').addEventListener('click',()=>checkWriteAnswer(true));$('writeHintBtn').addEventListener('click',()=>{if(!writeState||writeState.checked)return;writeState.hintUsed=true;const item=writeState.current,chars=Array.from(item.korean.replace(/\s/g,''));$('writeHintText').textContent=`Petunjuk: dimulai dengan “${chars[0]||'?'}”, total ${chars.length} blok Hangeul. Kalau benar setelah lihat petunjuk, XP lebih sedikit.`;$('writeHintText').classList.remove('hidden');});$('nextWrite').addEventListener('click',()=>{if(!writeState)return;writeState.index++;renderWriteQuestion();});$('writeAnswer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();checkWriteAnswer(false);}});$('writeRestart').addEventListener('click',()=>startWriting());$('writeReturn').addEventListener('click',()=>showView('settingsView'));document.querySelectorAll('[data-error-kind]').forEach(b=>b.addEventListener('click',()=>classifyWriteError(b.dataset.errorKind)));
 $('startListening').addEventListener('click',startListening);$('listenPlay').addEventListener('click',playListenAudio);$('listenStop').addEventListener('click',()=>stopSpeech());$('stopListeningAudio').addEventListener('click',()=>stopSpeech());$('nextListen').addEventListener('click',()=>{if(!listenState)return;listenState.index++;$('listenPrompt').classList.remove('korean');renderListenQuestion();});$('listenRestart').addEventListener('click',startListening);$('listenReturn').addEventListener('click',()=>showView('listenView'));
 $('memoryWordSearch').addEventListener('input',e=>renderMemoryWordSkills(e.target.value));$('memoryWordFilter').addEventListener('change',()=>renderMemoryWordSkills());
-(function initMemoryRange(){const max=Math.max(1,...vocabulary.map(v=>Number(v.no)||0));const saved=safeParse(safeRead('kvl.memoryRange.v1'),{});$('memoryRangeStart').value=String(Math.max(1,Math.min(max,Number(saved.start)||1)));$('memoryRangeEnd').value=String(Math.max(1,Math.min(max,Number(saved.end)||max)));renderMemoryRangeInfo();['memoryRangeStart','memoryRangeEnd'].forEach(id=>$(id).addEventListener('input',renderMemoryRangeInfo));$('memoryRangeReset').addEventListener('click',()=>{$('memoryRangeStart').value='1';$('memoryRangeEnd').value=String(Math.max(1,...vocabulary.map(v=>Number(v.no)||0)));renderMemoryRangeInfo();toast('Rentang Memory Lab dipulihkan ke seluruh kosakata. Progres hafalan tetap aman.','success');});})();
+(function initMemoryRange(){
+  const max=(typeof maxNoForChapter==='function')?maxNoForChapter(settings.chapter||'all'):Math.max(1,vocabulary.length);
+  const saved=safeParse(safeRead('kvl.memoryRange.v1'),{});
+  if($('memoryRangeStart'))$('memoryRangeStart').value=String(Math.max(1,Math.min(max,Number(saved.start)||1)));
+  if($('memoryRangeEnd'))$('memoryRangeEnd').value=String(Math.max(1,Math.min(max,Number(saved.end)||max)));
+  if(typeof renderMemoryRangeInfo==='function')renderMemoryRangeInfo();
+  ['memoryRangeStart','memoryRangeEnd'].forEach(id=>{if($(id))$(id).addEventListener('input',()=>{if(typeof renderMemoryRangeInfo==='function')renderMemoryRangeInfo();});});
+  if($('memoryRangeReset'))$('memoryRangeReset').addEventListener('click',()=>{
+    const mx=(typeof maxNoForChapter==='function')?maxNoForChapter(settings.chapter||'all'):Math.max(1,vocabulary.length);
+    $('memoryRangeStart').value='1';$('memoryRangeEnd').value=String(mx);
+    if(typeof renderMemoryRangeInfo==='function')renderMemoryRangeInfo();
+    toast('Rentang Memory Lab dipulihkan.','success');
+  });
+})();
 $('startMemory').addEventListener('click',()=>startMemory());$('startNewWords').addEventListener('click',()=>{$('memorySessionMode').value='new';startMemory('new');});$('skipMemory').addEventListener('click',skipMemoryQuestion);$('nextMemory').addEventListener('click',()=>{if(!memoryState)return;memoryState.index++;renderMemoryQuestion();});$('endMemory').addEventListener('click',()=>{if(memoryState&&confirm('Akhiri sesi sekarang? Progres jawaban tetap tersimpan, tetapi sesi belum selesai tidak menambah streak.'))finishMemory(false);});$('checkMemoryWrite').addEventListener('click',()=>checkMemoryWrite(false));$('memoryWriteAnswer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();checkMemoryWrite(false);}});$('memoryHintBtn').addEventListener('click',memoryHint);$('memoryTeacherHelp')?.addEventListener('click',memoryHint);$('memoryAudio').addEventListener('click',()=>{if(!memoryState||!memoryState.current)return;const old=settings.rate;settings.rate=Number($('listenSpeed')?.value)||old;speakKorean(memoryState.current.item.korean,$('memoryAudio'));settings.rate=old;});$('memoryMarkHard').addEventListener('click',toggleHardWord);$('revealMemoryRecall').addEventListener('click',revealMemoryRecall);document.querySelectorAll('[data-memory-quality]').forEach(b=>b.addEventListener('click',()=>rateMemoryRecall(Number(b.dataset.memoryQuality))));$('memoryAgain').addEventListener('click',()=>startMemory(lastMemoryMode));$('memoryBackDashboard').addEventListener('click',()=>{memoryState=null;$('memoryResultPanel').classList.add('hidden');renderMemoryDashboard();});$('openFlashcards').addEventListener('click',()=>startFlashcards('memoryView'));$('beginFlashcards').addEventListener('click',()=>startFlashcards('flashcardView'));$('closeFlashcards').addEventListener('click',()=>{stopSpeech(false);$('flashcardPanel').classList.add('hidden');$('flashcardSetupPanel').classList.remove('hidden');if(flashcardReturnView==='memoryView')showView('memoryView');});$('revealFlashcard').addEventListener('click',revealFlashcard);document.querySelectorAll('[data-flash-quality]').forEach(b=>b.addEventListener('click',()=>rateFlashcard(Number(b.dataset.flashQuality))));$('nextFlashcard').addEventListener('click',()=>{if(!flashState)return;flashState.index++;renderFlashcard();});$('flashcardAudio').addEventListener('click',()=>{if(flashState&&flashState.current)speakKorean(flashState.current.korean,$('flashcardAudio'));});$('homeMemoryBtn')?.addEventListener('click',()=>showView('memoryView'));
 document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>{
   let target=btn.dataset.go;
@@ -2759,12 +3182,59 @@ ensureDaily();
 if(window.__kvlStorageLoadIssue){toast('Data lokal sebelumnya tidak bisa dibaca. Aplikasi membuka daftar bawaan dan tidak menimpa file rusak secara otomatis. Impor backup JSON bila punya.','warning',7000);}
 if(!safeRead('koreanVocabLab.v2'))persistApp(true);
 
+if(typeof rebuildVocabulary==='function')rebuildVocabulary();
+if(typeof syncChapterSelects==='function')syncChapterSelects();
+settings.end=(typeof maxNoForChapter==='function')?maxNoForChapter(settings.chapter||'all'):maxVocabularyNo();
+if(typeof updateCountOptions==='function')updateCountOptions();
 renderHomeDashboard();renderManagedVocabulary('');renderVocabularyList('');renderWriteMistakes();renderListeningDifficultWords();renderMemoryDashboard();renderStatsDashboard();updateNewAudioStatus();
 if($('totalVocabNumber'))$('totalVocabNumber').textContent=String(totalWords());
 
 $('homeAddVocabularyBtn')?.addEventListener('click',()=>showView('addView'));
 $('homeTotalMini') && ($('homeTotalMini').textContent=String(vocabulary.length));
 const __oldRenderHomeDashboard=renderHomeDashboard;renderHomeDashboard=function(){__oldRenderHomeDashboard();if($('homeTotalMini'))$('homeTotalMini').textContent=String(vocabulary.length);};
+
+/* ===== Chapter filter: event delegation (aman, sekali pasang) ===== */
+(function wireChapterFilters(){
+  if (window.__kvlChapterWired) return;
+  window.__kvlChapterWired = true;
+  document.addEventListener('change', function(e){
+    const t = e.target;
+    if (!t || !t.id) return;
+    if (['chapterFilter','quizChapter','memoryChapter','writeChapter','listenChapter'].indexOf(t.id) === -1) return;
+    if (typeof settings === 'undefined') return;
+    settings.chapter = t.value || 'all';
+    // sync all selects
+    ['chapterFilter','quizChapter','memoryChapter','writeChapter','listenChapter'].forEach(function(id){
+      const el = document.getElementById(id);
+      if (el && el.value !== settings.chapter) el.value = settings.chapter;
+    });
+    var max = (typeof maxNoForChapter === 'function') ? maxNoForChapter(settings.chapter) : Math.max(1, (typeof vocabulary !== 'undefined' ? vocabulary.length : 1));
+    settings.start = 1;
+    settings.end = max;
+    function setRange(a, b){
+      var A = document.getElementById(a), B = document.getElementById(b);
+      if (A) { A.value = '1'; A.max = String(max); }
+      if (B) { B.value = String(max); B.max = String(max); }
+    }
+    setRange('rangeStart','rangeEnd');
+    setRange('memoryRangeStart','memoryRangeEnd');
+    setRange('writeRangeStart','writeRangeEnd');
+    setRange('listenRangeStart','listenRangeEnd');
+    if (typeof updateCountOptions === 'function') updateCountOptions();
+    if (typeof updateTypingOptions === 'function') updateTypingOptions();
+    if (typeof updateListeningOptions === 'function') updateListeningOptions();
+    if (typeof renderMemoryRangeInfo === 'function') renderMemoryRangeInfo();
+    if (typeof persistSettings === 'function') persistSettings();
+    // re-render collection list
+    var q = document.getElementById('reviewSearch');
+    if (typeof renderVocabularyList === 'function') {
+      renderVocabularyList(q ? q.value : '');
+    }
+    var label = settings.chapter === 'all' ? 'Semua bab' : settings.chapter;
+    if (typeof toast === 'function') toast('Materi: ' + label + ' · nomor 1–' + max, 'good');
+  });
+})();
+
 </script>
 </body>
 </html>
