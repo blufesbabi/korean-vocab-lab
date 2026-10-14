@@ -891,12 +891,14 @@
         justify-content: space-between;
         gap: 12px;
         min-width: 0;
-        padding: 16px 16px 16px 18px;
+        min-height: 64px;
+        padding: 14px 16px 14px 18px;
         background: linear-gradient(180deg, #121c2c 0%, #0f1826 100%);
         border: 1px solid rgba(58, 80, 106, 0.85);
         border-radius: 16px;
         box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
-        transition: border-color 0.18s ease, background 0.18s ease, transform 0.15s ease;
+        transition: border-color 0.18s ease, background 0.18s ease;
+        box-sizing: border-box;
       }
       .vocab-line:hover {
         border-color: rgba(143, 186, 255, 0.45);
@@ -905,31 +907,46 @@
       .vocab-line-main {
         flex: 1 1 auto;
         display: flex;
+        flex-direction: row;
         align-items: center;
-        gap: 14px 18px;
+        gap: 16px;
         min-width: 0;
       }
       .vocab-line-korean {
-        flex: 0 1 44%;
+        flex: 0 1 42%;
+        max-width: 42%;
         min-width: 0;
-        font-size: 25px;
+        margin: 0;
+        padding: 0;
+        font-size: 24px;
         font-weight: 800;
         letter-spacing: -0.02em;
-        line-height: 1.25;
+        line-height: 1.3;
         color: var(--ink);
         overflow-wrap: anywhere;
         word-break: keep-all;
       }
       .vocab-line-meaning {
-        flex: 1 1 48%;
+        flex: 1 1 50%;
         min-width: 0;
-        margin-top: 0;
-        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
         font-weight: 600;
         line-height: 1.35;
         color: #d7e4f3;
         overflow-wrap: anywhere;
         word-break: break-word;
+      }
+      .vocab-line .sound-button,
+      .vocab-line .sound-button.small {
+        flex: 0 0 auto;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        margin: 0;
+        padding: 0;
+        align-self: center;
       }
       .vocab-no {
         display: inline-block;
@@ -940,6 +957,30 @@
         letter-spacing: 0.02em;
         vertical-align: 0.12em;
         opacity: 0.9;
+      }
+      @media (max-width: 520px) {
+        .vocab-line {
+          padding: 12px 12px 12px 14px;
+          min-height: 56px;
+          gap: 10px;
+        }
+        .vocab-line-main {
+          gap: 12px;
+        }
+        .vocab-line-korean {
+          flex: 0 1 40%;
+          max-width: 40%;
+          font-size: 20px;
+        }
+        .vocab-line-meaning {
+          font-size: 16px;
+        }
+        .vocab-line .sound-button,
+        .vocab-line .sound-button.small {
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+        }
       }
       .vocab-line .sound-button.small {
         flex: none;
@@ -2003,7 +2044,7 @@
 #memoryHintText,#memoryTeacherHelpText,.practice-feedback{font-size:15px;line-height:1.6}
 .practice-feedback div{font-size:15px;line-height:1.65}
 @media(max-width:720px){.custom-study-list{max-height:220px}.session-nav .btn{font-size:12px;padding:10px 12px}.guide-box{font-size:15px!important}}
-.session-nav .btn{font-size:12px;padding:10px 12px}}
+.session-nav .btn{font-size:12px;padding:10px 12px}
 
 
 /* guide-size-boost */
@@ -2128,6 +2169,228 @@
   min-height: 48px;
 }
 
+
+/* ===== Unified session navigation ===== */
+.session-header-row,
+.quiz-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.session-exit-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.btn-session-exit {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0 !important;
+  border-radius: 10px;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.session-mode-label {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.session-progress-block {
+  margin: 8px 0 14px;
+}
+.session-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.session-progress-meta strong {
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.session-nav-row,
+.form-footer.session-nav,
+#writeNavRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 4px;
+}
+.session-nav-row .btn,
+.form-footer.session-nav .btn,
+#writeNavRow .btn {
+  min-height: 44px;
+  border-radius: 12px;
+  font-weight: 800;
+  padding: 10px 16px;
+}
+.session-nav-row .btn-primary,
+.form-footer.session-nav .btn-primary,
+#writeNavRow .btn-primary {
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.session-nav-row .btn-ghost,
+.form-footer.session-nav .btn-ghost,
+#writeNavRow .btn-ghost {
+  flex: 0 0 auto;
+}
+.session-nav-row .btn:disabled,
+.form-footer.session-nav .btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+@media (max-width: 520px) {
+  .session-nav-row,
+  .form-footer.session-nav,
+  #writeNavRow {
+    gap: 8px;
+  }
+  .session-nav-row .btn,
+  .form-footer.session-nav .btn,
+  #writeNavRow .btn {
+    min-height: 46px;
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+}
+
+
+#skipQuestion, #skipListen { display: none !important; }
+
+#prevQuestion:not(:disabled),
+#prevWrite:not(:disabled),
+#prevListen:not(:disabled),
+#prevMemory:not(:disabled) {
+  pointer-events: auto !important;
+  opacity: 1;
+  cursor: pointer;
+}
+#prevQuestion:disabled,
+#prevWrite:disabled,
+#prevListen:disabled,
+#prevMemory:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.q-status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+.q-status-pill {
+  min-width: 40px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(58, 80, 106, 0.85);
+  background: rgba(15, 24, 38, 0.9);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.q-status-pill.is-done {
+  border-color: rgba(184, 243, 107, 0.45);
+  color: var(--accent);
+  background: rgba(184, 243, 107, 0.08);
+}
+.q-status-pill.current,
+.q-status-pill.is-todo.current {
+  outline: 2px solid rgba(143, 186, 255, 0.55);
+}
+
+.vocab-line-main.vocab-line-fmt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.vocab-line-fmt .vocab-no {
+  flex: 0 0 2.75rem;
+  min-width: 2.75rem;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 800;
+  color: #7f94af;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  opacity: 1;
+  vertical-align: baseline;
+}
+.vocab-line-fmt .vocab-sep {
+  flex: 0 0 auto;
+  color: rgba(127, 148, 175, 0.55);
+  font-weight: 600;
+  font-size: 14px;
+  user-select: none;
+}
+.vocab-line-fmt .vocab-line-korean {
+  flex: 0 1 38%;
+  max-width: 40%;
+  min-width: 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+.vocab-line-fmt .vocab-line-meaning {
+  flex: 1 1 45%;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #d7e4f3;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+@media (max-width: 520px) {
+  .vocab-line-fmt .vocab-no {
+    flex-basis: 2.25rem;
+    min-width: 2.25rem;
+    font-size: 12px;
+  }
+  .vocab-line-fmt .vocab-line-korean {
+    flex: 0 1 36%;
+    max-width: 38%;
+    font-size: 18px;
+  }
+  .vocab-line-fmt .vocab-line-meaning {
+    font-size: 15px;
+  }
+  .vocab-line-main.vocab-line-fmt {
+    gap: 8px;
+  }
+}
 </style>
   </head>
   <body>
@@ -2138,7 +2401,7 @@
           <div class="brand-icon" aria-hidden="true">아수</div>
           <div class="brand-text">
             <div class="eyebrow">Korean · focused practice</div>
-            <div class="brand-name">𓂺 <span class="brand-sub">Bab 1</span></div>
+            <div class="brand-name">𓂺 <span class="brand-sub">EPS-TOPIK BAB 1-30</span></div>
           </div>
         </div>
         <div class="header-right">
@@ -2508,15 +2771,16 @@
 
         <section id="quizView" class="view" aria-labelledby="questionText">
           <div class="quiz-top">
-            <div class="quiz-status">
-              <span class="pill" id="sessionBadge">SESI QUIZ</span
-              ><span class="pill" id="directionBadge">Korea → Indonesia</span>
+            <div class="session-exit-row">
+              <button type="button" class="btn btn-ghost btn-session-exit" id="quitQuiz" title="Keluar" aria-label="Keluar dari sesi">✕</button>
+              <span class="session-mode-label" id="sessionBadge">Quiz</span>
+              <span class="pill" id="directionBadge">Korea → Indonesia</span>
             </div>
-            <button type="button" class="btn btn-ghost btn-out" id="quitQuiz">Akhiri sesi</button>
           </div>
           <div class="question-card">
-            <div class="progress-meta">
-              <span id="questionNumber">Soal 1 dari 10</span
+            <div class="session-progress-block">
+            <div class="session-progress-meta progress-meta">
+              <span id="questionNumber">SOAL 1 DARI 10</span
               ><span id="scoreMeta">Skor: 0</span>
             </div>
             <div
@@ -2566,12 +2830,7 @@
               </div>
               <strong id="correctCount" class="hidden" aria-hidden="true" style="display:none">0</strong>
               <button type="button" class="btn btn-ghost" id="prevQuestion" disabled>Previous</button>
-              <button type="button" class="btn btn-ghost" id="skipQuestion">Skip</button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                id="nextQuestion"
-              >Continue</button>
+              <button type="button" class="btn btn-primary" id="nextQuestion">Continue →</button>
             </div>
           </div>
           <div class="action-row">
@@ -3093,14 +3352,18 @@
             aria-live="polite"
           >
             <div class="session-header-row">
-              <div class="session-top">
-                <span class="pill" id="writeSessionBadge">TYPING</span>
-                <span class="session-number" id="writeSessionCount">Soal 1</span>
+              <div class="session-exit-row">
+                <button type="button" class="btn btn-ghost btn-session-exit" id="outWrite" title="Keluar" aria-label="Keluar dari sesi">✕</button>
+                <span class="session-mode-label" id="writeSessionBadge">Typing</span>
               </div>
-              <button type="button" class="btn btn-ghost btn-out" id="outWrite">Akhiri sesi</button>
             </div>
+            <div class="session-progress-block">
+              <div class="session-progress-meta">
+                <span id="writeSessionCount">SOAL 1 DARI 10</span>
+              </div>
             <div class="progress-track compact">
               <div id="writeProgress" class="progress-fill"></div>
+            </div>
             </div>
             <div class="q-status-legend" id="writeStatusLegend" aria-hidden="true">
               <span>✓ Dikerjakan</span><span>○ Belum</span>
@@ -3128,7 +3391,7 @@
             </div>
             <div class="quiz-footer session-nav-row" id="writeNavRow" style="margin-top:16px">
               <button type="button" class="btn btn-ghost" id="prevWrite" disabled>Previous</button>
-              <button type="button" class="btn btn-primary" id="nextWrite">Continue</button>
+              <button type="button" class="btn btn-primary" id="nextWrite">Continue →</button>
             </div>
             <div
               id="writeHintText"
@@ -3347,15 +3610,23 @@
           </section>
           <section id="listenSessionPanel" class="practice-panel hidden">
             <div class="session-header-row">
-              <div class="session-top">
-                <span class="pill">LISTENING</span>
-                <span class="session-number" id="listenSessionCount">Soal 1</span>
+              <div class="session-exit-row">
+                <button type="button" class="btn btn-ghost btn-session-exit" id="outListen" title="Keluar" aria-label="Keluar dari sesi">✕</button>
+                <span class="session-mode-label">Listening</span>
               </div>
-              <button type="button" class="btn btn-ghost btn-out" id="outListen">Akhiri sesi</button>
             </div>
+            <div class="session-progress-block">
+              <div class="session-progress-meta">
+                <span id="listenSessionCount">SOAL 1 DARI 10</span>
+              </div>
             <div class="progress-track compact">
               <div class="progress-fill" id="listenProgress"></div>
             </div>
+            </div>
+            <div class="q-status-legend" id="listenStatusLegend" aria-hidden="true">
+              <span>✓ Dikerjakan</span><span>○ Belum</span>
+            </div>
+            <div class="q-status-bar" id="listenStatusBar" aria-label="Status soal listening"></div>
             <div class="question-kicker">DENGARKAN AUDIO</div>
             <div class="practice-prompt" id="listenPrompt">
               Tekan putar, lalu pilih arti yang lu dengar.
@@ -3369,14 +3640,9 @@
             </div>
             <div id="listenChoices" class="practice-choice-grid"></div>
             <div id="listenFeedback" aria-live="polite"></div>
-            <div class="form-footer">
-              <button
-                type="button"
-                id="nextListen"
-                class="btn btn-primary hidden"
-              >
-                Soal berikutnya →
-              </button>
+            <div class="form-footer session-nav session-nav-row">
+              <button type="button" class="btn btn-ghost" id="prevListen" disabled>Previous</button>
+              <button type="button" id="nextListen" class="btn btn-primary">Continue →</button>
             </div>
           </section>
           <section id="listenResultPanel" class="card hidden">
@@ -3740,17 +4006,22 @@
               </div>
               <p class="tiny" id="memStartHint" style="margin:0;text-align:center;color:var(--muted)">Mode: Otomatis — sistem memilih kosakata sesuai pengaturan di atas.</p>
             </div>
+          </section>
 
           <section id="memorySessionPanel" class="practice-panel hidden">
             <div class="session-header-row">
-              <div class="session-top">
-                <span class="pill" id="memoryTypeBadge">SESI CAMPURAN</span>
-                <span id="memorySessionCount" class="session-number">Kartu 1</span>
+              <div class="session-exit-row">
+                <button type="button" class="btn btn-ghost btn-session-exit" id="outMemory" title="Keluar" aria-label="Keluar dari sesi">✕</button>
+                <span class="session-mode-label" id="memoryTypeBadge">Memory Lab</span>
               </div>
-              <button type="button" class="btn btn-ghost btn-out" id="outMemory">Out</button>
             </div>
+            <div class="session-progress-block">
+              <div class="session-progress-meta">
+                <span id="memorySessionCount">SOAL 1 DARI 10</span>
+              </div>
             <div class="progress-track compact">
               <div id="memoryProgress" class="progress-fill"></div>
+            </div>
             </div>
             <div class="q-status-legend" id="memoryStatusLegend" aria-hidden="true">
               <span>✓ Dikerjakan</span><span>○ Belum</span>
@@ -3859,8 +4130,8 @@
             <div id="memoryFeedback" aria-live="polite"></div>
             <div class="form-footer session-nav">
               <button type="button" id="prevMemory" class="btn btn-ghost" disabled>Previous</button>
-              <button type="button" id="skipMemory" class="btn btn-ghost">Skip</button>
-              <button type="button" id="nextMemory" class="btn btn-primary hidden">Continue</button>
+              <button type="button" id="skipMemory" class="btn btn-ghost">Continue</button>
+              <button type="button" id="nextMemory" class="btn btn-primary hidden">Continue →</button>
               <button type="button" id="endMemory" class="btn btn-ghost">Akhiri sesi</button>
             </div>
           </section>
@@ -4782,6 +5053,66 @@
         },
         { no: 67, korean: "조심하다", meaning: "Hati-hati", category: "Bab 2" },
         { no: 68, korean: "반장님", meaning: "Mandor", category: "Bab 2" },
+        { no: 69, korean: "생필품", meaning: "barang kebutuhan sehari-hari", category: "Bab 2" },
+        { no: 70, korean: "대형", meaning: "besar", category: "Bab 2" },
+        { no: 71, korean: "마트", meaning: "mart", category: "Bab 2" },
+        { no: 72, korean: "종종", meaning: "sering, kerap kali", category: "Bab 2" },
+        { no: 73, korean: "또는", meaning: "dan, atau", category: "Bab 2" },
+        { no: 74, korean: "주말 특가", meaning: "khusus akhir pekan", category: "Bab 2" },
+        { no: 75, korean: "같다", meaning: "bersama, seperti", category: "Bab 2" },
+        { no: 76, korean: "할인", meaning: "diskon", category: "Bab 2" },
+        { no: 77, korean: "행사", meaning: "acara", category: "Bab 2" },
+        { no: 78, korean: "열다", meaning: "membuka", category: "Bab 2" },
+        { no: 79, korean: "식료품", meaning: "produk makanan", category: "Bab 2" },
+        { no: 80, korean: "부터", meaning: "mulai", category: "Bab 2" },
+        { no: 81, korean: "까지", meaning: "sampai", category: "Bab 2" },
+        { no: 82, korean: "다양하다", meaning: "beragam", category: "Bab 2" },
+        { no: 83, korean: "상품", meaning: "produk", category: "Bab 2" },
+        { no: 84, korean: "싸다", meaning: "murah", category: "Bab 2" },
+        { no: 85, korean: "게", meaning: "dengan", category: "Bab 2" },
+        { no: 86, korean: "판매하다", meaning: "menjual", category: "Bab 2" },
+        { no: 87, korean: "나누어 주는", meaning: "yang dibagikan", category: "Bab 2" },
+        { no: 88, korean: "전단지", meaning: "brosur", category: "Bab 2" },
+        { no: 89, korean: "통해", meaning: "melalui", category: "Bab 2" },
+        { no: 90, korean: "및", meaning: "dan", category: "Bab 2" },
+        { no: 91, korean: "금액", meaning: "saldo", category: "Bab 2" },
+        { no: 92, korean: "추천", meaning: "rekomendasi", category: "Bab 2" },
+        { no: 93, korean: "등", meaning: "seperti, lain-lain", category: "Bab 2" },
+        { no: 94, korean: "대한", meaning: "tentang", category: "Bab 2" },
+        { no: 95, korean: "얻다", meaning: "mendapatkan", category: "Bab 2" },
+        { no: 96, korean: "온라인 쇼핑몰", meaning: "belanja online", category: "Bab 2" },
+        { no: 97, korean: "도", meaning: "juga", category: "Bab 2" },
+        { no: 98, korean: "구매하다", meaning: "membeli", category: "Bab 2" },
+        { no: 99, korean: "정기적으로", meaning: "secara rutin", category: "Bab 2" },
+        { no: 100, korean: "쿠폰", meaning: "kupon", category: "Bab 2" },
+        { no: 101, korean: "제공하다", meaning: "menyediakan", category: "Bab 2" },
+        { no: 102, korean: "특정", meaning: "khusus", category: "Bab 2" },
+        { no: 103, korean: "추가", meaning: "tambahan", category: "Bab 2" },
+        { no: 104, korean: "받다", meaning: "mendapatkan, menerima", category: "Bab 2" },
+        { no: 105, korean: "또한", meaning: "dan", category: "Bab 2" },
+        { no: 106, korean: "당근", meaning: "wortel (nama toko)", category: "Bab 2" },
+        { no: 107, korean: "중고", meaning: "barang bekas", category: "Bab 2" },
+        { no: 108, korean: "거래", meaning: "transaksi", category: "Bab 2" },
+        { no: 109, korean: "플랫폼", meaning: "platform", category: "Bab 2" },
+        { no: 110, korean: "다른 사람", meaning: "orang lain", category: "Bab 2" },
+        { no: 111, korean: "더 이상", meaning: "lagi", category: "Bab 2" },
+        { no: 112, korean: "사용하다", meaning: "menggunakan", category: "Bab 2" },
+        { no: 113, korean: "지 않다", meaning: "tidak", category: "Bab 2" },
+        { no: 114, korean: "뿐만 아니라", meaning: "bukan hanya... tapi...", category: "Bab 2" },
+        { no: 115, korean: "가전 제품", meaning: "produk rumah tangga", category: "Bab 2" },
+        { no: 116, korean: "가구", meaning: "mebel", category: "Bab 2" },
+        { no: 117, korean: "이르까지", meaning: "sampai", category: "Bab 2" },
+        { no: 118, korean: "물건", meaning: "barang, benda", category: "Bab 2" },
+        { no: 119, korean: "사다", meaning: "membeli", category: "Bab 2" },
+        { no: 120, korean: "이러하다", meaning: "seperti ini", category: "Bab 2" },
+        { no: 121, korean: "자신", meaning: "diri sendiri", category: "Bab 2" },
+        { no: 122, korean: "아/었던", meaning: "yang telah", category: "Bab 2" },
+        { no: 123, korean: "팔다", meaning: "menjual", category: "Bab 2" },
+        { no: 124, korean: "대부분", meaning: "biasanya", category: "Bab 2" },
+        { no: 125, korean: "지역", meaning: "lokasi", category: "Bab 2" },
+        { no: 126, korean: "사이", meaning: "antara", category: "Bab 2" },
+        { no: 127, korean: "직거래", meaning: "transaksi langsung", category: "Bab 2" },
+        { no: 128, korean: "이루어지다", meaning: "terjadi, mengalami", category: "Bab 2" },
       ];
 
       const APP_DATA_KEY = "koreanVocabLab.v2"; // v3 UI, same data key for compatibility
@@ -5982,7 +6313,7 @@
         const q = currentQuestions[currentIndex];
         if (!q) return showResults();
         if ($("prevQuestion")) $("prevQuestion").disabled = currentIndex <= 0;
-        $("questionNumber").textContent = `Soal ${currentIndex + 1} dari ${
+        $("questionNumber").textContent = `SOAL ${currentIndex + 1} DARI ${
           currentQuestions.length
         }`;
         $("scoreMeta").textContent = `Skor: ${currentScore}`;
@@ -6001,7 +6332,7 @@
           if ($("nextQuestion")) $("nextQuestion").disabled = false;
         }
 
-        const pct = Math.round((currentIndex / currentQuestions.length) * 100);
+        const pct = Math.round(((currentIndex + 1) / currentQuestions.length) * 100);
         $("progressFill").style.width = pct + "%";
         $("progressTrack").setAttribute("aria-valuenow", String(pct));
         $("directionBadge").textContent =
@@ -6106,8 +6437,17 @@
           }
           $("nextQuestion").textContent =
             currentIndex === currentQuestions.length - 1
-              ? "Selesai"
-              : "Continue";
+              ? "Submit ✓"
+              : "Continue →";
+          if ($("skipQuestion")) {
+            if (currentIndex >= currentQuestions.length - 1) {
+              $("skipQuestion").classList.add("hidden");
+              $("skipQuestion").style.display = "none";
+            } else {
+              $("skipQuestion").classList.remove("hidden");
+              $("skipQuestion").style.display = "";
+            }
+          }
           if (typeof updateQuizStatusBar === "function") updateQuizStatusBar();
         })();
       }
@@ -6199,12 +6539,19 @@
       }
       function nextQuestion() {
   if (typeof currentQuestions === 'undefined' || !currentQuestions || !currentQuestions.length) return;
-  if (currentIndex >= currentQuestions.length - 1) {
-    if (typeof showResults === 'function') showResults();
-    return;
+  // Cegah double-fire satu klik = dua lompatan
+  if (window.__kvlQuizNavLock) return;
+  window.__kvlQuizNavLock = true;
+  try {
+    if (currentIndex >= currentQuestions.length - 1) {
+      if (typeof showResults === 'function') showResults();
+      return;
+    }
+    currentIndex = currentIndex + 1;
+    if (typeof renderQuestion === 'function') renderQuestion();
+  } finally {
+    setTimeout(function () { window.__kvlQuizNavLock = false; }, 120);
   }
-  currentIndex = currentIndex + 1;
-  if (typeof renderQuestion === 'function') renderQuestion();
 }
       function createSpeakerButton(text, label = "Dengarkan pelafalan") {
         const b = document.createElement("button");
@@ -6456,22 +6803,31 @@
           list.append(empty);
           return;
         }
-        matches.forEach((item) => {
+        matches.forEach((item, idx) => {
           const row = document.createElement("div");
           row.className = "vocab-line";
           const main = document.createElement("div");
-          main.className = "vocab-line-main";
-          const kr = document.createElement("div");
-          kr.className = "vocab-line-korean";
-          kr.lang = "ko";
+          main.className = "vocab-line-main vocab-line-fmt";
+          // Format: NOMOR. | HANGEUL | ARTI
           const no = document.createElement("span");
           no.className = "vocab-no";
-          no.textContent = "#" + item.no + " ";
-          kr.append(no, document.createTextNode(item.korean));
-          const meaning = document.createElement("div");
+          no.textContent = String(item.no) + ".";
+          const sep1 = document.createElement("span");
+          sep1.className = "vocab-sep";
+          sep1.textContent = "|";
+          sep1.setAttribute("aria-hidden", "true");
+          const kr = document.createElement("span");
+          kr.className = "vocab-line-korean";
+          kr.lang = "ko";
+          kr.textContent = item.korean;
+          const sep2 = document.createElement("span");
+          sep2.className = "vocab-sep";
+          sep2.textContent = "|";
+          sep2.setAttribute("aria-hidden", "true");
+          const meaning = document.createElement("span");
           meaning.className = "vocab-line-meaning";
           meaning.textContent = item.meaning;
-          main.append(kr, meaning);
+          main.append(no, sep1, kr, sep2, meaning);
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "sound-button small";
@@ -8037,22 +8393,31 @@
           list.append(empty);
           return;
         }
-        matches.forEach((item) => {
+        matches.forEach((item, idx) => {
           const row = document.createElement("div");
           row.className = "vocab-line";
           const main = document.createElement("div");
-          main.className = "vocab-line-main";
-          const kr = document.createElement("div");
-          kr.className = "vocab-line-korean";
-          kr.lang = "ko";
+          main.className = "vocab-line-main vocab-line-fmt";
+          // Format: NOMOR. | HANGEUL | ARTI
           const no = document.createElement("span");
           no.className = "vocab-no";
-          no.textContent = "#" + item.no + " ";
-          kr.append(no, document.createTextNode(item.korean));
-          const meaning = document.createElement("div");
+          no.textContent = String(item.no) + ".";
+          const sep1 = document.createElement("span");
+          sep1.className = "vocab-sep";
+          sep1.textContent = "|";
+          sep1.setAttribute("aria-hidden", "true");
+          const kr = document.createElement("span");
+          kr.className = "vocab-line-korean";
+          kr.lang = "ko";
+          kr.textContent = item.korean;
+          const sep2 = document.createElement("span");
+          sep2.className = "vocab-sep";
+          sep2.textContent = "|";
+          sep2.setAttribute("aria-hidden", "true");
+          const meaning = document.createElement("span");
           meaning.className = "vocab-line-meaning";
           meaning.textContent = item.meaning;
-          main.append(kr, meaning);
+          main.append(no, sep1, kr, sep2, meaning);
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "sound-button small";
@@ -8536,10 +8901,10 @@
         st.checked = !!q.answered;
         st.hintUsed = !!q.hintUsed;
         const item = q.item;
-        $("writeSessionCount").textContent = `Soal ${st.index + 1} dari ${st.queue.length}`;
-        $("writeProgress").style.width = `${Math.round((st.index / st.queue.length) * 100)}%`;
+        $("writeSessionCount").textContent = `SOAL ${st.index + 1} DARI ${st.queue.length}`;
+        $("writeProgress").style.width = `${Math.round(((st.index + 1) / st.queue.length) * 100)}%`;
         $("writePrompt").textContent = item.meaning;
-        $("writeSessionBadge").textContent = item.category || "TYPING";
+        // mode label stays "Typing"; category shown elsewhere if needed
         $("writeCorrectStat").textContent = st.correct;
         $("writeWrongStat").textContent = st.wrong;
         if ($("prevWrite")) $("prevWrite").disabled = st.index <= 0;
@@ -8554,7 +8919,16 @@
           $("writeAudio").onclick = () => speakKorean(item.korean, $("writeAudio"));
           $("nextWrite").classList.remove("hidden");
           $("nextWrite").textContent =
-            st.index === st.queue.length - 1 ? "Selesai" : "Continue";
+            st.index === st.queue.length - 1 ? "Submit ✓" : "Continue →";
+        if ($("skipWrite")) {
+          if (st.index >= st.queue.length - 1) {
+            $("skipWrite").classList.add("hidden");
+            $("skipWrite").style.display = "none";
+          } else {
+            $("skipWrite").classList.remove("hidden");
+            $("skipWrite").style.display = "";
+          }
+        }
           $("writeHintText").classList.add("hidden");
           $("writeErrorClassify").classList.add("hidden");
           const fb = document.createElement("div");
@@ -8575,6 +8949,8 @@
           $("writeHintBtn").disabled = false;
           if ($("skipWrite")) $("skipWrite").disabled = false;
           $("nextWrite").classList.remove("hidden");
+          $("nextWrite").textContent =
+            st.index === st.queue.length - 1 ? "Submit ✓" : "Continue →";
           $("writeHintText").classList.add("hidden");
           $("writeFeedback").replaceChildren();
           $("writeErrorClassify").classList.add("hidden");
@@ -8670,7 +9046,7 @@
           ((st.index + 1) / st.queue.length) * 100
         )}%`;
         $("nextWrite").textContent =
-          st.index === st.queue.length - 1 ? "Selesai" : "Continue";
+          st.index === st.queue.length - 1 ? "Submit ✓" : "Continue →";
         $("nextWrite").classList.remove("hidden");
         renderWriteMistakes();
         renderHomeDashboard();
@@ -8679,6 +9055,8 @@
       function finishWriting() {
         if (!writeState) return;
         const st = writeState;
+        if (st.__finishDone) return;
+        st.__finishDone = true;
         const total = (st.queue && st.queue.length) || 0;
         const answered = (st.answers && st.answers.length) || 0;
         const correct = st.correct || 0;
@@ -8891,8 +9269,19 @@
           return;
         }
         resetRoastSession();
+        const normalizedQueue = (queue || []).map(function (raw) {
+          if (raw && raw.item && raw.item.korean) return raw;
+          return {
+            item: raw,
+            answered: false,
+            selectedUid: null,
+            correct: null,
+            options: null,
+            feedbackHtml: null
+          };
+        });
         listenState = {
-          queue,
+          queue: normalizedQueue,
           pool: sourcePool,
           index: 0,
           correct: 0,
@@ -8902,6 +9291,7 @@
           replays: 0,
           checked: false,
           results: [],
+          finished: false
         };
         renderListenQuestion();
         $("listenSessionPanel").scrollIntoView({
@@ -8909,62 +9299,119 @@
           block: "start",
         });
       }
+      function normalizeListenQueueItem(raw) {
+        // Pastikan setiap slot queue punya state jawaban terpisah
+        if (!raw) return null;
+        if (raw.item && raw.item.korean) return raw;
+        return {
+          item: raw,
+          answered: false,
+          selectedUid: null,
+          correct: null,
+          options: null,
+          feedbackHtml: null
+        };
+      }
       function renderListenQuestion() {
         if (!listenState) return;
         const st = listenState;
         if (st.index >= st.queue.length) return finishListening();
         stopSpeech(false);
-        st.current = st.queue[st.index];
+
+        // Normalisasi slot soal
+        let q = normalizeListenQueueItem(st.queue[st.index]);
+        st.queue[st.index] = q;
+        st.current = q.item;
         st.replays = 0;
-        st.checked = false;
+        // checked mengikuti soal AKTIF, bukan global reset
+        st.checked = !!q.answered;
+
         $("listenPrompt").classList.remove("korean");
         $("listenPrompt").lang = "id";
-        $("listenSessionCount").textContent = `Soal ${st.index + 1} dari ${
-          st.queue.length
-        }`;
-        $("listenProgress").style.width = `${Math.round(
-          (st.index / st.queue.length) * 100
-        )}%`;
-        $("listenPrompt").textContent =
-          "Dengarkan audio. Teks Korea masih disembunyikan sampai lu menjawab.";
-        $("listenFeedback").replaceChildren();
-        $("nextListen").classList.add("hidden");
-        $("listenPlay").disabled = false;
+        $("listenSessionCount").textContent =
+          "SOAL " + (st.index + 1) + " DARI " + st.queue.length;
+        $("listenProgress").style.width =
+          Math.round(((st.index + 1) / st.queue.length) * 100) + "%";
+
+        if (q.answered) {
+          $("listenPrompt").textContent = q.item.korean;
+          $("listenPrompt").classList.add("korean");
+          $("listenPrompt").lang = "ko";
+          $("listenPlay").disabled = true;
+        } else {
+          $("listenPrompt").textContent =
+            "Dengarkan audio. Teks Korea masih disembunyikan sampai lu menjawab.";
+          $("listenPlay").disabled = false;
+        }
         $("listenStop").disabled = false;
+        $("listenFeedback").replaceChildren();
+        if (q.feedbackHtml) {
+          $("listenFeedback").innerHTML = q.feedbackHtml;
+        }
+
         const limit = Number($("listenReplayLimit").value);
         $("listenReplayStatus").textContent =
-          limit === 0 ? "Pemutaran bebas" : `Pemutaran tersisa: ${limit}`;
-        const pool = (st.pool || vocabulary).filter(
-          (v) => v.uid !== st.current.uid
-        );
-        const count =
-          $("listenDifficulty").value === "easy"
-            ? 2
-            : $("listenDifficulty").value === "hard"
-            ? 4
-            : 3;
-        const options = shuffle(pool)
-          .filter(
-            (v, i, a) =>
-              a.findIndex(
-                (x) => normalizeText(x.meaning) === normalizeText(v.meaning)
-              ) === i
-          )
-          .slice(0, count);
-        st.options = shuffle([st.current, ...options]);
+          limit === 0 ? "Pemutaran bebas" : "Pemutaran tersisa: " + limit;
+
+        // Opsi: pakai yang tersimpan agar jawaban bisa di-restore
+        if (!q.options || !q.options.length) {
+          const pool = (st.pool || vocabulary).filter(function (v) {
+            return v.uid !== q.item.uid;
+          });
+          const count =
+            $("listenDifficulty").value === "easy"
+              ? 2
+              : $("listenDifficulty").value === "hard"
+              ? 4
+              : 3;
+          const distractors = shuffle(pool)
+            .filter(function (v, i, a) {
+              return (
+                a.findIndex(function (x) {
+                  return (
+                    normalizeText(x.meaning) === normalizeText(v.meaning)
+                  );
+                }) === i
+              );
+            })
+            .slice(0, count);
+          q.options = shuffle([q.item].concat(distractors));
+        }
+        st.options = q.options;
         renderListenChoices();
+        if (typeof updateListenNavButtons === "function")
+          updateListenNavButtons();
+        if (typeof updateListenStatusBar === "function")
+          updateListenStatusBar();
       }
       function renderListenChoices() {
+        const st = listenState;
+        if (!st) return;
+        const q = normalizeListenQueueItem(st.queue[st.index]);
+        st.queue[st.index] = q;
         const box = $("listenChoices");
         box.replaceChildren();
         const letters = ["A", "B", "C", "D", "E"];
-        listenState.options.forEach((item, i) => {
+        const opts = q.options || st.options || [];
+        opts.forEach(function (item, i) {
           const b = document.createElement("button");
           b.type = "button";
           b.className = "practice-choice";
-          b.innerHTML = `<span class="choice-letter">${letters[i]}</span> <span></span>`;
+          b.innerHTML =
+            '<span class="choice-letter">' +
+            letters[i] +
+            "</span> <span></span>";
           b.querySelector("span:last-child").textContent = item.meaning;
-          b.addEventListener("click", () => answerListening(item.uid));
+          if (q.answered) {
+            b.disabled = true;
+            if (item.uid === q.item.uid) b.classList.add("correct");
+            if (q.selectedUid && item.uid === q.selectedUid && !q.correct)
+              b.classList.add("wrong");
+          } else {
+            b.addEventListener("click", function () {
+              answerListening(item.uid);
+            });
+          }
           box.append(b);
         });
       }
@@ -8996,63 +9443,113 @@
       }
       function answerListening(uid) {
         const st = listenState;
-        if (!st || st.checked) return;
-        const item = st.current,
-          correct = uid === item.uid;
+        if (!st) return;
+        let q = normalizeListenQueueItem(st.queue[st.index]);
+        st.queue[st.index] = q;
+        // Sudah dijawab: izinkan ganti pilihan tanpa double-count skor
+        const item = q.item;
+        const correct = uid === item.uid;
+        const firstTime = !q.answered;
+
+        q.answered = true;
+        q.selectedUid = uid;
+        q.correct = correct;
+        st.current = item;
         st.checked = true;
-        st.answered++;
-        if (correct) st.correct++;
-        else st.wrong++;
-        recordLearningResult(item, "listening", correct ? 2 : 0, {
-          source: "mode-listening",
-          xpBase: correct ? 5 : 0,
-        });
-        st.results.push({ uid: item.uid, correct });
-        [...$("listenChoices").querySelectorAll("button")].forEach((b, i) => {
+
+        if (firstTime) {
+          st.answered = (st.answered || 0) + 1;
+          if (correct) st.correct = (st.correct || 0) + 1;
+          else st.wrong = (st.wrong || 0) + 1;
+          try {
+            recordLearningResult(item, "listening", correct ? 2 : 0, {
+              source: "mode-listening",
+              xpBase: correct ? 5 : 0,
+            });
+          } catch (e) {}
+          st.results = st.results || [];
+          st.results.push({ uid: item.uid, correct: correct });
+        } else {
+          // Update results entry if re-answered
+          try {
+            const r = (st.results || []).find(function (x) {
+              return x && x.uid === item.uid;
+            });
+            if (r) r.correct = correct;
+          } catch (e) {}
+        }
+
+        // UI feedback
+        const opts = q.options || st.options || [];
+        [...$("listenChoices").querySelectorAll("button")].forEach(function (b, i) {
           b.disabled = true;
-          const opt = st.options[i];
+          const opt = opts[i];
+          if (!opt) return;
+          b.classList.remove("correct", "wrong");
           if (opt.uid === item.uid) b.classList.add("correct");
           else if (opt.uid === uid) b.classList.add("wrong");
         });
         $("listenPlay").disabled = true;
         $("listenStop").disabled = false;
-        const fb = document.createElement("div");
-        fb.className = "practice-feedback " + (correct ? "good" : "bad");
-        const strong = document.createElement("strong");
-        strong.textContent = correct ? t("fb.correct") : pickRoast();
-        if (correct) resetRoastStreak();
-        const detail = document.createElement("div");
-        detail.textContent = `${item.korean} = ${item.meaning}.`;
-        fb.append(strong, detail);
-        const audio = createSpeakerButton(
-          item.korean,
-          "Dengarkan jawaban yang benar"
-        );
-        audio.classList.add("small");
-        audio.style.marginTop = "10px";
-        fb.append(audio);
-        $("listenFeedback").replaceChildren(fb);
         $("listenPrompt").textContent = item.korean;
         $("listenPrompt").classList.add("korean");
         $("listenPrompt").lang = "ko";
-        $("nextListen").textContent =
-          st.index === st.queue.length - 1
-            ? "Selesai"
-            : "Continue";
-        $("nextListen").classList.remove("hidden");
-        $("listenProgress").style.width = `${Math.round(
-          ((st.index + 1) / st.queue.length) * 100
-        )}%`;
-        renderListeningDifficultWords();
-        renderHomeDashboard();
+        // Feedback: roasting sama seperti Quiz/Typing via pickRoast()
+        const fb = document.createElement("div");
+        fb.className = "practice-feedback " + (correct ? "good" : "bad");
+        const strong = document.createElement("strong");
+        if (correct) {
+          if (typeof resetRoastStreak === "function") resetRoastStreak();
+          strong.textContent =
+            (typeof t === "function" ? t("fb.correct") : null) || "Bener ✓";
+        } else {
+          // Hanya roast saat salah; hindari double-roast saat re-render
+          if (firstTime && typeof pickRoast === "function") {
+            strong.textContent = pickRoast();
+          } else if (q.roastLine) {
+            strong.textContent = q.roastLine;
+          } else if (typeof pickRoast === "function") {
+            strong.textContent = pickRoast();
+          } else {
+            strong.textContent = "Belum pas.";
+          }
+          q.roastLine = strong.textContent;
+        }
+        const detail = document.createElement("div");
+        detail.textContent = correct
+          ? item.korean + " · " + item.meaning + ". Dengarkan lagi biar nempel."
+          : "Yang bener: " + item.korean + " · " + item.meaning + ".";
+        fb.append(strong, detail);
+        $("listenFeedback").replaceChildren(fb);
+        q.feedbackHtml = $("listenFeedback").innerHTML;
+        if (typeof updateListenNavButtons === "function") updateListenNavButtons();
+        if (typeof updateListenStatusBar === "function") updateListenStatusBar();
       }
       function finishListening() {
         if (!listenState) return;
         const st = listenState;
+        if (st.finished || st.__finishDone) return;
+        st.finished = true;
+        st.__finishDone = true;
+        // Hitung ulang dari queue agar konsisten dengan indikator
+        let answered = 0, correct = 0, wrong = 0;
+        (st.queue || []).forEach(function (q) {
+          if (q && q.answered) {
+            answered++;
+            if (q.correct) correct++;
+            else wrong++;
+          }
+        });
+        if (!answered) {
+          answered = st.answered || 0;
+          correct = st.correct || 0;
+          wrong = st.wrong || 0;
+        } else {
+          st.answered = answered;
+          st.correct = correct;
+          st.wrong = wrong;
+        }
         const total = (st.queue && st.queue.length) || 0;
-        const answered = st.answered || 0;
-        const correct = st.correct || 0;
-        const wrong = st.wrong || 0;
         const pct = answered ? Math.round((correct / answered) * 100) : 0;
         const wrongUids = [];
         try {
@@ -9407,6 +9904,7 @@
         resetRoastSession();
         memoryState = {
           queue,
+          sessionLength: queue.length,
           index: 0,
           correct: 0,
           wrong: 0,
@@ -9416,6 +9914,7 @@
           current: null,
           checked: false,
           hintUsed: false,
+          finished: false,
         };
         try {
           window.__lastMemoryPool = queue.map(function (q) {
@@ -9435,7 +9934,8 @@
       function renderMemoryQuestion() {
         const st = memoryState;
         if (!st) return;
-        if (st.index >= st.queue.length) return finishMemory(true);
+        var __mlen = st.sessionLength || (st.queue && st.queue.length) || 0;
+        if (st.finished || st.index >= __mlen) return finishMemory(true);
         const q = st.queue[st.index];
         st.current = q;
         st.checked = !!q.answered;
@@ -9459,11 +9959,9 @@
               write: "Dari arti di bawah, tulis Hangeul-nya yang bener.",
               listening: "Dengerin audionya, terus pilih arti yang lu denger.",
             }[type] || "Ikuti petunjuk di bawah.";
-        $("memorySessionCount").textContent = `Kartu ${st.index + 1} dari ${
-          st.queue.length
-        }`;
+        $("memorySessionCount").textContent = `SOAL ${st.index + 1} DARI ${st.sessionLength || st.queue.length}`;
         $("memoryProgress").style.width = `${Math.round(
-          (st.index / st.queue.length) * 100
+          ((st.index + 1) / (st.sessionLength || st.queue.length || 1)) * 100
         )}%`;
         $("memoryPrompt").classList.remove("korean");
         $("memoryPrompt").lang = "id";
@@ -9482,7 +9980,29 @@
           : "☆ Tandai sulit";
         $("memoryHintText").classList.add("hidden");
         if ($("prevMemory")) { $("prevMemory").disabled = !(st && st.index > 0); $("prevMemory").style.pointerEvents = (st && st.index > 0) ? "" : "none"; }
-        if ($("skipMemory")) $("skipMemory").disabled = !!st.checked;
+        var __isLastMem =
+          st.index >=
+          ((st.sessionLength || (st.queue && st.queue.length) || 1) - 1);
+        if ($("skipMemory")) {
+          if (__isLastMem) {
+            $("skipMemory").classList.add("hidden");
+            $("skipMemory").style.display = "none";
+            $("skipMemory").disabled = true;
+          } else {
+            $("skipMemory").classList.remove("hidden");
+            $("skipMemory").style.display = "";
+            $("skipMemory").disabled = !!st.checked;
+          }
+        }
+        if ($("nextMemory")) {
+          if (__isLastMem) {
+            $("nextMemory").classList.remove("hidden");
+            $("nextMemory").textContent = "Submit ✓";
+          }
+        }
+        if ($("skipMemory") && !__isLastMem) {
+          $("skipMemory").textContent = "Continue";
+        }
         if ($("prevMemory")) $("prevMemory").disabled = !st || st.index <= 0;
         if (q.answered && typeof restoreMemoryAnswerUI === "function") setTimeout(function(){ restoreMemoryAnswerUI(q); }, 0);
         $("memoryWriteAnswer").value = "";
@@ -9692,20 +10212,41 @@
             if (fb) q.feedbackHtml = fb.innerHTML;
           } catch (e) {}
         }
-        if (!correct && q && q.repeats < 3) {
-          q.repeats++;
-          st.queue.push({ ...q, repeats: q.repeats });
-        }
+        // JANGAN push soal salah kembali ke queue sesi aktif.
+        // Pengulangan hanya lewat tombol "Ulangi jawaban salah" di ringkasan.
+        // (Dulu: st.queue.push pada jawaban salah → total soal bertambah misterius.)
+
+        const sessionLen =
+          (st && st.sessionLength) ||
+          (st && st.queue && st.queue.length) ||
+          1;
+        if (st && !st.sessionLength) st.sessionLength = sessionLen;
+
         $("skipMemory").disabled = true;
         $("nextMemory").classList.remove("hidden");
-        if ($("prevMemory")) { $("prevMemory").disabled = !(st && st.index > 0); $("prevMemory").style.pointerEvents = (st && st.index > 0) ? "" : "none"; }
-        $("nextMemory").textContent =
-          st.index === st.queue.length - 1 ? "Lihat ringkasan →" : "Lanjut →";
-        $("memoryProgress").style.width = `${Math.round(
-          ((st.index + 1) / st.queue.length) * 100
-        )}%`;
-        renderHomeDashboard();
-        renderMemoryDashboard();
+        if ($("prevMemory")) {
+          $("prevMemory").disabled = !(st && st.index > 0);
+          $("prevMemory").style.pointerEvents =
+            st && st.index > 0 ? "" : "none";
+        }
+        const isLast = st.index >= sessionLen - 1;
+        $("nextMemory").textContent = isLast ? "Submit ✓" : "Continue →";
+        if ($("skipMemory")) {
+          if (isLast) {
+            $("skipMemory").classList.add("hidden");
+            $("skipMemory").style.display = "none";
+          } else {
+            $("skipMemory").classList.remove("hidden");
+            $("skipMemory").style.display = "";
+          }
+        }
+        $("memoryProgress").style.width =
+          Math.round(((st.index + 1) / sessionLen) * 100) + "%";
+        try {
+          if (typeof renderHomeDashboard === "function") renderHomeDashboard();
+          if (typeof renderMemoryDashboard === "function")
+            renderMemoryDashboard();
+        } catch (e) {}
       }
       function revealMemoryRecall() {
         const st = memoryState;
@@ -9833,71 +10374,143 @@
       function finishMemory(completed = true) {
         const st = memoryState;
         if (!st) return;
-        const total = (st.queue && st.queue.length) || 0;
-        const correct = st.correct || 0;
-        const wrong = st.wrong || 0;
-        const answered = st.answered || 0;
-        const pct = answered ? Math.round((correct / answered) * 100) : 0;
-        // Simpan daftar salah untuk tombol ulangi (hanya yang benar-benar dijawab salah)
-        const wrongUids = [];
-        try {
-          (st.results || []).forEach(function (r) {
-            if (r && r.correct === false && r.uid) wrongUids.push(r.uid);
-          });
-        } catch (e) {}
-        window.__lastMemoryWrongUids = wrongUids;
-        try {
-          window.__lastMemoryPool = (st.queue || []).map(function (q) {
-            return q.item || q;
-          });
-        } catch (e) {}
-        $("memorySessionPanel").classList.add("hidden");
-        if (typeof showModeResult === "function") showModeResult("memory");
-        else {
-          $("memoryResultPanel").classList.remove("hidden");
-          $("memoryResultPanel").style.display = "";
+        // Cegah finish ganda / soal tambahan setelah selesai
+        if (st.finished && st.__finishDone) return;
+        st.finished = true;
+        st.__finishDone = true;
+        // Kunci panjang sesi — jangan pakai queue yang pernah memanjang
+        if (!st.sessionLength) st.sessionLength = (st.queue && st.queue.length) || 0;
+        // Potong queue jika sempat memanjang (sisa dari bug lama / state tertinggal)
+        if (st.queue && st.sessionLength && st.queue.length > st.sessionLength) {
+          st.queue = st.queue.slice(0, st.sessionLength);
         }
-        $("memoryResultPercent").innerHTML = pct + "<small>%</small>";
-        if ($("memoryResultCorrect")) $("memoryResultCorrect").textContent = String(correct);
-        if ($("memoryResultWrong")) $("memoryResultWrong").textContent = String(wrong);
-        if ($("memoryResultTotal")) $("memoryResultTotal").textContent = String(total || answered);
-        const msg =
-          pct === 100 && answered > 0
-            ? "Bersih. Semua jawaban tepat. Tetap ulangi pelafalan agar ingatan makin kuat."
-            : wrong > 0
-            ? "Ada beberapa kata yang belum otomatis teringat. Ulangi daftar yang salah, lalu tes lagi."
-            : answered === 0
-            ? "Belum ada jawaban yang dinilai pada sesi ini."
-            : "Sesi selesai. Cek ringkasan di bawah.";
-        $("memoryResultMessage").textContent = msg;
-        const retryBtn = $("memoryRetryWrong");
-        const noWrong = $("memoryNoWrongNotice");
+
+        // Hitung statistik dari queue + results (jangan andalkan counter saja)
+        let total = (st.queue && st.queue.length) || 0;
+        let correct = Number(st.correct) || 0;
+        let wrong = Number(st.wrong) || 0;
+        let answered = Number(st.answered) || 0;
+        const results = Array.isArray(st.results) ? st.results.slice() : [];
+
+        // Bangun results dari queue jika results kosong tapi soal sudah dijawab
+        if (!results.length && st.queue) {
+          st.queue.forEach(function (q) {
+            if (!q) return;
+            if (q.answered === true || q.correct === true || q.correct === false) {
+              results.push({
+                uid: (q.item && q.item.uid) || q.uid,
+                type: q.type,
+                correct: q.correct === true,
+                skipped: !!q.skipped
+              });
+            }
+          });
+        }
+
+        // Hitung ulang dari results (sumber kebenaran)
+        const judged = results.filter(function (r) {
+          return r && r.skipped !== true && (r.correct === true || r.correct === false);
+        });
+        if (judged.length) {
+          answered = judged.length;
+          correct = judged.filter(function (r) { return r.correct === true; }).length;
+          wrong = judged.filter(function (r) { return r.correct === false; }).length;
+        }
+        // Total soal = panjang queue asli (tanpa push ulang), atau answered
+        if (!total) total = answered;
+        // Jika queue memanjang karena repeat, gunakan unique answered sebagai total dinilai
+        const pct = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+        const wrongUids = [];
+        const seenWrong = {};
+        judged.forEach(function (r) {
+          if (r.correct === false && r.uid && !seenWrong[r.uid]) {
+            seenWrong[r.uid] = true;
+            wrongUids.push(r.uid);
+          }
+        });
+        window.__lastMemoryWrongUids = wrongUids;
+        window.__memoryResultSnapshot = {
+          total: total,
+          correct: correct,
+          wrong: wrong,
+          answered: answered,
+          results: results,
+          completed: !!completed
+        };
+        try {
+          window.__lastMemoryPool = (st.queue || []).map(function (q) { return q.item || q; });
+        } catch (e) {}
+
+        // Isi UI SEBELUM ganti tampilan
+        const setTxt = function (id, val) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = String(val);
+        };
+        const pctEl = document.getElementById('memoryResultPercent');
+        if (pctEl) pctEl.innerHTML = pct + '<small>%</small>';
+        setTxt('memoryResultCorrect', correct);
+        setTxt('memoryResultWrong', wrong);
+        setTxt('memoryResultTotal', answered || total);
+
+        const msgEl = document.getElementById('memoryResultMessage');
+        if (msgEl) {
+          if (answered === 0) {
+            msgEl.textContent = 'Belum ada jawaban yang dinilai pada sesi ini.';
+          } else if (wrong === 0 && pct === 100) {
+            msgEl.textContent = 'Bersih. Semua jawaban tepat. Tetap ulangi pelafalan agar ingatan makin kuat.';
+          } else {
+            msgEl.textContent = 'Belum kokoh. Jangan cuma baca ulang; kerjakan lagi sampai bisa mengenali kata tanpa bantuan.';
+          }
+        }
+
+        const retryBtn = document.getElementById('memoryRetryWrong');
+        const noWrong = document.getElementById('memoryNoWrongNotice');
         if (wrongUids.length) {
           if (retryBtn) {
             retryBtn.disabled = false;
-            retryBtn.textContent = "Ulangi " + wrongUids.length + " jawaban salah";
-            retryBtn.classList.remove("hidden");
+            retryBtn.classList.remove('hidden');
+            retryBtn.style.display = '';
+            retryBtn.textContent = 'Ulangi ' + wrongUids.length + ' jawaban salah';
           }
-          if (noWrong) noWrong.classList.add("hidden");
+          if (noWrong) noWrong.classList.add('hidden');
         } else {
           if (retryBtn) {
             retryBtn.disabled = true;
-            retryBtn.textContent = "Tidak ada jawaban salah";
+            retryBtn.classList.add('hidden');
+            retryBtn.textContent = 'Tidak ada jawaban salah';
           }
-          if (noWrong) noWrong.classList.remove("hidden");
+          if (noWrong) {
+            noWrong.classList.remove('hidden');
+            noWrong.textContent = 'Tidak ada jawaban salah.';
+          }
         }
-        if (completed && answered > 0)
-          completeActivity(
-            "memory",
-            correct + "/" + answered + " benar",
-            correct === answered
-          );
+
+        // Ganti ke halaman hasil (sembunyikan soal + setup)
+        try {
+          if (document.getElementById('memorySessionPanel')) {
+            document.getElementById('memorySessionPanel').classList.add('hidden');
+            document.getElementById('memorySessionPanel').style.display = 'none';
+          }
+        } catch (e) {}
+        if (typeof showModeResult === 'function') showModeResult('memory');
         else {
-          persistApp(true);
-          renderAllDashboards();
+          const rp = document.getElementById('memoryResultPanel');
+          if (rp) {
+            rp.classList.remove('hidden');
+            rp.style.display = '';
+          }
         }
-        renderMemoryDashboard();
-        renderStatsDashboard();
+
+        try {
+          if (typeof completeActivity === 'function' && completed && answered > 0) {
+            completeActivity('memory', correct + '/' + answered + ' tepat', wrong === 0 && answered > 0);
+          }
+        } catch (e) {}
+        try {
+          if (typeof renderMemoryDashboard === 'function') renderMemoryDashboard();
+          if (typeof renderHomeDashboard === 'function') renderHomeDashboard();
+        } catch (e) {}
       }
       function pickFlashcardPool() {
         // Pool dari bab aktif + rentang Memory Lab, diacak.
@@ -9973,9 +10586,7 @@
         $("flashFront").textContent = item.korean;
         $("flashBack").textContent = item.meaning;
         $("flashBack").classList.add("hidden");
-        $("flashNote").textContent = `Kartu ${st.index + 1} dari ${
-          st.queue.length
-        }. Ingat artinya sebelum membuka.`;
+        $("flashNote").textContent = `SOAL ${st.index + 1} DARI ${st.sessionLength || st.queue.length}. Ingat artinya sebelum membuka.`;
         $("revealFlashcard").disabled = false;
         $("revealFlashcard").classList.remove("hidden");
         document
@@ -10838,6 +11449,9 @@
       });
       $("nextWrite").addEventListener("click", () => {
         if (!writeState) return;
+        if (window.__kvlWriteNavLock) return;
+        window.__kvlWriteNavLock = true;
+        setTimeout(function () { window.__kvlWriteNavLock = false; }, 120);
         if (writeState.index >= writeState.queue.length - 1) {
           if (typeof finishWriting === "function") finishWriting();
           return;
@@ -10868,7 +11482,16 @@
       $("stopListeningAudio").addEventListener("click", () => stopSpeech());
       $("nextListen").addEventListener("click", () => {
         if (!listenState) return;
-        listenState.index++;
+        if (window.__kvlListenNavLock) return;
+        window.__kvlListenNavLock = true;
+        setTimeout(function () { window.__kvlListenNavLock = false; }, 120);
+        const st = listenState;
+        const len = (st.queue && st.queue.length) || 0;
+        if (st.index >= len - 1) {
+          if (typeof finishListening === "function") finishListening();
+          return;
+        }
+        st.index++;
         $("listenPrompt").classList.remove("korean");
         renderListenQuestion();
       });
@@ -10926,8 +11549,24 @@
       $("skipMemory").addEventListener("click", skipMemoryQuestion);
       $("nextMemory").addEventListener("click", () => {
         if (!memoryState) return;
-        if (typeof goMemoryIndex === 'function') goMemoryIndex(memoryState.index + 1);
-        else { memoryState.index++; renderMemoryQuestion(); }
+        const st = memoryState;
+        if (st.finished) {
+          if (typeof finishMemory === "function") finishMemory(true);
+          return;
+        }
+        const len = st.sessionLength || (st.queue && st.queue.length) || 0;
+        // Soal terakhir + Submit → akhiri sesi (skip di soal ini netral, bukan salah)
+        if (st.index >= len - 1) {
+          st.finished = true;
+          if (typeof finishMemory === "function") finishMemory(true);
+          return;
+        }
+        if (!st.checked) return; // sebelum last: butuh jawab/skip dulu
+        if (typeof goMemoryIndex === "function") goMemoryIndex(st.index + 1);
+        else {
+          st.index++;
+          renderMemoryQuestion();
+        }
       });
       $("endMemory").addEventListener("click", () => {
         if (
@@ -12035,7 +12674,7 @@
           "KENALI TULISAN": "RECOGNIZE TEXT",
           "INGAT ARTI": "RECALL MEANING",
           "TULIS HANGEUL": "WRITE HANGUL",
-          "Lanjut →": "Continue →",
+          "Continue →": "Continue →",
           "Akhiri sesi": "End session",
           "Dashboard Memory Lab": "Memory Lab dashboard",
           "Hari ini": "Today",
@@ -12204,7 +12843,7 @@
           "KENALI TULISAN": "글자 인식",
           "INGAT ARTI": "뜻 회상",
           "TULIS HANGEUL": "한글 쓰기",
-          "Lanjut →": "계속 →",
+          "Continue →": "계속 →",
           "Akhiri sesi": "세션 종료",
           "Dashboard Memory Lab": "메모리 랩 대시보드",
           "Hari ini": "오늘",
@@ -12372,7 +13011,7 @@
           "KENALI TULISAN": "KENALI TULISAN",
           "INGAT ARTI": "ELING ARTI",
           "TULIS HANGEUL": "NULIS HANGEUL",
-          "Lanjut →": "Banjur →",
+          "Continue →": "Banjur →",
           "Akhiri sesi": "Pungkasi sesi",
           "Dashboard Memory Lab": "Dashboard Memory Lab",
           "Hari ini": "Dina iki",
@@ -12887,6 +13526,8 @@ function startCustomMemorySession() {
   if (typeof resetRoastSession === 'function') resetRoastSession();
   memoryState = {
     queue: queue,
+    sessionLength: queue.length,
+    finished: false,
     index: 0,
     correct: 0,
     wrong: 0,
@@ -12995,8 +13636,20 @@ function wireCustomStudy() {
 function skipMemoryQuestionSoft() {
   var st = memoryState;
   if (!st) return;
+  var len = st.sessionLength || (st.queue && st.queue.length) || 0;
   var q = st.current || st.queue[st.index];
   if (!q) return;
+  // Soal terakhir: Skip tidak mengakhiri sesi (tombol seharusnya disembunyikan)
+  if (st.index >= len - 1) {
+    if (!q.answered && !st.checked) {
+      q.skipped = true;
+      q.answered = false;
+      q.correct = null;
+      q.userAnswer = null;
+      st.skipped = (st.skipped || 0) + 1;
+    }
+    return;
+  }
   if (q.answered || st.checked) {
     goMemoryIndex(st.index + 1);
     return;
@@ -13014,7 +13667,8 @@ function goMemoryIndex(idx) {
   var st = memoryState;
   if (!st) return;
   if (idx < 0) return;
-  if (idx >= st.queue.length) {
+  var len = st.sessionLength || (st.queue && st.queue.length) || 0;
+  if (st.finished || idx >= len) {
     return finishMemory(true);
   }
   st.index = idx;
@@ -13024,12 +13678,18 @@ function goMemoryIndex(idx) {
 }
 
 function prevMemoryQuestion() {
+  if (window.__kvlPrevLock) return;
   var st = memoryState;
   if (!st || st.index <= 0) return;
-  if (typeof goMemoryIndex === 'function') goMemoryIndex(st.index - 1);
-  else {
-    st.index = st.index - 1;
-    if (typeof renderMemoryQuestion === 'function') renderMemoryQuestion();
+  window.__kvlPrevLock = true;
+  try {
+    if (typeof goMemoryIndex === 'function') goMemoryIndex(st.index - 1);
+    else {
+      st.index = st.index - 1;
+      if (typeof renderMemoryQuestion === 'function') renderMemoryQuestion();
+    }
+  } finally {
+    setTimeout(function () { window.__kvlPrevLock = false; }, 80);
   }
 }
 
@@ -13043,7 +13703,7 @@ function restoreMemoryAnswerUI(q) {
   if (csEl('skipMemory')) csEl('skipMemory').disabled = true;
   if (csEl('nextMemory')) {
     csEl('nextMemory').classList.remove('hidden');
-    csEl('nextMemory').textContent = st.index >= st.queue.length - 1 ? 'Selesai →' : 'Lanjut →';
+    csEl('nextMemory').textContent = st.index >= st.queue.length - 1 ? 'Selesai →' : 'Continue →';
   }
   if (type === 'recognition' || type === 'listening') {
     var buttons = document.querySelectorAll('#memoryChoices button, #memoryChoices .practice-choice');
@@ -13076,37 +13736,124 @@ function restoreMemoryAnswerUI(q) {
 
 /* Quiz prev/skip — simpan jawaban */
 function prevQuestionNav() {
+  if (window.__kvlPrevLock) return;
   if (typeof currentIndex === 'undefined' || currentIndex <= 0) return;
-  currentIndex = currentIndex - 1;
-  if (typeof renderQuestion === 'function') renderQuestion();
+  window.__kvlPrevLock = true;
+  try {
+    currentIndex = currentIndex - 1;
+    if (typeof renderQuestion === 'function') renderQuestion();
+  } finally {
+    setTimeout(function () { window.__kvlPrevLock = false; }, 80);
+  }
 }
 
 function skipQuestionNav() {
-  if (typeof currentQuestions === 'undefined' || !currentQuestions || !currentQuestions.length) return;
-  var q = currentQuestions[currentIndex];
-  if (!q) return;
-  // Skip: netral, bukan salah. Jangan set selectedNo ke nilai "terjawab".
-  if (q.selectedNo === null || q.selectedNo === undefined) {
-    q.skipped = true;
-    q.correct = null;
-    // selectedNo tetap null supaya soal masih bisa dijawab saat Previous
-  }
-  if (currentIndex < currentQuestions.length - 1) {
-    currentIndex++;
-    if (typeof renderQuestion === 'function') renderQuestion();
-  } else if (typeof showResults === 'function') {
-    showResults();
-  }
+  // Tombol Lewati dihapus dari Quiz — no-op untuk mencegah lompat ganda
+  return;
 }
 
 
 /* Typing session nav */
 function prevWriteQuestion() {
+  if (window.__kvlPrevLock) return;
   var st = writeState;
   if (!st || st.index <= 0) return;
-  st.index = st.index - 1;
-  if (typeof renderWriteQuestion === 'function') renderWriteQuestion();
+  window.__kvlPrevLock = true;
+  try {
+    st.index = st.index - 1;
+    if (typeof renderWriteQuestion === 'function') renderWriteQuestion();
+  } finally {
+    setTimeout(function () { window.__kvlPrevLock = false; }, 80);
+  }
 }
+
+/* Listening: Previous + Lewati */
+function prevListenQuestion() {
+  if (window.__kvlPrevLock) return;
+  var st = listenState;
+  if (!st || st.index <= 0) return;
+  window.__kvlPrevLock = true;
+  try {
+    try { if (typeof stopSpeech === 'function') stopSpeech(false); } catch (e) {}
+    st.index = st.index - 1;
+    if (typeof renderListenQuestion === 'function') renderListenQuestion();
+  } finally {
+    setTimeout(function () { window.__kvlPrevLock = false; }, 80);
+  }
+}
+function skipListenQuestion() {
+  var st = listenState;
+  if (!st || !st.queue) return;
+  var q = st.queue[st.index];
+  if (q && q.answered !== true) {
+    q.skipped = true;
+    // netral — bukan salah
+  }
+  try { if (typeof stopSpeech === 'function') stopSpeech(false); } catch (e) {}
+  // Jangan akhiri di soal terakhir
+  if (st.index < st.queue.length - 1) {
+    st.index++;
+    if (typeof renderListenQuestion === 'function') renderListenQuestion();
+  }
+}
+
+function updateListenStatusBar() {
+  var st = listenState;
+  if (!st || !st.queue) return;
+  if (typeof renderStatusBar === 'function') {
+    renderStatusBar(
+      'listenStatusBar',
+      st.queue.length,
+      function (i) {
+        var q = st.queue[i];
+        if (!q) return 'todo';
+        if (q.answered === true) return 'done';
+        if (q.selectedUid) return 'done';
+        if (q.correct === true || q.correct === false) return 'done';
+        return 'todo';
+      },
+      function (idx) {
+        if (!listenState) return;
+        if (window.__kvlPrevLock) return;
+        try { if (typeof stopSpeech === 'function') stopSpeech(false); } catch (e) {}
+        listenState.index = idx;
+        if (typeof renderListenQuestion === 'function') renderListenQuestion();
+      },
+      st.index
+    );
+  }
+}
+
+function updateListenNavButtons() {
+  var st = listenState;
+  if (!st || !st.queue) return;
+  var isLast = st.index >= st.queue.length - 1;
+  var prev = document.getElementById('prevListen');
+  var skip = document.getElementById('skipListen');
+  var next = document.getElementById('nextListen');
+  if (prev) {
+    prev.disabled = st.index <= 0;
+  }
+  if (skip) {
+    skip.classList.add('hidden');
+    skip.style.display = 'none';
+  }
+  if (next) {
+    next.classList.remove('hidden');
+    next.style.display = '';
+    next.textContent = isLast ? 'Submit ✓' : 'Continue →';
+  }
+  var countEl = document.getElementById('listenSessionCount');
+  if (countEl) {
+    countEl.textContent = 'SOAL ' + (st.index + 1) + ' DARI ' + st.queue.length;
+  }
+  var bar = document.getElementById('listenProgress');
+  if (bar && st.queue.length) {
+    bar.style.width = Math.round(((st.index + 1) / st.queue.length) * 100) + '%';
+  }
+  if (typeof updateListenStatusBar === 'function') updateListenStatusBar();
+}
+
 function skipWriteSoft() {
   var st = writeState;
   if (!st) return;
@@ -13122,13 +13869,10 @@ function skipWriteSoft() {
   }
   st.checked = false;
   if (typeof updateWriteStatusBar === "function") updateWriteStatusBar();
+  // Skip TIDAK mengakhiri sesi di soal terakhir — hanya Submit
   if (st.index < st.queue.length - 1) {
     st.index++;
     if (typeof renderWriteQuestion === "function") renderWriteQuestion();
-  } else if (typeof finishWriting === "function") {
-    finishWriting();
-  } else if (typeof endWriteSession === "function") {
-    endWriteSession();
   }
 }
 /* nav: single listener via wireSessionNavOnce */
@@ -13149,18 +13893,6 @@ function skipWriteSoft() {
 })();
 
 /* Prev memory: selalu bisa balik selama bukan soal pertama */
-document.addEventListener('click', function(e){
-  const t = e.target && e.target.closest && e.target.closest('#prevMemory');
-  if (!t) return;
-  e.preventDefault();
-  if (typeof prevMemoryQuestion === 'function') prevMemoryQuestion();
-});
-document.addEventListener('click', function(e){
-  const t = e.target && e.target.closest && e.target.closest('#skipMemory');
-  if (!t) return;
-  e.preventDefault();
-  if (typeof skipMemoryQuestion === 'function') skipMemoryQuestion();
-});
 
 
 (function wireSessionNavOnce(){
@@ -13198,6 +13930,16 @@ document.addEventListener('click', function(e){
       if (typeof skipQuestionNav === 'function') skipQuestionNav();
       return;
     }
+    if (id === 'prevListen') {
+      e.preventDefault();
+      if (typeof prevListenQuestion === 'function') prevListenQuestion();
+      return;
+    }
+    if (id === 'skipListen') {
+      e.preventDefault();
+      if (typeof skipListenQuestion === 'function') skipListenQuestion();
+      return;
+    }
     if (id === 'prevWrite') {
       e.preventDefault();
       if (typeof prevWriteQuestion === 'function') prevWriteQuestion();
@@ -13228,19 +13970,26 @@ document.addEventListener('click', function(e){
 
 
 /* ===== Question status bars (✓ / ↷ / ○) ===== */
-function renderStatusBar(containerId, total, getStatus, onJump) {
+function renderStatusBar(containerId, total, getStatus, onJump, activeIndex) {
   var box = document.getElementById(containerId);
   if (!box) return;
   box.replaceChildren();
+  var active = typeof activeIndex === 'number' ? activeIndex : -1;
   for (var i = 0; i < total; i++) {
     var st = getStatus(i); // 'done' | 'skip' | 'todo'
     var pill = document.createElement('button');
     pill.type = 'button';
-    pill.className = 'q-status-pill is-' + st;
+    pill.className = 'q-status-pill is-' + st + (i === active ? ' is-current' : '');
     var icon = st === 'done' ? '✓' : '○';
     pill.textContent = icon + ' ' + (i + 1);
-    pill.title = st === 'done' ? 'Dikerjakan' : 'Belum';
-    pill.setAttribute('aria-label', 'Soal ' + (i + 1) + ' · ' + pill.title);
+    pill.title =
+      (st === 'done' ? 'Dikerjakan' : 'Belum') +
+      (i === active ? ' · Sedang dikerjakan' : '');
+    pill.setAttribute(
+      'aria-label',
+      'Soal ' + (i + 1) + ' · ' + pill.title
+    );
+    pill.setAttribute('aria-current', i === active ? 'step' : 'false');
     (function (idx) {
       pill.addEventListener('click', function () {
         if (typeof onJump === 'function') onJump(idx);
@@ -13265,7 +14014,7 @@ function updateQuizStatusBar() {
       currentIndex = idx;
       renderQuestion();
     }
-  );
+  , typeof currentIndex === "number" ? currentIndex : 0);
   // mark current
   var pills = document.querySelectorAll('#quizStatusBar .q-status-pill');
   if (pills[currentIndex]) pills[currentIndex].classList.add('is-current');
@@ -13287,7 +14036,7 @@ function updateWriteStatusBar() {
       st.index = idx;
       renderWriteQuestion();
     }
-  );
+  , st.index);
   var pills = document.querySelectorAll('#writeStatusBar .q-status-pill');
   if (pills[st.index]) pills[st.index].classList.add('is-current');
 }
@@ -13311,7 +14060,7 @@ function updateMemoryStatusBar() {
         renderMemoryQuestion();
       }
     }
-  );
+  , st.index);
   var pills = document.querySelectorAll('#memoryStatusBar .q-status-pill');
   if (pills[st.index]) pills[st.index].classList.add('is-current');
 }
@@ -13319,24 +14068,6 @@ function updateMemoryStatusBar() {
 
 /* ===== Setup vs Session + custom count ===== */
 function showModeSession(mode) {
-  function hideSetupInView(viewId, keepIds) {
-    var view = document.getElementById(viewId);
-    if (!view) return;
-    Array.prototype.forEach.call(view.children, function (child) {
-      if (child.nodeType !== 1) return;
-      var keep = keepIds.some(function (id) {
-        return child.id === id || (child.querySelector && child.querySelector('#' + id));
-      });
-      if (keep) {
-        child.classList.remove('hidden');
-        child.classList.remove('kvl-setup-hidden');
-        child.style.display = '';
-      } else {
-        child.classList.add('kvl-setup-hidden');
-        child.style.display = 'none';
-      }
-    });
-  }
   function showAllInView(viewId) {
     var view = document.getElementById(viewId);
     if (!view) return;
@@ -13349,9 +14080,7 @@ function showModeSession(mode) {
     });
   }
   window.__kvlShowAllInView = showAllInView;
-  window.__kvlHideSetupInView = hideSetupInView;
 
-  // Hanya panel SOAL yang ditampilkan. Panel HASIL harus tetap tersembunyi.
   var sessionIds = {
     memory: { view: 'memoryView', session: 'memorySessionPanel', result: 'memoryResultPanel' },
     write: { view: 'writeView', session: 'writeSessionPanel', result: 'writeResultPanel' },
@@ -13359,14 +14088,57 @@ function showModeSession(mode) {
   };
   var cfg = sessionIds[mode];
   if (!cfg) return;
-  hideSetupInView(cfg.view, [cfg.session]);
+  var view = document.getElementById(cfg.view);
   var sess = document.getElementById(cfg.session);
+  var res = document.getElementById(cfg.result);
+
+  // Sembunyikan semua anak langsung view, kecuali yang berisi panel soal
+  if (view) {
+    Array.prototype.forEach.call(view.children, function (child) {
+      if (child.nodeType !== 1) return;
+      var keep = sess && (child === sess || (child.contains && child.contains(sess)));
+      if (keep) {
+        child.classList.remove('hidden');
+        child.classList.remove('kvl-setup-hidden');
+        child.style.display = '';
+      } else {
+        child.classList.add('kvl-setup-hidden');
+        child.style.display = 'none';
+      }
+    });
+  }
+
+  // Jika panel soal nested: sembunyikan sibling setup di dalam ancestor yang sama
+  if (sess && view) {
+    var node = sess;
+    while (node && node !== view) {
+      node.classList.remove('hidden');
+      node.classList.remove('kvl-setup-hidden');
+      if (node.style) node.style.display = '';
+      var parent = node.parentElement;
+      if (!parent) break;
+      Array.prototype.forEach.call(parent.children, function (sib) {
+        if (sib === node) return;
+        if (sib.nodeType !== 1) return;
+        // jangan sembunyikan ancestor path hasil yang kebetulan sibling — hasil tetap di-hide di bawah
+        if (res && (sib === res || (sib.contains && sib.contains(res)))) {
+          sib.classList.add('hidden');
+          sib.style.display = 'none';
+          return;
+        }
+        if (sib.contains && sib.contains(sess)) return;
+        sib.classList.add('kvl-setup-hidden');
+        sib.style.display = 'none';
+      });
+      node = parent;
+    }
+  }
+
   if (sess) {
     sess.classList.remove('hidden');
     sess.classList.remove('kvl-setup-hidden');
     sess.style.display = '';
   }
-  var res = document.getElementById(cfg.result);
   if (res) {
     res.classList.add('hidden');
     res.classList.add('kvl-setup-hidden');
@@ -13385,10 +14157,14 @@ function showModeResult(mode) {
   var cfg = map[mode];
   if (!cfg) return;
   var view = document.getElementById(cfg.view);
+  var sess = document.getElementById(cfg.session);
+  var res = document.getElementById(cfg.result);
+
   if (view) {
     Array.prototype.forEach.call(view.children, function (child) {
       if (child.nodeType !== 1) return;
-      if (child.id === cfg.result) {
+      var containsResult = res && (child === res || (child.contains && child.contains(res)));
+      if (containsResult) {
         child.classList.remove('hidden');
         child.classList.remove('kvl-setup-hidden');
         child.style.display = '';
@@ -13398,19 +14174,34 @@ function showModeResult(mode) {
       }
     });
   }
-  var sess = document.getElementById(cfg.session);
   if (sess) {
     sess.classList.add('hidden');
     sess.style.display = 'none';
   }
-  var res = document.getElementById(cfg.result);
   if (res) {
     res.classList.remove('hidden');
     res.classList.remove('kvl-setup-hidden');
     res.style.display = '';
+    var p = res.parentElement;
+    while (p && p !== view) {
+      p.classList.remove('hidden');
+      p.classList.remove('kvl-setup-hidden');
+      if (p.style && p.style.display === 'none') p.style.display = '';
+      // hide siblings of path that are not the result
+      Array.prototype.forEach.call(p.children, function (sib) {
+        if (sib.nodeType !== 1) return;
+        if (sib === res || (sib.contains && sib.contains(res))) return;
+        if (res.parentElement === p && sib !== res) {
+          sib.classList.add('kvl-setup-hidden');
+          sib.style.display = 'none';
+        }
+      });
+      p = p.parentElement;
+    }
   }
   try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
 }
+
 function showModeSetup(mode) {
   var map = { memory: 'memoryView', write: 'writeView', listen: 'listenView' };
   var viewId = map[mode];
@@ -13476,20 +14267,23 @@ setTimeout(function () { try { wireCustomCountToggles(); } catch (e) {} }, 200);
 setTimeout(function () { try { wireCustomCountToggles(); } catch (e) {} }, 800);
 
 
-document.addEventListener('click', function(e){
-  var el = e.target && e.target.closest && e.target.closest('button, [id]');
-  if (!el || !el.id) return;
-  if (el.id === 'memoryBackDashboard' || el.id === 'endMemory') {
-    setTimeout(function(){ if (typeof showModeSetup === 'function') showModeSetup('memory'); }, 30);
-  }
-  if (el.id === 'writeBack' || el.id === 'endWrite') {
-    setTimeout(function(){ if (typeof showModeSetup === 'function') showModeSetup('write'); }, 30);
-  }
-}, true);
+/* removed: endMemory must not force showModeSetup after finishMemory */
+
 
 
 /* ===== Exit session (Out) ===== */
-function exitActiveSession(mode) {
+function exitActiveSession(mode, opts) {
+  opts = opts || {};
+  // Konfirmasi sebelum keluar (kecuali opts.force)
+  if (!opts.force) {
+    var ok = true;
+    try {
+      ok = window.confirm(
+        'Keluar dari sesi latihan?\n\nProgres soal sesi ini tidak dilanjutkan. Statistik yang sudah tercatat tetap aman.'
+      );
+    } catch (e) {}
+    if (!ok) return false;
+  }
   try { if (typeof stopSpeech === 'function') stopSpeech(false); } catch (e) {}
   // Permanently end the active session — no resume.
   if (mode === 'quiz') {
@@ -14093,6 +14887,8 @@ setTimeout(function () {
 setTimeout(function () {
   try { wireMemoryMaterialMode(); } catch (e) {}
 }, 600);
+
+
 
 
 </script>
