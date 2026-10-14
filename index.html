@@ -9,6 +9,7 @@
       :root {
         --ink: #edf3fa;
         --muted: #9aa9bd;
+        --text-muted: var(--muted);
         --bg: #0c1320;
         --panel: #141f30;
         --panel2: #19263a;
@@ -1027,15 +1028,15 @@
         font-size: 13px;
         line-height: 1.6;
       }
-      .footer {
+      .footer-copyright {
+        font-family: Inter, sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.2px;
         text-align: center;
-        color: #6f8096;
-        font-size: 11px;
+        color: var(--text-muted);
         margin-top: 26px;
-        line-height: 1.7;
-      }
-      .footer strong {
-        color: #aebbd0;
+        line-height: 1.6;
       }
       .muted {
         color: var(--muted);
@@ -2600,16 +2601,6 @@
             </div>
           </section>
 
-          <section class="card" style="margin-bottom: 18px">
-            <div class="tiny" style="margin: 0">
-              <strong style="color: var(--ink)">Tips cepat:</strong>
-              Tekan <span class="kbd">1</span>–<span class="kbd">4</span> untuk
-              memilih jawaban, <span class="kbd">Space</span> untuk audio,
-              <span class="kbd">Esc</span> untuk hentikan suara. Data hanya
-              disimpan di browser ini — ekspor JSON secara berkala dari tab
-              Vocab.
-            </div>
-          </section>
         </section>
 
         <section
@@ -3819,12 +3810,12 @@
         <section id="memoryView" class="view" aria-labelledby="memoryTitle">
           <div class="section-heading">
             <div>
-              <div class="kicker">Guide · biar nempel beneran</div>
+              <div class="kicker">Active Recall · Spaced Repetition</div>
               <h1 id="memoryTitle" class="page-title" data-i18n="mem.title">
                 Memory Lab
               </h1>
               <p class="page-lead">
-                Guide mode: kita kejar kata yang masih goyah sampe nempel. Santai, yang penting konsisten.
+                Latih ingatan kosakata, temukan kata yang belum dikuasai, dan ulangi sampai benar-benar melekat dalam ingatan.
               </p>
             </div>
             <span class="pill xp-chip" id="memoryLevelBadge"
@@ -4551,11 +4542,9 @@
           </section>
         </section>
       </main>
-      <footer class="footer">
-        <strong>한입</strong> · Bab 1 · Berjalan lokal di browser.<br />Audio
-        dari perangkat atau mode online. Data tersimpan lokal — ekspor JSON
-        secara berkala.
-      </footer>
+      <footer class="footer-copyright">
+  © 2026 Korean Vocab Lab. All rights reserved.
+</footer>
     </div>
     <script>
       "use strict";
