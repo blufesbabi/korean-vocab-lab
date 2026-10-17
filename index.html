@@ -2278,7 +2278,7 @@
 }
 
 
-#skipQuestion, #skipListen { display: none !important; }
+/* removed: #skipQuestion/#skipListen elements not in DOM */
 
 #prevQuestion:not(:disabled),
 #prevWrite:not(:disabled),
@@ -2402,7 +2402,7 @@
           <div class="brand-icon" aria-hidden="true">아수</div>
           <div class="brand-text">
             <div class="eyebrow">Korean · focused practice</div>
-            <div class="brand-name">𓂺 <span class="brand-sub">ESP-TOPIK BAB 1-30</span></div>
+            <div class="brand-name">𓂺 <span class="brand-sub">EPS-TOPIK BAB 1-30</span></div>
           </div>
         </div>
         <div class="header-right">
@@ -2464,14 +2464,6 @@
           data-i18n="nav.flashcard"
         >
           Flashcard
-        </button>
-        <button
-          type="button"
-          class="nav-btn"
-          data-go="addView"
-          data-i18n="nav.vocab"
-        >
-          Vocab
         </button>
         <button
           type="button"
@@ -2746,13 +2738,7 @@
                 data-i18n="quiz.collection"
               >
                 Lihat Koleksi</button
-              ><button
-                type="button"
-                class="btn btn-ghost"
-                id="homeAddVocabularyBtn"
-              >
-                Buka Vocab
-              </button>
+
             </div>
           </section>
           <div class="tiny">
@@ -3715,19 +3701,52 @@
                   Mulai sesi flash card
                 </h2>
                 <p class="tiny">
-                  Semua kosakata dalam rentang aktif dimasukkan, diacak. Nilai
-                  tiap kartu dengan jujur agar jadwal pengulangan akurat.
+                  Pilih bab, jumlah kartu, lalu mulai. Kartu diacak tanpa duplikat.
+                  Nilai tiap kartu dengan jujur agar jadwal pengulangan akurat.
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              id="beginFlashcards"
-              class="btn btn-primary"
-              data-i18n="flash.start"
-            >
-              Mulai Flash Card →
-            </button>
+            <div class="form-grid" style="margin-bottom: 14px">
+              <div class="field">
+                <label for="flashChapter">Kosakata</label>
+                <select id="flashChapter" class="control">
+                  <option value="all">Semua bab</option>
+                  <option value="Bab 1">Bab 1</option>
+                  <option value="Bab 2">Bab 2</option>
+                  <option value="Bab 3">Bab 3</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="flashCount">Jumlah kartu</label>
+                <select id="flashCount" class="control">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="all">Semua di pool</option>
+                  <option value="custom">Custom…</option>
+                </select>
+              </div>
+            </div>
+            <div class="field hidden" id="flashCustomCountWrap" style="margin-bottom: 14px">
+              <label for="flashCustomCount">Jumlah custom</label>
+              <input id="flashCustomCount" class="control" type="number" min="1" max="500" value="12" />
+              <span class="hint">Tidak boleh melebihi jumlah kosakata di pool yang dipilih.</span>
+            </div>
+            <div class="action-row">
+              <button
+                type="button"
+                id="beginFlashcards"
+                class="btn btn-primary"
+                data-i18n="flash.start"
+              >
+                Mulai Flash Card →
+              </button>
+              <button type="button" id="reshuffleFlashcards" class="btn btn-secondary">
+                Acak ulang
+              </button>
+            </div>
           </section>
           <section id="flashcardPanel" class="card hidden">
             <div class="section-heading" style="margin-top: 0">
@@ -3948,6 +3967,7 @@
                     <button type="button" class="chip-btn active" data-cs-cat="all">Semua</button>
                     <button type="button" class="chip-btn" data-cs-cat="Bab 1">Bab 1</button>
                     <button type="button" class="chip-btn" data-cs-cat="Bab 2">Bab 2</button>
+                    <button type="button" class="chip-btn" data-cs-cat="Bab 3">Bab 3</button>
                     <button type="button" class="chip-btn" data-cs-cat="Kosakata Kelas">Kosakata Kelas</button>
                     <button type="button" class="chip-btn" data-cs-cat="Percakapan">Percakapan</button>
                   </div>
@@ -4505,22 +4525,6 @@
             <h2 class="section-title" data-i18n="prefs.data">
               Data & cadangan
             </h2>
-            <p class="tiny" style="margin-top: -4px">
-              Ekspor / impor kosakata ada di menu <strong>Vocab</strong>. Semua
-              data disimpan lokal di browser ini.
-            </p>
-            <div class="form-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                id="prefsOpenVocab"
-              >
-                Buka Vocab
-              </button>
-              <button type="button" class="btn btn-ghost" id="prefsOpenStats">
-                Lihat Statistik
-              </button>
-            </div>
             <hr
               style="
                 border: none;
@@ -5134,7 +5138,7 @@
         { no: 22, korean: "침대", meaning: "tempat tidur / kasur", category: "Bab 3" },
         { no: 23, korean: "의자", meaning: "kursi", category: "Bab 3" },
         { no: 24, korean: "책상", meaning: "meja belajar", category: "Bab 3" },
-        { no: 25, korean: "옷장", meaning: "lemari pakaian", category: "Bab 3" },
+        { no: 25, korean: "옷장", meaning: "lemari baju", category: "Bab 3" },
         { no: 26, korean: "소파", meaning: "sofa", category: "Bab 3" },
         { no: 27, korean: "전자레인지", meaning: "microwave", category: "Bab 3" },
         { no: 28, korean: "세탁기", meaning: "mesin cuci", category: "Bab 3" },
@@ -5143,16 +5147,16 @@
         { no: 31, korean: "식탁", meaning: "meja makan", category: "Bab 3" },
         { no: 32, korean: "그림", meaning: "gambar", category: "Bab 3" },
         { no: 33, korean: "보다", meaning: "melihat", category: "Bab 3" },
-        { no: 34, korean: "보기", meaning: "contoh / pilihan contoh", category: "Bab 3" },
-        { no: 35, korean: "같이", meaning: "bersama / seperti", category: "Bab 3" },
+        { no: 34, korean: "보기", meaning: "contoh", category: "Bab 3" },
+        { no: 35, korean: "같이", meaning: "sama/seperti", category: "Bab 3" },
         { no: 36, korean: "대화", meaning: "percakapan", category: "Bab 3" },
-        { no: 37, korean: "완성하다", meaning: "melengkapi / menyelesaikan", category: "Bab 3" },
+        { no: 37, korean: "완성하다", meaning: "melengkapi", category: "Bab 3" },
         { no: 38, korean: "문장", meaning: "kalimat", category: "Bab 3" },
         { no: 39, korean: "쓰다", meaning: "menulis", category: "Bab 3" },
         { no: 40, korean: "도", meaning: "juga", category: "Bab 3" },
         { no: 41, korean: "없다", meaning: "tidak ada", category: "Bab 3" },
         { no: 42, korean: "대답하다", meaning: "menjawab", category: "Bab 3" },
-        { no: 43, korean: "제시되다", meaning: "disajikan / diberikan", category: "Bab 3" },
+        { no: 43, korean: "제시되다", meaning: "disediakan", category: "Bab 3" },
         { no: 44, korean: "표현", meaning: "ekspresi / ungkapan", category: "Bab 3" },
         { no: 45, korean: "활용하다", meaning: "memanfaatkan / menggunakan", category: "Bab 3" },
         { no: 46, korean: "대화하다", meaning: "melakukan percakapan", category: "Bab 3" },
@@ -5178,57 +5182,57 @@
         { no: 66, korean: "명사", meaning: "kata benda", category: "Bab 3" },
         { no: 67, korean: "동사", meaning: "kata kerja", category: "Bab 3" },
         { no: 68, korean: "형용사", meaning: "kata sifat", category: "Bab 3" },
-        { no: 69, korean: "유용하다", meaning: "berguna / bermanfaat", category: "Bab 3" },
-        { no: 70, korean: "알겠습니다", meaning: "baiklah / saya mengerti", category: "Bab 3" },
+        { no: 69, korean: "유용하다", meaning: "penting/berguna", category: "Bab 3" },
+        { no: 70, korean: "알겠습니다", meaning: "baiklah", category: "Bab 3" },
         { no: 71, korean: "이따", meaning: "nanti", category: "Bab 3" },
         { no: 72, korean: "전화하다", meaning: "menelepon", category: "Bab 3" },
-        { no: 73, korean: "반장님", meaning: "ketua kelas / mandor (sesuai konteks)", category: "Bab 3" },
+        { no: 73, korean: "반장님", meaning: "mandor", category: "Bab 3" },
         { no: 74, korean: "특별시", meaning: "kota khusus", category: "Bab 3" },
         { no: 75, korean: "특별자치시", meaning: "kota otonomi khusus", category: "Bab 3" },
         { no: 76, korean: "광역시", meaning: "kota metropolitan", category: "Bab 3" },
         { no: 77, korean: "가장", meaning: "paling", category: "Bab 3" },
         { no: 78, korean: "크다", meaning: "besar", category: "Bab 3" },
-        { no: 79, korean: "로", meaning: "dengan / menggunakan / ke / melalui (sesuai konteks)", category: "Bab 3" },
+        { no: 79, korean: "로", meaning: "merupakan/menggunakan/menuju/ke/arah", category: "Bab 3" },
         { no: 80, korean: "정치", meaning: "politik", category: "Bab 3" },
         { no: 81, korean: "경제", meaning: "ekonomi", category: "Bab 3" },
-        { no: 82, korean: "중심지", meaning: "pusat", category: "Bab 3" },
+        { no: 82, korean: "중심지", meaning: "tempat pusat", category: "Bab 3" },
         { no: 83, korean: "주변", meaning: "sekitar", category: "Bab 3" },
         { no: 84, korean: "함께", meaning: "bersama", category: "Bab 3" },
         { no: 85, korean: "수도권", meaning: "wilayah ibu kota", category: "Bab 3" },
         { no: 86, korean: "이루다", meaning: "membentuk", category: "Bab 3" },
-        { no: 87, korean: "며", meaning: "dan / sambil (sesuai konteks)", category: "Bab 3" },
-        { no: 88, korean: "지역", meaning: "wilayah / daerah", category: "Bab 3" },
-        { no: 89, korean: "넘다", meaning: "melampaui / lebih dari", category: "Bab 3" },
-        { no: 90, korean: "거주하다", meaning: "bertempat tinggal / menetap", category: "Bab 3" },
+        { no: 87, korean: "며", meaning: "dengan/lalu", category: "Bab 3" },
+        { no: 88, korean: "지역", meaning: "wilayah", category: "Bab 3" },
+        { no: 89, korean: "넘다", meaning: "lebih", category: "Bab 3" },
+        { no: 90, korean: "거주하다", meaning: "menetap", category: "Bab 3" },
         { no: 91, korean: "대한민국", meaning: "Republik Korea", category: "Bab 3" },
         { no: 92, korean: "관문", meaning: "pintu gerbang", category: "Bab 3" },
         { no: 93, korean: "인천국제공항", meaning: "Bandara Internasional Incheon", category: "Bab 3" },
         { no: 94, korean: "인천항", meaning: "Pelabuhan Incheon", category: "Bab 3" },
-        { no: 95, korean: "위치하다", meaning: "berlokasi / terletak", category: "Bab 3" },
-        { no: 96, korean: "아/어 있다", meaning: "menyatakan keadaan hasil suatu tindakan", category: "Bab 3" },
+        { no: 95, korean: "위치하다", meaning: "berlokasi / terdapat", category: "Bab 3" },
+        { no: 96, korean: "아/어 있다", meaning: "sedang (dalam keadaan), tidak diartikan", category: "Bab 3" },
         { no: 97, korean: "한편", meaning: "sementara itu / di sisi lain", category: "Bab 3" },
         { no: 98, korean: "행정", meaning: "administrasi / pemerintahan", category: "Bab 3" },
-        { no: 99, korean: "업무", meaning: "tugas / pekerjaan", category: "Bab 3" },
-        { no: 100, korean: "효율적으로", meaning: "secara efisien", category: "Bab 3" },
+        { no: 99, korean: "업무", meaning: "tugas", category: "Bab 3" },
+        { no: 100, korean: "효율적으로", meaning: "secara efisien/efektif", category: "Bab 3" },
         { no: 101, korean: "수행하다", meaning: "menjalankan / melaksanakan", category: "Bab 3" },
-        { no: 102, korean: "기 위해", meaning: "untuk / demi", category: "Bab 3" },
+        { no: 102, korean: "기 위해", meaning: "untuk", category: "Bab 3" },
         { no: 103, korean: "만들다", meaning: "membuat", category: "Bab 3" },
         { no: 104, korean: "아/어 지다", meaning: "menjadi (perubahan keadaan)", category: "Bab 3" },
-        { no: 105, korean: "행정중심복합도시", meaning: "kota kompleks pusat administrasi", category: "Bab 3" },
-        { no: 106, korean: "교육부", meaning: "Kementerian Pendidikan", category: "Bab 3" },
-        { no: 107, korean: "고용노동부", meaning: "Kementerian Ketenagakerjaan", category: "Bab 3" },
-        { no: 108, korean: "대부분", meaning: "sebagian besar / kebanyakan", category: "Bab 3" },
-        { no: 109, korean: "정부", meaning: "pemerintah", category: "Bab 3" },
-        { no: 110, korean: "부처", meaning: "kementerian / instansi pemerintah", category: "Bab 3" },
-        { no: 111, korean: "인근", meaning: "sekitar / kawasan terdekat", category: "Bab 3" },
+        { no: 105, korean: "행정중심복합도시", meaning: "kota multifungsi pemerintahan", category: "Bab 3" },
+        { no: 106, korean: "교육부", meaning: "dinas pendidikan", category: "Bab 3" },
+        { no: 107, korean: "고용노동부", meaning: "dinas ketenagakerjaan", category: "Bab 3" },
+        { no: 108, korean: "대부분", meaning: "biasanya", category: "Bab 3" },
+        { no: 109, korean: "정부", meaning: "pemerintahan", category: "Bab 3" },
+        { no: 110, korean: "부처", meaning: "kementerian", category: "Bab 3" },
+        { no: 111, korean: "인근", meaning: "sekitar", category: "Bab 3" },
         { no: 112, korean: "경부선", meaning: "jalur kereta Seoul–Busan", category: "Bab 3" },
-        { no: 113, korean: "호남선", meaning: "jalur kereta di wilayah Honam", category: "Bab 3" },
+        { no: 113, korean: "호남선", meaning: "jalur kereta api Provinsi Jeolla Utara dan Selatan", category: "Bab 3" },
         { no: 114, korean: "지나가다", meaning: "melewati", category: "Bab 3" },
         { no: 115, korean: "교통", meaning: "transportasi / lalu lintas", category: "Bab 3" },
         { no: 116, korean: "과학", meaning: "ilmu pengetahuan / sains", category: "Bab 3" },
-        { no: 117, korean: "인", meaning: "orang / manusia (bergantung konteks)", category: "Bab 3" },
+        { no: 117, korean: "인", meaning: "merupakan/orang", category: "Bab 3" },
         { no: 118, korean: "두 번째", meaning: "urutan kedua", category: "Bab 3" },
-        { no: 119, korean: "세계적인", meaning: "bertaraf dunia / global", category: "Bab 3" },
+        { no: 119, korean: "세계적인", meaning: "secara global", category: "Bab 3" },
         { no: 120, korean: "규모", meaning: "skala / ukuran", category: "Bab 3" },
         { no: 121, korean: "부산항", meaning: "Pelabuhan Busan", category: "Bab 3" },
         { no: 122, korean: "아름답다", meaning: "indah", category: "Bab 3" },
@@ -5237,15 +5241,15 @@
         { no: 125, korean: "관광객", meaning: "wisatawan", category: "Bab 3" },
         { no: 126, korean: "방문하다", meaning: "mengunjungi", category: "Bab 3" },
         { no: 127, korean: "자동차", meaning: "mobil", category: "Bab 3" },
-        { no: 128, korean: "조선", meaning: "pembuatan kapal / industri perkapalan", category: "Bab 3" },
+        { no: 128, korean: "조선", meaning: "perkapalan", category: "Bab 3" },
         { no: 129, korean: "중화학", meaning: "kimia berat", category: "Bab 3" },
         { no: 130, korean: "산업", meaning: "industri", category: "Bab 3" },
         { no: 131, korean: "발달하다", meaning: "berkembang", category: "Bab 3" },
         { no: 132, korean: "공업", meaning: "industri / manufaktur", category: "Bab 3" },
-        { no: 133, korean: "이 외에", meaning: "selain ini / selain itu", category: "Bab 3" },
+        { no: 133, korean: "이 외에", meaning: "selain ini", category: "Bab 3" },
         { no: 134, korean: "남동쪽", meaning: "arah tenggara", category: "Bab 3" },
-        { no: 135, korean: "지방", meaning: "wilayah / daerah", category: "Bab 3" },
-        { no: 136, korean: "도", meaning: "juga / pulau / provinsi (bergantung konteks)", category: "Bab 3" },
+        { no: 135, korean: "지방", meaning: "wilayah", category: "Bab 3" },
+        { no: 136, korean: "도", meaning: "juga/pulau", category: "Bab 3" },
         { no: 137, korean: "섬유 산업", meaning: "industri tekstil", category: "Bab 3" },
         { no: 138, korean: "남서쪽", meaning: "arah barat daya", category: "Bab 3" },
         { no: 139, korean: "예술", meaning: "seni", category: "Bab 3" },
@@ -6396,10 +6400,12 @@
         }
         return shuffle([correctItem, ...unique]);
       }
-      function makeQuestions(pool, direction) {
+      function makeQuestions(pool, direction, choicePool) {
+        var optPool =
+          choicePool && choicePool.length ? choicePool : pool;
         return shuffledOrder(pool).map((item) => ({
           item,
-          options: buildChoices(item, pool, direction),
+          options: buildChoices(item, optPool, direction),
           selectedNo: null,
           correct: false,
         }));
@@ -6437,7 +6443,7 @@
         lastBasePool = [...basePool];
         lastDirection = direction;
         resetRoastSession();
-        currentQuestions = makeQuestions(sessionPool, sessionDirection);
+        currentQuestions = makeQuestions(sessionPool, sessionDirection, lastBasePool);
         currentIndex = 0;
         currentScore = 0;
         currentAnswers = [];
@@ -6601,6 +6607,7 @@
         if (typeof updateQuizStatusBar === "function") updateQuizStatusBar();
         currentAnswers.push({
           no: q.item.no,
+          uid: q.item.uid || ("base-" + q.item.no),
           korean: q.item.korean,
           meaning: q.item.meaning,
           selectedNo: no,
@@ -6796,7 +6803,18 @@
           $("allReview").append(createReviewItem(a, true))
         );
         lastWrongQuestions = wrong
-          .map((a) => vocabulary.find((v) => v.no === a.no))
+          .map(function (a) {
+            if (a.uid) {
+              var byUid = vocabulary.find(function (v) {
+                return (v.uid || ("base-" + v.no)) === a.uid;
+              });
+              if (byUid) return byUid;
+            }
+            var byKr = vocabulary.find(function (v) {
+              return v.korean === a.korean && v.meaning === a.meaning;
+            });
+            return byKr || null;
+          })
           .filter(Boolean);
         lastSessionAnswers = [...currentAnswers];
         lastBasePool = [...sessionPool];
@@ -6852,7 +6870,9 @@
           lastWrongQuestions,
           lastDirection,
           "wrong",
-          lastWrongQuestions
+          lastBasePool && lastBasePool.length
+            ? lastBasePool
+            : lastWrongQuestions
         );
       }
       function openReview() {
@@ -6868,116 +6888,6 @@
             : active || "settingsView";
         renderVocabularyList($("reviewSearch").value || "");
         showView("reviewView");
-      }
-      function renderVocabularyList(query = "") {
-        const list = document.getElementById("vocabularyList");
-        if (!list) return;
-        list.replaceChildren();
-        const term =
-          typeof normalizeText === "function"
-            ? normalizeText(query)
-            : String(query || "").toLowerCase();
-        const ch =
-          window.settings && settings.chapter
-            ? settings.chapter
-            : typeof settings !== "undefined" && settings.chapter
-            ? settings.chapter
-            : "all";
-        let pool;
-        if (typeof poolByChapter === "function") {
-          pool = poolByChapter(ch);
-        } else if (typeof vocabulary !== "undefined") {
-          if (!ch || ch === "all") {
-            pool = vocabulary.map((v, i) =>
-              Object.assign({}, v, { no: v.globalNo || i + 1 })
-            );
-          } else {
-            const filtered = vocabulary.filter((v) => v.category === ch);
-            pool = filtered.map((v, i) =>
-              Object.assign({}, v, { no: v.chapterNo || i + 1 })
-            );
-          }
-        } else {
-          pool = [];
-        }
-        const matches = pool.filter((v) => {
-          if (!term) return true;
-          return (
-            String(v.no).includes(term) ||
-            (typeof normalizeText === "function"
-              ? normalizeText(v.korean)
-              : String(v.korean || "").toLowerCase()
-            ).includes(term) ||
-            (typeof normalizeText === "function"
-              ? normalizeText(v.meaning)
-              : String(v.meaning || "").toLowerCase()
-            ).includes(term) ||
-            (typeof normalizeText === "function"
-              ? normalizeText(v.category || "")
-              : String(v.category || "").toLowerCase()
-            ).includes(term)
-          );
-        });
-        const babLabel = !ch || ch === "all" ? "Semua bab" : ch;
-        const countEl = document.getElementById("reviewCount");
-        if (countEl)
-          countEl.textContent =
-            matches.length + " dari " + pool.length + " kata · " + babLabel;
-        const titleEl = document.getElementById("reviewTitle");
-        if (titleEl)
-          titleEl.textContent =
-            !ch || ch === "all"
-              ? "Daftar semua kosakata"
-              : "Daftar kosakata " + ch;
-        const pillEl = document.getElementById("reviewTotalPill");
-        if (pillEl) pillEl.textContent = babLabel;
-        if (!matches.length) {
-          const empty = document.createElement("div");
-          empty.className = "empty-state";
-          empty.style.gridColumn = "1/-1";
-          empty.textContent = "Kosakata tidak ditemukan untuk filter ini.";
-          list.append(empty);
-          return;
-        }
-        matches.forEach((item, idx) => {
-          const row = document.createElement("div");
-          row.className = "vocab-line";
-          const main = document.createElement("div");
-          main.className = "vocab-line-main vocab-line-fmt";
-          // Format: NOMOR. | HANGEUL | ARTI
-          const no = document.createElement("span");
-          no.className = "vocab-no";
-          no.textContent = String(item.no) + ".";
-          const sep1 = document.createElement("span");
-          sep1.className = "vocab-sep";
-          sep1.textContent = "|";
-          sep1.setAttribute("aria-hidden", "true");
-          const kr = document.createElement("span");
-          kr.className = "vocab-line-korean";
-          kr.lang = "ko";
-          kr.textContent = item.korean;
-          const sep2 = document.createElement("span");
-          sep2.className = "vocab-sep";
-          sep2.textContent = "|";
-          sep2.setAttribute("aria-hidden", "true");
-          const meaning = document.createElement("span");
-          meaning.className = "vocab-line-meaning";
-          meaning.textContent = item.meaning;
-          main.append(no, sep1, kr, sep2, meaning);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "sound-button small";
-          btn.textContent = "🔊";
-          btn.title = "Dengarkan";
-          btn.disabled =
-            typeof canPlayTts === "function" ? !canPlayTts() : false;
-          btn.addEventListener("click", () => {
-            if (typeof speakKorean === "function")
-              speakKorean(item.korean, btn);
-          });
-          row.append(main, btn);
-          list.append(row);
-        });
       }
 
       // Settings and navigation handlers
@@ -9416,9 +9326,34 @@
             feedbackHtml: null
           };
         });
+        // Always prefer a wide pool for MCQ distractors (not the retry-only queue).
+        var listenDistractorPool = sourcePool;
+        try {
+          var widePool = null;
+          if (typeof rangeValues === "function") {
+            widePool = rangeValues("listenRangeStart", "listenRangeEnd").pool;
+          }
+          if ((!widePool || !widePool.length) && typeof poolByChapter === "function") {
+            widePool = poolByChapter((settings && settings.chapter) || "all");
+          }
+          if ((!widePool || !widePool.length) && typeof vocabulary !== "undefined") {
+            widePool = vocabulary.slice();
+          }
+          // Use wide pool when sourcePool is a small retry set
+          if (
+            widePool &&
+            widePool.length > sourcePool.length &&
+            sourcePool.length <= 15
+          ) {
+            listenDistractorPool = widePool;
+          } else if (widePool && widePool.length) {
+            listenDistractorPool = widePool;
+          }
+        } catch (e) {}
+        window.__lastListenDistractorPool = listenDistractorPool;
         listenState = {
           queue: normalizedQueue,
-          pool: sourcePool,
+          pool: listenDistractorPool,
           index: 0,
           correct: 0,
           wrong: 0,
@@ -9491,8 +9426,14 @@
 
         // Opsi: pakai yang tersimpan agar jawaban bisa di-restore
         if (!q.options || !q.options.length) {
-          const pool = (st.pool || vocabulary).filter(function (v) {
-            return v.uid !== q.item.uid;
+          const pool = (
+            (st && st.pool) ||
+            window.__lastListenDistractorPool ||
+            vocabulary
+          ).filter(function (v) {
+            var uid = v.uid || ("base-" + v.no);
+            var correctUid = (q.item && q.item.uid) || ("base-" + (q.item && q.item.no));
+            return uid !== correctUid;
           });
           const count =
             $("listenDifficulty").value === "easy"
@@ -10058,6 +9999,7 @@
           });
           window.__lastMemoryMode = mode;
         } catch (e) {}
+        if (typeof snapshotMemorySessionConfig === "function") snapshotMemorySessionConfig();
         renderMemoryQuestion();
         $("memorySessionPanel").scrollIntoView({
           behavior: "smooth",
@@ -10577,6 +10519,7 @@
         try {
           window.__lastMemoryPool = (st.queue || []).map(function (q) { return q.item || q; });
         } catch (e) {}
+        if (typeof snapshotMemorySessionConfig === "function") snapshotMemorySessionConfig();
 
         // Isi UI SEBELUM ganti tampilan
         const setTxt = function (id, val) {
@@ -10649,20 +10592,44 @@
         } catch (e) {}
       }
       function pickFlashcardPool() {
-        // Pool dari bab aktif + rentang Memory Lab, diacak.
-        const range =
-          typeof memoryRangeValues === "function" ? memoryRangeValues() : null;
-        let list =
-          range && Array.isArray(range.pool) ? range.pool.slice() : null;
-        if (!list || !list.length) {
-          const ch = (settings && settings.chapter) || "all";
-          list =
-            typeof poolByChapter === "function"
-              ? poolByChapter(ch)
-              : vocabulary.slice();
+        // Chapter from setup (fallback: settings.chapter / all).
+        var chEl = document.getElementById("flashChapter");
+        var ch = (chEl && chEl.value) || (settings && settings.chapter) || "all";
+        var list =
+          typeof poolByChapter === "function"
+            ? poolByChapter(ch)
+            : vocabulary.slice();
+        if (!list || !list.length) list = vocabulary.slice();
+        // Unique by uid
+        var seen = {};
+        list = list.filter(function (v) {
+          var uid = v.uid || ("base-" + v.no);
+          if (seen[uid]) return false;
+          seen[uid] = true;
+          return true;
+        });
+        list = shuffle(list.slice());
+        // Count limit
+        var countEl = document.getElementById("flashCount");
+        var mode = (countEl && countEl.value) || "10";
+        var n;
+        if (mode === "all") n = list.length;
+        else if (mode === "custom") {
+          var customEl = document.getElementById("flashCustomCount");
+          n = Math.max(1, Number(customEl && customEl.value) || 10);
+        } else {
+          n = Math.max(1, Number(mode) || 10);
         }
-        if (!list.length) list = vocabulary.slice();
-        return shuffle(list);
+        if (n > list.length) {
+          if (typeof toast === "function") {
+            toast(
+              "Hanya ada " + list.length + " kosakata di pool. Memakai semua.",
+              "info"
+            );
+          }
+          n = list.length;
+        }
+        return list.slice(0, n);
       }
       let flashcardReturnView = "flashcardView";
       function startFlashcards(returnView = "flashcardView") {
@@ -11740,20 +11707,7 @@
             rateMemoryRecall(Number(b.dataset.memoryQuality))
           )
         );
-      if ($("memoryAgain"))
-        $("memoryAgain").addEventListener("click", () => {
-          // Reset & acak ulang: pool sesi sebelumnya, acak ulang
-          if (window.__lastMemoryPool && window.__lastMemoryPool.length && typeof startCustomMemorySession === "function") {
-            // rebuild queue from pool with shuffle via startMemory mode
-          }
-          startMemory(lastMemoryMode || window.__lastMemoryMode || null);
-        });
-      if ($("memoryBackDashboard"))
-        $("memoryBackDashboard").addEventListener("click", () => {
-          memoryState = null;
-          $("memoryResultPanel").classList.add("hidden");
-          renderMemoryDashboard();
-        });
+            
       // wired also via shared practiceResultsHandlers below
       $("openFlashcards").addEventListener("click", () =>
         startFlashcards("memoryView")
@@ -13332,11 +13286,7 @@
       $("prefsOpenQuiz")?.addEventListener("click", () =>
         showView("quizSetupView")
       );
-      $("prefsOpenVocab")?.addEventListener("click", () => showView("addView"));
-      $("prefsOpenStats")?.addEventListener("click", () =>
-        showView("statsView")
-      );
-      $("prefsResetAudio")?.addEventListener("click", () => {
+            $("prefsResetAudio")?.addEventListener("click", () => {
         stopSpeech(false);
         settings.rate = 1;
         settings.ttsEnabled = true;
@@ -13402,9 +13352,7 @@
       if ($("totalVocabNumber"))
         $("totalVocabNumber").textContent = String(totalWords());
 
-      $("homeAddVocabularyBtn")?.addEventListener("click", () =>
-        showView("addView")
-      );
+      
       $("homeTotalMini") &&
         ($("homeTotalMini").textContent = String(vocabulary.length));
       const __oldRenderHomeDashboard = renderHomeDashboard;
@@ -13679,6 +13627,7 @@ function startCustomMemorySession() {
   renderMemoryQuestion();
   if (csEl('memorySessionPanel')) csEl('memorySessionPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   if (typeof toast === 'function') toast('Custom Study · ' + queue.length + ' soal · ' + (customStudyShuffleOrder ? 'acak' : 'urut'), 'good');
+  if (typeof snapshotMemorySessionConfig === 'function') snapshotMemorySessionConfig();
 }
 
 function wireCustomStudy() {
@@ -14697,7 +14646,7 @@ function wireCustomQuestions() {
       }
       if (id === mode + 'CqStart') {
         e.preventDefault();
-        if (mode === 'quiz') startQuizCustomQuestions();
+        if (mode === 'quiz') { /* Custom Questions UI retired */ if (typeof toast === 'function') toast('Custom Questions Quiz tidak tersedia. Pakai jumlah soal di pengaturan.', 'info'); }
         else if (mode === 'write') startWriteCustomQuestions();
         else if (mode === 'listen') startListenCustomQuestions();
       }
@@ -14756,28 +14705,156 @@ function memoryRetryWrong() {
   else if (typeof startMemory === "function") startMemory();
 }
 
-function memoryResetShuffle() {
-  var pool = window.__lastMemoryPool;
-  if (pool && pool.length) {
-    // acak item lalu bangun queue skill cycle seperti custom
-    var items = pool.map(function (x) { return x.item || x; }).slice();
-    shuffleInPlace(items);
-    if (typeof customStudySelected !== "undefined" && customStudySelected) {
+
+/* ===== Memory session config snapshot (Reset / Shuffle preserve Custom Study) ===== */
+function snapshotMemorySessionConfig() {
+  try {
+    var st = memoryState;
+    if (!st || !st.queue || !st.queue.length) return;
+    var uids = [];
+    var types = [];
+    var pool = [];
+    st.queue.forEach(function (q) {
+      var it = q.item || q;
+      if (!it) return;
+      var uid = it.uid || ("base-" + it.no);
+      uids.push(uid);
+      types.push(q.type || null);
+      pool.push(it);
+    });
+    var skillEl = document.getElementById("memorySkillMode");
+    window.__lastMemoryConfig = {
+      mode: st.custom ? "custom" : "auto",
+      materialMode: st.custom ? "custom" : (window.__memMaterialMode || "auto"),
+      uids: uids,
+      sessionLength: st.sessionLength || st.queue.length,
+      skillMode: (skillEl && skillEl.value) || "auto",
+      lastMemoryMode: (typeof lastMemoryMode !== "undefined" ? lastMemoryMode : null),
+      types: types,
+    };
+    window.__lastMemoryPool = pool;
+    window.__lastMemoryMode = st.custom ? "custom" : (window.__lastMemoryConfig.lastMemoryMode || "auto");
+  } catch (e) {
+    console.warn("snapshotMemorySessionConfig", e);
+  }
+}
+
+function restartMemoryFromLastConfig(opts) {
+  opts = opts || {};
+  var shuffle = !!opts.shuffle;
+  var cfg = window.__lastMemoryConfig || null;
+  var pool = window.__lastMemoryPool || [];
+  if (!pool.length && cfg && cfg.uids && cfg.uids.length && typeof vocabulary !== "undefined") {
+    var set = {};
+    cfg.uids.forEach(function (u) { set[u] = true; });
+    pool = vocabulary.filter(function (v) {
+      return set[v.uid || ("base-" + v.no)];
+    });
+  }
+  if (!pool.length) {
+    if (typeof toast === "function") toast("Tidak ada sesi sebelumnya untuk diulang.", "warning");
+    if (typeof startMemory === "function") startMemory();
+    return;
+  }
+
+  var items = pool.map(function (x) { return x.item || x; }).slice();
+  // Keep exact session size from completed session
+  var len = (cfg && cfg.sessionLength) ? Number(cfg.sessionLength) : items.length;
+  if (len > 0 && items.length > len) items = items.slice(0, len);
+  if (shuffle) {
+    for (var i = items.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = items[i];
+      items[i] = items[j];
+      items[j] = tmp;
+    }
+  }
+
+  var skillMode = (cfg && cfg.skillMode) || "auto";
+  var SKILL_CYCLE = ["recognition", "recall", "write", "listening"];
+  var queue = [];
+  items.forEach(function (item, i) {
+    var type;
+    if (!shuffle && cfg && cfg.types && cfg.types[i]) type = cfg.types[i];
+    else if (["write", "listening", "recognition", "recall"].indexOf(skillMode) >= 0) type = skillMode;
+    else if (skillMode === "random") type = SKILL_CYCLE[Math.floor(Math.random() * SKILL_CYCLE.length)];
+    else type = SKILL_CYCLE[i % SKILL_CYCLE.length];
+    queue.push({
+      item: item,
+      type: type,
+      repeats: 0,
+      skipped: false,
+      answered: false,
+      userAnswer: null,
+      quality: null,
+      correct: null,
+    });
+  });
+  if (!queue.length) {
+    if (typeof toast === "function") toast("Gagal mengulang sesi.", "warning");
+    return;
+  }
+
+  // Restore material mode so UI/state stay consistent with original session
+  if (cfg && cfg.materialMode) {
+    try { window.__memMaterialMode = cfg.materialMode; } catch (e) {}
+  }
+  if (cfg && cfg.mode === "custom" && typeof customStudySelected !== "undefined" && customStudySelected) {
+    try {
       customStudySelected.clear();
       items.forEach(function (v) {
         customStudySelected.add(v.uid || ("base-" + v.no));
       });
-    }
-    if (typeof startCustomMemorySession === "function") {
-      // force shuffle flag briefly
-      var prev = typeof customStudyShuffleOrder !== "undefined" ? customStudyShuffleOrder : false;
-      try { customStudyShuffleOrder = true; } catch (e) {}
-      startCustomMemorySession();
-      try { customStudyShuffleOrder = prev; } catch (e) {}
-      return;
-    }
+    } catch (e) {}
   }
-  if (typeof startMemory === "function") startMemory(window.__lastMemoryMode || lastMemoryMode || null);
+  if (typeof lastMemoryMode !== "undefined") {
+    lastMemoryMode = (cfg && cfg.mode === "custom") ? "custom" : (cfg && cfg.lastMemoryMode) || lastMemoryMode;
+  }
+
+  if (typeof stopSpeech === "function") stopSpeech(false);
+  if (typeof resetRoastSession === "function") resetRoastSession();
+  var rp = document.getElementById("memoryResultPanel");
+  if (rp) rp.classList.add("hidden");
+  var fp = document.getElementById("flashcardPanel");
+  if (fp) fp.classList.add("hidden");
+  var sp = document.getElementById("memorySessionPanel");
+  if (sp) sp.classList.remove("hidden");
+  if (typeof showModeSession === "function") showModeSession("memory");
+
+  memoryState = {
+    queue: queue,
+    sessionLength: queue.length,
+    finished: false,
+    index: 0,
+    correct: 0,
+    wrong: 0,
+    skipped: 0,
+    answered: 0,
+    seen: new Set(),
+    results: [],
+    current: null,
+    checked: false,
+    hintUsed: false,
+    custom: !!(cfg && cfg.mode === "custom"),
+  };
+  // Refresh snapshot for next cycle
+  snapshotMemorySessionConfig();
+  if (typeof renderMemoryQuestion === "function") renderMemoryQuestion();
+  if (typeof toast === "function") {
+    toast(
+      (cfg && cfg.mode === "custom" ? "Custom Study" : "Memory") +
+        " · " +
+        queue.length +
+        " soal" +
+        (shuffle ? " · acak" : " · urut"),
+      "good"
+    );
+  }
+}
+
+
+function memoryResetShuffle() {
+  restartMemoryFromLastConfig({ shuffle: true });
 }
 
 function memoryNewSession() {
@@ -15015,6 +15092,26 @@ function wireMemoryMaterialMode() {
     setTimeout(apply, 200);
     setTimeout(apply, 800);
   }
+})();
+
+
+(function wireFlashcardSetup() {
+  if (window.__kvlFlashSetupWired) return;
+  window.__kvlFlashSetupWired = true;
+  document.addEventListener("change", function (e) {
+    if (!e.target || e.target.id !== "flashCount") return;
+    var wrap = document.getElementById("flashCustomCountWrap");
+    if (wrap) wrap.classList.toggle("hidden", e.target.value !== "custom");
+  });
+  document.addEventListener("click", function (e) {
+    var t = e.target && e.target.closest && e.target.closest("#reshuffleFlashcards");
+    if (!t) return;
+    e.preventDefault();
+    if (typeof startFlashcards === "function") {
+      startFlashcards("flashcardView");
+      if (typeof toast === "function") toast("Flash card diacak ulang.", "good");
+    }
+  });
 })();
 
 setTimeout(function () {
