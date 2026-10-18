@@ -656,6 +656,25 @@
         overflow-wrap: anywhere;
         transition: border-color 0.15s, background 0.15s;
       }
+      /* Quiz Indonesia → Korea: Hangul in answer choices */
+      .choice-main.choice-hangul {
+        font-size: clamp(20px, 4.2vw, 26px);
+        font-weight: 800;
+        line-height: 1.35;
+        min-height: 78px;
+        letter-spacing: 0.01em;
+      }
+      .choice-main.choice-hangul .choice-letter {
+        font-size: 12px;
+        font-weight: 900;
+      }
+      @media (max-width: 720px) {
+        .choice-main.choice-hangul {
+          font-size: clamp(18px, 5vw, 22px);
+          min-height: 72px;
+          padding: 12px 12px;
+        }
+      }
       .choice-main:hover:not(:disabled) {
         border-color: #7395bb;
         background: #17273b;
@@ -6514,6 +6533,10 @@
           const answer = document.createElement("button");
           answer.type = "button";
           answer.className = "choice-main";
+          if (sessionDirection === "id-ko") {
+            answer.classList.add("choice-hangul");
+            answer.lang = "ko";
+          }
           answer.dataset.no = String(option.no);
           answer.setAttribute(
             "aria-label",
