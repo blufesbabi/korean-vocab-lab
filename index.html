@@ -5429,7 +5429,7 @@
         { no: 36, korean: "일", meaning: "tanggal", category: "Bab 5" },
         { no: 37, korean: "지난주", meaning: "minggu lalu", category: "Bab 5" },
         { no: 38, korean: "이번주", meaning: "minggu ini", category: "Bab 5" },
-        { no: 39, korean: "다름주", meaning: "minggu depan", category: "Bab 5" },
+        { no: 39, korean: "다음 주", meaning: "minggu depan", category: "Bab 5" },
         { no: 40, korean: "숫자", meaning: "angka", category: "Bab 5" },
         { no: 41, korean: "작년", meaning: "tahun lalu", category: "Bab 5" },
         { no: 42, korean: "올해", meaning: "tahun ini", category: "Bab 5" },
@@ -6632,7 +6632,7 @@
           return "weekday";
         if (/^(어제|오늘|내일)$/.test(k) || /^(kemarin|hari ini|besok)$/.test(m)) return "day-relative";
         if (/^(아침|점심|저녁|밤)$/.test(k) || /^(pagi|siang|petang|malam)$/.test(m)) return "time-of-day";
-        if (/^(작년|올해|내년|지난달|이번달|다음달|지난주|이번주|다름주)$/.test(k)) return "time-period";
+        if (/^(작년|올해|내년|지난달|이번달|다음달|지난주|이번주|다음 주)$/.test(k)) return "time-period";
         if (/(tahun lalu|tahun ini|tahun depan|bulan lalu|bulan ini|minggu lalu|minggu ini|minggu depan)/.test(m))
           return "time-period";
         if (/월$/.test(k) && /bulan/.test(m)) return "month";
