@@ -2411,6 +2411,13 @@
     gap: 8px;
   }
 }
+
+      .chapter-picker{border:1px solid var(--line);border-radius:12px;background:#0f1928;padding:0;margin-bottom:10px}
+      .chapter-picker-summary{cursor:pointer;padding:11px 13px;font-size:13px;font-weight:750;color:var(--ink);list-style:none}
+      .chapter-picker-summary::-webkit-details-marker{display:none}
+      .chapter-picker-list{display:grid;gap:4px;padding:4px 10px 12px;border-top:1px solid var(--line)}
+      .chapter-picker-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:650;cursor:pointer;padding:6px 4px}
+      .chapter-picker-item input{accent-color:var(--accent);width:16px;height:16px}
 </style>
   </head>
   <body>
@@ -2490,7 +2497,7 @@
           data-go="reviewView"
           data-i18n="nav.collection"
         >
-          Koleksi
+          Vocab
         </button>
         <button
           type="button"
@@ -2758,7 +2765,7 @@
                 class="btn btn-secondary"
                 data-i18n="quiz.collection"
               >
-                Lihat Koleksi</button
+                Lihat Vocab</button
 
             </div>
           </section>
@@ -2989,7 +2996,7 @@
         <section id="addView" class="view" aria-labelledby="addTitle">
           <div class="section-heading">
             <div>
-              <div class="kicker">Koleksi milik lu</div>
+              <div class="kicker">Vocab milik lu</div>
               <h1 id="addTitle" class="page-title" data-i18n="vocab.title">
                 Vocab
               </h1>
@@ -3314,17 +3321,7 @@
                   >Rentang mengikuti kosakata yang tersedia.</span
                 >
               </div>
-              <div class="field">
-                <label for="writeScope">Prioritas materi</label
-                ><select id="writeScope" class="control">
-                  <option value="all">Semua kosakata</option>
-                  <option value="new">Belum dipelajari</option>
-                  <option value="weak">
-                    Sering salah / perlu latihan
-                  </option></select><span class="hint"
-                  >Pilihan ini menyaring kata di dalam rentang aktif.</span
-                >
-              </div>
+              
             </div>
             <div class="form-footer">
               <button
@@ -3973,16 +3970,7 @@
                     </div>
                     <span class="hint" id="memoryCountHint">Jumlah menyesuaikan kosakata yang tersedia dalam rentang.</span>
                   </div>
-                  <div class="field">
-                    <label for="memorySessionMode">Prioritas materi</label>
-                    <select id="memorySessionMode" class="control">
-                      <option value="mixed" selected>Otomatis (rekomendasi sistem)</option>
-                      <option value="new">Hanya kata baru</option>
-                      <option value="due">Hanya yang perlu diulang hari ini</option>
-                      <option value="weak">Hanya yang sering salah</option>
-                    </select>
-                    <span class="hint">Filter kata mana yang masuk sesi. Bukan cara menjawabnya.</span>
-                  </div>
+                  
                 </div>
                 <div class="notice" id="memoryRangeInfo" style="margin-top:12px">Menghitung rentang kosakata...</div>
                 <p class="hint" id="memoryRangeHelp">Memory Lab hanya memilih kata di rentang ini. Jadwal pengulangan tetap diprioritaskan di dalam rentang.</p>
@@ -3998,23 +3986,24 @@
                     </div>
                     <span class="custom-study-count" id="customStudyCount">0 dipilih</span>
                   </div>
-                  <div class="chip-row" id="customStudyCats">
-                    <button type="button" class="chip-btn active" data-cs-cat="all">Semua</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Bab 1">Bab 1</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Bab 2">Bab 2</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Bab 3">Bab 3</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Bab 4">Bab 4</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Bab 5">Bab 5</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Kosakata Kelas">Kosakata Kelas</button>
-                    <button type="button" class="chip-btn" data-cs-cat="Percakapan">Percakapan</button>
-                  </div>
+                  <details class="chapter-picker" id="customStudyCats">
+                    <summary class="chapter-picker-summary">Pilih bab (bisa lebih dari satu)</summary>
+                    <div class="chapter-picker-list">
+                      <label class="chapter-picker-item"><input type="checkbox" data-cs-cat="all" checked /> Semua bab</label>
+                      <label class="chapter-picker-item"><input type="checkbox" data-cs-cat="Bab 1" /> Bab 1</label>
+                      <label class="chapter-picker-item"><input type="checkbox" data-cs-cat="Bab 2" /> Bab 2</label>
+                      <label class="chapter-picker-item"><input type="checkbox" data-cs-cat="Bab 3" /> Bab 3</label>
+                      <label class="chapter-picker-item"><input type="checkbox" data-cs-cat="Bab 4" /> Bab 4</label>
+                      <label class="chapter-picker-item"><input type="checkbox" data-cs-cat="Bab 5" /> Bab 5</label>
+                    </div>
+                  </details>
                   <input class="control" id="customStudySearch" type="search" placeholder="Cari Hangeul atau arti…" aria-label="Cari kosakata custom study" autocomplete="off" />
                   <div class="custom-study-toolbar">
                     <button type="button" class="btn btn-ghost btn-sm" id="customStudySelectAll">Pilih semua di filter</button>
                     <button type="button" class="btn btn-ghost btn-sm" id="customStudyClear">Hapus pilihan</button>
                   </div>
                   <div class="custom-study-list" id="customStudyList" role="listbox" aria-label="Daftar kosakata"></div>
-                  <p class="tiny" style="margin-top:8px">Preset: <button type="button" class="link-button" id="customStudySavePreset">Simpan pilihan</button> · <button type="button" class="link-button" id="customStudyLoadPreset">Muat preset</button></p>
+                  
                   <p class="notice warning hidden" id="customStudyEmptyHint" style="margin-top:10px">Belum ada kata dipilih. Centang minimal 1 kosakata sebelum Belajar Sekarang.</p>
                 </div>
               </div>
@@ -6634,32 +6623,71 @@
       function getOptionText(item, direction) {
         return direction === "id-ko" ? item.korean : item.meaning;
       }
-      function buildChoices(correctItem, pool, direction) {
-        const keyFor = (item) => normalizeText(getOptionText(item, direction));
+      
+      function semanticGroupKey(item) {
+        if (!item) return null;
+        const k = String(item.korean || "").trim();
+        const m = normalizeText(item.meaning || "");
+        if (/^(일|월|화|수|목|금|토)요일$/.test(k) || /hari (minggu|senin|selasa|rabu|kamis|jumat|sabtu)/.test(m))
+          return "weekday";
+        if (/^(어제|오늘|내일)$/.test(k) || /^(kemarin|hari ini|besok)$/.test(m)) return "day-relative";
+        if (/^(아침|점심|저녁|밤)$/.test(k) || /^(pagi|siang|petang|malam)$/.test(m)) return "time-of-day";
+        if (/^(작년|올해|내년|지난달|이번달|다음달|지난주|이번주|다름주)$/.test(k)) return "time-period";
+        if (/(tahun lalu|tahun ini|tahun depan|bulan lalu|bulan ini|minggu lalu|minggu ini|minggu depan)/.test(m))
+          return "time-period";
+        if (/월$/.test(k) && /bulan/.test(m)) return "month";
+        if (/^(하나|둘|셋|넷|다섯|여섯|일곱|여덟|아홉|열|\d+)$/.test(k) || /^(satu|dua|tiga|empat|lima|angka|nomor)/.test(m))
+          return "number";
+        if (/^(아버지|어머니|부모|형|누나|오빠|동생|아들|딸|가족|친구)$/.test(k) ||
+            /(ayah|ibu|orang tua|kakak|adik|anak|keluarga|teman)/.test(m)) return "family-people";
+        if (/(밥|빵|사과|과자|물|주스|우유|커피|차|맥주|비빔밥|김치|고기|과일|음식|makan|minum|nasi|roti|air|kopi)/.test(k + " " + m))
+          return "food-drink";
+        if (/(학교|회사|병원|은행|시장|가게|식당|카페|역|공항|집|방|부엌|화장실|sekolah|kantor|rumah sakit|bank|pasar|restoran)/.test(k + " " + m))
+          return "place";
+        if (/(가다|오다|먹다|마시다|보다|읽다|쓰다|하다|일하다|공부하다|운동하다|자다|쉬다)/.test(k) ||
+            /(pergi|datang|makan|minum|melihat|membaca|menulis|bekerja|belajar|tidur|istirahat)/.test(m))
+          return "action-verb";
+        if (/(빨강|파랑|노랑|초록|하얀|검정|warna|merah|biru|kuning|hijau|putih|hitam)/.test(k + " " + m))
+          return "color";
+        if (item.category) return "cat:" + item.category;
+        return null;
+      }
+      function pickSemanticDistractors(correctItem, pool, direction, need) {
+        need = need || 3;
+        const keyFor = (it) => normalizeText(getOptionText(it, direction));
         const correctKey = keyFor(correctItem);
-        const poolOptions = pool.filter(
-          (item) => item.no !== correctItem.no && keyFor(item) !== correctKey
-        );
-        const unique = [];
+        const correctUid = correctItem.uid || ("base-" + correctItem.no);
+        const group = semanticGroupKey(correctItem);
         const seen = new Set([correctKey]);
-        for (const item of shuffle(poolOptions)) {
-          const key = keyFor(item);
-          if (!key || seen.has(key)) continue;
+        const out = [];
+        const tryAdd = (it) => {
+          if (!it) return;
+          const uid = it.uid || ("base-" + it.no);
+          if (uid === correctUid) return;
+          const key = keyFor(it);
+          if (!key || seen.has(key)) return;
           seen.add(key);
-          unique.push(item);
-          if (unique.length === 3) break;
+          out.push(it);
+        };
+        const from = Array.isArray(pool) && pool.length ? pool : vocabulary;
+        if (group) {
+          const same = shuffle(from.filter((v) => semanticGroupKey(v) === group));
+          for (const v of same) { tryAdd(v); if (out.length >= need) return out; }
         }
-        if (unique.length < 3) {
-          for (const item of shuffle(vocabulary)) {
-            if (item.no === correctItem.no) continue;
-            const key = keyFor(item);
-            if (!key || seen.has(key)) continue;
-            seen.add(key);
-            unique.push(item);
-            if (unique.length === 3) break;
-          }
+        if (correctItem.category) {
+          const sameCh = shuffle(from.filter((v) => v.category === correctItem.category));
+          for (const v of sameCh) { tryAdd(v); if (out.length >= need) return out; }
         }
-        return shuffle([correctItem, ...unique]);
+        for (const v of shuffle(from)) { tryAdd(v); if (out.length >= need) return out; }
+        if (from !== vocabulary) {
+          for (const v of shuffle(vocabulary)) { tryAdd(v); if (out.length >= need) return out; }
+        }
+        return out;
+      }
+
+      function buildChoices(correctItem, pool, direction) {
+        const distractors = pickSemanticDistractors(correctItem, pool, direction, 3);
+        return shuffle([correctItem].concat(distractors));
       }
       function makeQuestions(pool, direction, choicePool) {
         var optPool =
@@ -6906,13 +6934,7 @@
         content.append(strong);
         const detail = document.createElement("span");
         detail.textContent = q.correct
-          ? getUiLang() === "en"
-            ? "Nice. Listen again to lock the pronunciation."
-            : getUiLang() === "ko"
-            ? "좋아요. 발음을 다시 들어 보세요."
-            : getUiLang() === "jv"
-            ? "Apik. Rungokna maneh pelafalane."
-            : "Jawaban tepat. Dengarkan lagi pelafalannya supaya makin familiar."
+          ? "Jawaban tepat. Dengarkan lagi pelafalannya supaya makin familiar."
           : `${t("fb.answer")}: ${
               sessionDirection === "ko-id"
                 ? q.item.meaning
@@ -7722,12 +7744,34 @@
       function aliasesFor(item) {
         return Array.isArray(item.aliases) ? item.aliases : [];
       }
+      function splitKoreanAlternatives(value) {
+        return String(value ?? "")
+          .split("/")
+          .map((part) => normalizeKoreanAnswer(part))
+          .filter(Boolean);
+      }
+      function sameKoreanAlternativeSet(a, b) {
+        const left = splitKoreanAlternatives(a).sort();
+        const right = splitKoreanAlternatives(b).sort();
+        if (!left.length || left.length !== right.length) return false;
+        for (let i = 0; i < left.length; i++) {
+          if (left[i] !== right[i]) return false;
+        }
+        return true;
+      }
       function answerMatches(input, item) {
         const answer = normalizeKoreanAnswer(input);
         if (!answer) return false;
-        return [item.korean, ...aliasesFor(item)].some(
-          (candidate) => normalizeKoreanAnswer(candidate) === answer
-        );
+        const candidates = [item.korean, ...aliasesFor(item)];
+        return candidates.some((candidate) => {
+          const candNorm = normalizeKoreanAnswer(candidate);
+          if (!candNorm) return false;
+          if (candNorm === answer) return true;
+          if (candNorm.includes("/") || String(input || "").includes("/")) {
+            return sameKoreanAlternativeSet(candidate, input);
+          }
+          return false;
+        });
       }
       function getLevel(xp = appData.xp || 0) {
         const levels = [
@@ -8840,7 +8884,7 @@
             customCount: String(($("writeCustomCount") && $("writeCustomCount").value) || ""),
             start: t.start,
             end: t.end,
-            scope: $("writeScope").value || "all",
+            scope: ($("writeScope") && $("writeScope").value) || "all",
           },
           listening: {
             count: String($("listenCount").value || "all"),
@@ -9002,9 +9046,9 @@
         if (ls > le) [ls, le] = [1, max];
         $("writeRangeStart").value = String(ts);
         $("writeRangeEnd").value = String(te);
-        $("writeScope").value = ["all", "new", "weak"].includes(t.scope)
+        (function(){ var __ws=$("writeScope"); if(__ws) __ws.value=["all", "new", "weak"].includes(t.scope)
           ? t.scope
-          : "all";
+          : "all"; })();
         {
           const allowedW = ["5","10","15","20","30","40","all","custom"];
           const tc = String(t.count || "");
@@ -9079,7 +9123,7 @@
         if (kind === "typing") {
           $("writeRangeStart").value = "1";
           $("writeRangeEnd").value = String(max);
-          $("writeScope").value = "all";
+          (function(){ var __ws=$("writeScope"); if(__ws) __ws.value="all"; })();
           $("writeCount").value = countDefaultFor(max);
           updateTypingOptions();
         } else {
@@ -9137,7 +9181,7 @@
         $("writeSessionPanel").classList.remove("hidden");
         if (typeof showModeSession === "function") showModeSession("write");
         const r = rangeValues("writeRangeStart", "writeRangeEnd");
-        const scope = scopeOverride || $("writeScope").value;
+        const scope = scopeOverride || ($("writeScope") && $("writeScope").value) || "all";
         const chapterPool =
           r && Array.isArray(r.pool)
             ? r.pool
@@ -9706,17 +9750,12 @@
               : $("listenDifficulty").value === "hard"
               ? 4
               : 3;
-          const distractors = shuffle(pool)
-            .filter(function (v, i, a) {
-              return (
-                a.findIndex(function (x) {
-                  return (
-                    normalizeText(x.meaning) === normalizeText(v.meaning)
-                  );
-                }) === i
-              );
-            })
-            .slice(0, count);
+          const distractors = pickSemanticDistractors(
+            q.item,
+            pool,
+            "ko-id",
+            count
+          );
           q.options = shuffle([q.item].concat(distractors));
         }
         st.options = q.options;
@@ -10227,7 +10266,7 @@
           return;
         }
         // Mode otomatis: abaikan centang custom supaya tidak tercampur
-        const mode = modeOverride || $("memorySessionMode").value;
+        const mode = modeOverride || ($("memorySessionMode") && $("memorySessionMode").value) || "mixed";
         lastMemoryMode = mode;
         const queue = buildMemoryQueue(mode);
         if (!queue.length) {
@@ -10406,16 +10445,11 @@
         if (q && q._choiceOpts && q._choiceField === field) {
           opts = q._choiceOpts;
         } else {
-          const other = vocabulary.filter((v) => v.uid !== item.uid);
-          const unique = [];
-          const seen = new Set([normalizeText(item[field])]);
-          for (const v of shuffle(other)) {
-            const key = normalizeText(v[field]);
-            if (!key || seen.has(key)) continue;
-            seen.add(key);
-            unique.push(v);
-            if (unique.length >= 3) break;
-          }
+          const direction = field === "korean" ? "id-ko" : "ko-id";
+          const pool =
+            (st && st.queue && st.queue.map(function (x) { return x.item || x; })) ||
+            vocabulary;
+          const unique = pickSemanticDistractors(item, pool, direction, 3);
           opts = shuffle([item, ...unique]);
           if (q) {
             q._choiceOpts = opts;
@@ -11414,9 +11448,9 @@
         if (ls > le) [ls, le] = [1, max];
         $("writeRangeStart").value = String(ts);
         $("writeRangeEnd").value = String(te);
-        $("writeScope").value = ["all", "new", "weak"].includes(t.scope)
+        (function(){ var __ws=$("writeScope"); if(__ws) __ws.value=["all", "new", "weak"].includes(t.scope)
           ? t.scope
-          : "all";
+          : "all"; })();
         {
           const allowedW = ["5","10","15","20","30","40","all","custom"];
           const tc = String(t.count || "");
@@ -11765,11 +11799,7 @@
         onPracticeRangeChange("typing", "end")
       );
       $("writeCount").addEventListener("change", persistPracticePrefs);
-      $("writeScope").addEventListener("change", () => {
-        updateTypingOptions();
-        persistPracticePrefs();
-      });
-      $("resetWriteSettings").addEventListener("click", () =>
+            $("resetWriteSettings").addEventListener("click", () =>
         resetPracticeSettings("typing")
       );
       $("listenRangeStart").addEventListener("change", () =>
@@ -11911,7 +11941,6 @@
       })();
       $("startMemory").addEventListener("click", () => startMemory());
       $("startNewWords").addEventListener("click", () => {
-        $("memorySessionMode").value = "new";
         startMemory("new");
       });
       $("skipMemory").addEventListener("click", skipMemoryQuestion);
@@ -12201,7 +12230,7 @@
           "nav.listening": "Listening",
           "nav.flashcard": "Flashcard",
           "nav.vocab": "Vocab",
-          "nav.collection": "Koleksi",
+          "nav.collection": "Vocab",
           "nav.stats": "Statistik",
           "nav.settings": "Pengaturan",
           "home.kicker": "Hafal. Dengar. Kuasai.",
@@ -12250,7 +12279,7 @@
           "quiz.to": "Sampai nomor",
           "quiz.dir": "Arah pertanyaan",
           "quiz.start": "MULAI QUIZ →",
-          "quiz.collection": "Lihat Koleksi",
+          "quiz.collection": "Lihat Vocab",
           "quiz.openVocab": "Buka Vocab",
           "quiz.correct": "Benar",
           "quiz.wrong": "Belum pas.",
@@ -12289,818 +12318,11 @@
           "fb.correct": "Benar!",
           "fb.wrong": "Salah.",
           "fb.answer": "Jawaban yang benar",
-        },
-        en: {
-          "nav.home": "Home",
-          "nav.memory": "Memory",
-          "nav.quiz": "Quiz",
-          "nav.typing": "Typing",
-          "nav.listening": "Listening",
-          "nav.flashcard": "Flashcard",
-          "nav.vocab": "Vocab",
-          "nav.collection": "Collection",
-          "nav.stats": "Stats",
-          "nav.settings": "Settings",
-          "home.kicker": "Memorize. Listen. Master.",
-          "home.title": "Master Korean vocabulary with deliberate practice.",
-          "home.lead":
-            "Quiz, typing, listening, and adaptive review in one place. Focus on weak words, not endless review of what you already know.",
-          "home.progress": "Your progress today",
-          "home.progressSub":
-            "See what needs work now, not just total collection size.",
-          "home.studyNow": "Study Now →",
-          "home.new": "Not studied",
-          "home.due": "Due today",
-          "home.mastery": "Mastery",
-          "home.xp": "XP",
-          "home.streak": "Streak",
-          "home.total": "Total words",
-          "home.totalSub": "Built-in + your words",
-          "prefs.kicker": "Global",
-          "prefs.title": "Settings",
-          "prefs.lead":
-            "Audio, speech rate, interface language, and global preferences. No need to set these in every mode.",
-          "prefs.langTitle": "Interface language",
-          "prefs.langHint":
-            "All menu labels, buttons, and guidance text change. Word meanings stay as stored.",
-          "prefs.langLabel": "Choose language",
-          "prefs.ttsTitle": "Text-to-Speech (Korean)",
-          "prefs.langChanged":
-            "Interface language updated. The whole UI follows this language.",
-          "prefs.ttsOn": "Enable Text-to-Speech",
-          "prefs.ttsOnSub":
-            "Turn off to study without audio. Does not affect scores.",
-          "prefs.voice": "Korean voice",
-          "prefs.rate": "Default speech rate",
-          "prefs.practice": "Practice preferences",
-          "prefs.data": "Data & backup",
-          "quiz.kicker": "Multiple choice practice",
-          "quiz.title": "Quiz",
-          "quiz.lead":
-            "Set word range and question direction before starting. Audio is in Settings.",
-          "quiz.setup": "Session setup",
-          "quiz.setupSub": "Choose what to test before you start.",
-          "quiz.reset": "Restore defaults",
-          "quiz.count": "Number of questions",
-          "quiz.range": "Word number range",
-          "quiz.from": "From",
-          "quiz.to": "To",
-          "quiz.dir": "Question direction",
-          "quiz.start": "START QUIZ →",
-          "quiz.collection": "View collection",
-          "quiz.openVocab": "Open Vocab",
-          "quiz.correct": "Correct",
-          "quiz.wrong": "Wrong.",
-          "quiz.next": "NEXT →",
-          "quiz.result": "SEE RESULTS →",
-          "type.title": "Typing",
-          "type.lead": "See the meaning, type the Hangul answer.",
-          "type.start": "Start Typing →",
-          "type.check": "Check answer",
-          "type.hint": "Hint",
-          "type.skip": "Skip →",
-          "listen.title": "Listening",
-          "listen.lead": "Hear the Korean word, then pick the meaning.",
-          "listen.start": "Start Listening →",
-          "listen.play": "▶ Play Korean audio",
-          "mem.title": "Memory Lab",
-          "mem.lead":
-            "Forgotten words get priority. Writing and listening are tracked separately.",
-          "mem.start": "STUDY NOW →",
-          "mem.new": "Learn new words",
-          "flash.title": "Flash Card",
-          "flash.lead": "Recall the meaning before flipping the card.",
-          "flash.start": "Start Flash Cards →",
-          "flash.reveal": "Show meaning",
-          "flash.next": "Next card →",
-          "vocab.title": "Vocab",
-          "vocab.lead": "Add new words. They join every practice mode.",
-          "stats.title": "Stats",
-          "stats.lead": "Progress from recorded answers.",
-          "common.back": "← Back",
-          "common.save": "Save",
-          "common.cancel": "Cancel",
-          "common.search": "Search…",
-          "common.all": "All",
-          "fb.correct": "Correct!",
-          "fb.wrong": "Wrong.",
-          "fb.answer": "Correct answer",
-        },
-        ko: {
-          "nav.home": "홈",
-          "nav.memory": "메모리",
-          "nav.quiz": "퀴즈",
-          "nav.typing": "타이핑",
-          "nav.listening": "듣기",
-          "nav.flashcard": "플래시카드",
-          "nav.vocab": "단어",
-          "nav.collection": "목록",
-          "nav.stats": "통계",
-          "nav.settings": "설정",
-          "home.kicker": "암기. 듣기. 숙달.",
-          "home.title": "체계적인 연습으로 한국어 단어를 익히세요.",
-          "home.lead":
-            "퀴즈, 타이핑, 듣기, 적응형 복습을 한곳에서. 이미 아는 말보다 약한 단어에 집중하세요.",
-          "home.progress": "오늘 진행",
-          "home.progressSub": "전체 개수가 아니라 지금 해야 할 단어를 보세요.",
-          "home.studyNow": "지금 학습 →",
-          "home.new": "미학습",
-          "home.due": "오늘 복습",
-          "home.mastery": "숙달도",
-          "home.xp": "XP",
-          "home.streak": "연속",
-          "home.total": "총 단어",
-          "home.totalSub": "기본 + 직접 추가",
-          "prefs.kicker": "전역",
-          "prefs.title": "설정",
-          "prefs.lead":
-            "오디오, 발음 속도, 인터페이스 언어, 전역 설정. 모드마다 다시 맞출 필요 없습니다.",
-          "prefs.langTitle": "인터페이스 언어",
-          "prefs.langHint":
-            "메뉴·버튼·안내 문구가 모두 바뀝니다. 단어 뜻은 저장된 그대로 유지됩니다.",
-          "prefs.langLabel": "언어 선택",
-          "prefs.ttsTitle": "텍스트 음성 변환 (한국어)",
-          "prefs.langChanged":
-            "인터페이스 언어가 변경되었습니다. 전체 UI가 이 언어를 따릅니다.",
-          "prefs.ttsOn": "TTS 사용",
-          "prefs.ttsOnSub":
-            "소리 없이 공부하려면 끄세요. 점수에는 영향 없습니다.",
-          "prefs.voice": "한국어 음성",
-          "prefs.rate": "기본 발음 속도",
-          "prefs.practice": "학습 환경설정",
-          "prefs.data": "데이터 및 백업",
-          "quiz.kicker": "객관식 연습",
-          "quiz.title": "퀴즈",
-          "quiz.lead":
-            "시작 전에 단어 범위와 문제 방향을 설정하세요. 오디오는 설정 메뉴에 있습니다.",
-          "quiz.setup": "세션 설정",
-          "quiz.setupSub": "시작 전에 학습할 내용을 고르세요.",
-          "quiz.reset": "기본값 복원",
-          "quiz.count": "문제 수",
-          "quiz.range": "단어 번호 범위",
-          "quiz.from": "시작",
-          "quiz.to": "끝",
-          "quiz.dir": "문제 방향",
-          "quiz.start": "퀴즈 시작 →",
-          "quiz.collection": "목록 보기",
-          "quiz.openVocab": "단어 열기",
-          "quiz.correct": "정답",
-          "quiz.wrong": "오답.",
-          "quiz.next": "다음 →",
-          "quiz.result": "결과 보기 →",
-          "type.title": "타이핑",
-          "type.lead": "뜻을 보고 한글로 입력하세요.",
-          "type.start": "타이핑 시작 →",
-          "type.check": "정답 확인",
-          "type.hint": "힌트",
-          "type.skip": "건너뛰기 →",
-          "listen.title": "듣기",
-          "listen.lead": "한국어를 듣고 뜻을 고르세요.",
-          "listen.start": "듣기 시작 →",
-          "listen.play": "▶ 한국어 재생",
-          "mem.title": "메모리 랩",
-          "mem.lead": "잊은 단어를 우선합니다. 쓰기·듣기는 따로 추적됩니다.",
-          "mem.start": "지금 학습 →",
-          "mem.new": "새 단어 학습",
-          "flash.title": "플래시카드",
-          "flash.lead": "카드를 뒤집기 전에 뜻을 떠올리세요.",
-          "flash.start": "플래시카드 시작 →",
-          "flash.reveal": "뜻 보기",
-          "flash.next": "다음 카드 →",
-          "vocab.title": "단어",
-          "vocab.lead": "새 단어를 추가하면 모든 모드에 들어갑니다.",
-          "stats.title": "통계",
-          "stats.lead": "기록된 답변 기반 진행 상황.",
-          "common.back": "← 뒤로",
-          "common.save": "저장",
-          "common.cancel": "취소",
-          "common.search": "검색…",
-          "common.all": "전체",
-          "fb.correct": "정답!",
-          "fb.wrong": "틀렸습니다.",
-          "fb.answer": "정답",
-        },
-        jv: {
-          "nav.home": "Ngarep",
-          "nav.memory": "Memory",
-          "nav.quiz": "Kuis",
-          "nav.typing": "Nulis",
-          "nav.listening": "Ngrungokake",
-          "nav.flashcard": "Kartu",
-          "nav.vocab": "Tembung",
-          "nav.collection": "Koleksi",
-          "nav.stats": "Statistik",
-          "nav.settings": "Setelan",
-          "home.kicker": "Hafal. Rungokna. Kuasai.",
-          "home.title": "Kuasai tembung Korea nganggo latihan sing terukur.",
-          "home.lead":
-            "Kuis, nulis, ngrungokake, lan pengulangan adaptif siji panggonan. Fokus ning tembung sing isih ringkih, aja mung baleni sing wis apal.",
-          "home.progress": "Progresmu dina iki",
-          "home.progressSub":
-            "Delengen tembung sing kudu digarap, aja mung total koleksi.",
-          "home.studyNow": "Sinau Saiki →",
-          "home.new": "Durung sinau",
-          "home.due": "Baleni dina iki",
-          "home.mastery": "Penguasaan",
-          "home.xp": "XP",
-          "home.streak": "Streak",
-          "home.total": "Total tembung",
-          "home.totalSub": "Bawaan + gaweanmu",
-          "prefs.kicker": "Global",
-          "prefs.title": "Setelan",
-          "prefs.lead":
-            "Audio, kacepetan wacana, basa antarmuka, lan preferensi global. Ora usah diulang-ulang ing saben mode.",
-          "prefs.langTitle": "Basa antarmuka",
-          "prefs.langHint":
-            "Kabeh label menu, tombol, lan teks panduan diganti. Artine tembung tetep kaya sing disimpen.",
-          "prefs.langLabel": "Pilih basa",
-          "prefs.ttsTitle": "Text-to-Speech (Korea)",
-          "prefs.langChanged":
-            "Basa antarmuka diganti. Kabeh UI ngetutake basa iki.",
-          "prefs.ttsOn": "Aktifke Text-to-Speech",
-          "prefs.ttsOnSub": "Patenana yen sinau tanpa swara. Ora ngrubah skor.",
-          "prefs.voice": "Swara basa Korea",
-          "prefs.rate": "Kacepetan wacana default",
-          "prefs.practice": "Preferensi latihan",
-          "prefs.data": "Data & cadangan",
-          "quiz.kicker": "Latihan pilihan ganda",
-          "quiz.title": "Kuis",
-          "quiz.lead":
-            "Atur rentang tembung lan arah pitakon sadurunge miwiti. Audio ana ing Setelan.",
-          "quiz.setup": "Atur Sesi",
-          "quiz.setupSub": "Tentukna materi sing arep diuji.",
-          "quiz.reset": "Balikake Setelan",
-          "quiz.count": "Jumlah soal",
-          "quiz.range": "Rentang nomer tembung",
-          "quiz.from": "Saka nomer",
-          "quiz.to": "Nganti nomer",
-          "quiz.dir": "Arah pitakon",
-          "quiz.start": "MIWITI KUIS →",
-          "quiz.collection": "Deleng Koleksi",
-          "quiz.openVocab": "Bukak Vocab",
-          "quiz.correct": "Bener",
-          "quiz.wrong": "Salah.",
-          "quiz.next": "SOAL BANJUR →",
-          "quiz.result": "DELENG HASIL →",
-          "type.title": "Nulis",
-          "type.lead": "Deleng artine, nulis jawaban nganggo Hangeul.",
-          "type.start": "Miwiti Nulis →",
-          "type.check": "Priksa jawaban",
-          "type.hint": "Pitulung",
-          "type.skip": "Liwati →",
-          "listen.title": "Ngrungokake",
-          "listen.lead": "Rungokna tembung Korea banjur pilih artine.",
-          "listen.start": "Miwiti Ngrungokake →",
-          "listen.play": "▶ Puter audio Korea",
-          "mem.title": "Memory Lab",
-          "mem.lead":
-            "Tembung sing lali diprioritasake. Skill nulis lan ngrungokake dicek kapisah.",
-          "mem.start": "SINAU SAIKI →",
-          "mem.new": "Hafal Tembung Anyar",
-          "flash.title": "Kartu",
-          "flash.lead": "Elingna artine sadurunge mbukak kartu.",
-          "flash.start": "Miwiti Kartu →",
-          "flash.reveal": "Deleng arti",
-          "flash.next": "Kartu banjur →",
-          "vocab.title": "Tembung",
-          "vocab.lead":
-            "Lebokna tembung anyar. Langsung mlebu kabeh mode latihan.",
-          "stats.title": "Statistik",
-          "stats.lead": "Progres saka jawaban sing kacathet.",
-          "common.back": "← Bali",
-          "common.save": "Simpen",
-          "common.cancel": "Batal",
-          "common.search": "Goleki…",
-          "common.all": "Kabeh",
-          "fb.correct": "Bener!",
-          "fb.wrong": "Salah.",
-          "fb.answer": "Jawaban sing bener",
-        },
+        }
       };
 
-      // Phrase map: Indonesian source (as written in HTML) → translations. Used to flip ALL static UI text.
-      const PHRASE = {
-        en: {
-          "Korean study toolkit": "Korean study toolkit",
-          "Mendeteksi suara…": "Detecting voice…",
-          "Memuat kosakata…": "Loading vocabulary…",
-          "TOTAL KOSAKATA": "TOTAL WORDS",
-          "REKOR TERBAIK": "BEST SCORE",
-          "Belum ada": "None yet",
-          "Mulai tes pertama": "Start your first test",
-          kata: "words",
-          " hari": " days",
-          "Progres lu hari ini": "Your progress today",
-          "Langsung lihat kata yang perlu dikerjakan, bukan cuma total koleksi.":
-            "See what needs work now, not just total collection size.",
-          "Belajar Sekarang →": "Study Now →",
-          "Belum dipelajari": "Not studied",
-          "Ulangi hari ini": "Due today",
-          Penguasaan: "Mastery",
-          "Total kosakata": "Total words",
-          "Bawaan + buatan lu": "Built-in + your words",
-          "Tips cepat:": "Quick tips:",
-          Tekan: "Press",
-          "untuk memilih jawaban,": "to pick an answer,",
-          "untuk audio,": "for audio,",
-          "untuk hentikan suara.": "to stop speech.",
-          "Data hanya disimpan di browser ini — ekspor JSON secara berkala dari tab Vocab.":
-            "Data stays in this browser only — export JSON regularly from the Vocab tab.",
-          "Latihan pilihan ganda": "Multiple choice practice",
-          Quiz: "Quiz",
-          "Atur rentang kosakata dan arah pertanyaan sebelum mulai. Audio diatur di menu Pengaturan.":
-            "Set word range and question direction before starting. Audio is in Settings.",
-          "Atur Sesi Belajar": "Session setup",
-          "Tentukan materi yang ingin lu uji sebelum mulai.":
-            "Choose what to test before you start.",
-          "Tentukan materi yang ingin diuji sebelum mulai.":
-            "Choose what to test before you start.",
-          "Pulihkan Pengaturan": "Restore defaults",
-          "Jumlah soal": "Number of questions",
-          "Rentang nomor kosakata": "Word number range",
-          "Dari nomor": "From",
-          "Sampai nomor": "To",
-          "Arah pertanyaan": "Question direction",
-          "Korea → Indonesia": "Korean → Indonesian",
-          "Indonesia → Korea": "Indonesian → Korean",
-          "MULAI QUIZ →": "START QUIZ →",
-          "Lihat Koleksi": "View collection",
-          "Buka Vocab": "Open Vocab",
-          "Audio & kecepatan pelafalan diatur di menu":
-            "Audio & speech rate are set in",
-          Pengaturan: "Settings",
-          "Pengaturan dan rekor disimpan di penyimpanan lokal browser ini. Tidak ada akun atau backend.":
-            "Settings and records are stored in this browser only. No account or backend.",
-          "SESI QUIZ": "QUIZ SESSION",
-          "← Pengaturan": "← Settings",
-          Soal: "Question",
-          dari: "of",
-          "Skor:": "Score:",
-          "Pilih arti yang paling tepat": "Pick the best meaning",
-          "Pilih kosakata Korea yang tepat": "Pick the correct Korean word",
-          "Tekan speaker untuk mendengar pelafalan Korea.":
-            "Tap the speaker to hear Korean pronunciation.",
-          "Continue": "NEXT →",
-          "Selesai": "SEE RESULTS →",
-          Benar: "Correct",
-          Sisa: "Left",
-          "↻ Reset & acak ulang": "↻ Reset & reshuffle",
-          "■ Hentikan audio": "■ Stop audio",
-          "SESI SELESAI": "SESSION DONE",
-          "HASIL LATIHAN": "RESULTS",
-          "Sesi selesai.": "Session complete.",
-          "Cek kata yang masih perlu diulang.":
-            "Review words that still need work.",
-          "JAWABAN BENAR": "CORRECT",
-          "JAWABAN SALAH": "WRONG",
-          "TOTAL SOAL": "TOTAL",
-          "Ulangi jawaban salah": "Retry wrong answers",
-          "Reset & acak ulang": "Reset & reshuffle",
-          "Sesi baru": "New session",
-          "Review jawaban": "Answer review",
-          "Semua jawaban sesi ini": "All answers this session",
-          "DAFTAR MATERI": "MATERIAL LIST",
-          "Daftar kosakata Bab 1": "Chapter 1 vocabulary list",
-          "Cari Korea, arti, atau nomor…": "Search Korean, meaning, or number…",
-          "Active recall": "Active recall",
-          Typing: "Typing",
-          Listening: "Listening",
-          "Flash Card": "Flash Card",
-          Flashcard: "Flashcard",
-          "Memory Lab": "Memory Lab",
-          Vocab: "Vocab",
-          Statistik: "Stats",
-          Koleksi: "Collection",
-          "Mulai Typing →": "Start Typing →",
-          "Mulai Listening →": "Start Listening →",
-          "Mulai Flash Card →": "Start Flash Cards →",
-          "Periksa jawaban": "Check answer",
-          Petunjuk: "Hint",
-          "Lewati →": "Skip →",
-          "Lewati kata →": "Skip word →",
-          "▶ Putar audio Korea": "▶ Play Korean audio",
-          "■ Hentikan": "■ Stop",
-          "BELAJAR SEKARANG →": "STUDY NOW →",
-          "Hafal Kata Baru": "Learn new words",
-          "Flash Card santai": "Casual flash cards",
-          "Lihat arti": "Show meaning",
-          "Kartu berikutnya →": "Next card →",
-          Lupa: "Forgot",
-          Sulit: "Hard",
-          Ingat: "Remembered",
-          Mudah: "Easy",
-          "Prioritas materi": "Material priority",
-          "Urutan kartu": "Card order",
-          "Cara latihan": "Practice mode",
-          Acak: "Random",
-          "Berurutan (nomor kecil → besar)": "Sequential (low → high numbers)",
-          "Otomatis (rekomendasi sistem)": "Automatic (system pick)",
-          "Hanya kata baru": "New words only",
-          "Hanya yang perlu diulang hari ini": "Due today only",
-          "Hanya yang sering salah": "Often-wrong only",
-          "Otomatis (skill terlemah)": "Auto (weakest skill)",
-          "Typing (tulis Hangeul)": "Typing (write Hangul)",
-          "Listening (dengar audio)": "Listening (hear audio)",
-          "Kenali tulisan Korea": "Recognize Korean text",
-          "Ingat arti (tanpa pilihan)": "Recall meaning (no choices)",
-          "Acak semua cara": "Random all modes",
-          "Jumlah kosakata per sesi": "Words per session",
-          "Semua dalam filter": "All in filter",
-          "Rentang Nomor Kosakata": "Word number range",
-          "Pulihkan Rentang": "Reset range",
-          "Misi harian": "Daily missions",
-          Pencapaian: "Achievements",
-          "Kemampuan per skill": "Skill breakdown",
-          "Penguasaan tiap kosakata": "Per-word mastery",
-          "Bahasa antarmuka": "Interface language",
-          "Text-to-Speech (Korea)": "Text-to-Speech (Korean)",
-          "Preferensi latihan": "Practice preferences",
-          "Data & cadangan": "Data & backup",
-          "Aktifkan Text-to-Speech": "Enable Text-to-Speech",
-          "Suara bahasa Korea": "Korean voice",
-          "Kecepatan pelafalan default": "Default speech rate",
-          "Lambat · 0,7×": "Slow · 0.7×",
-          "Sedang · 0,85×": "Medium · 0.85×",
-          "Normal · 1,0×": "Normal · 1.0×",
-          "↻ Muat ulang daftar suara": "↻ Reload voice list",
-          "🔊 Coba suara Korea": "🔊 Preview Korean voice",
-          "Arah quiz default": "Default quiz direction",
-          "Status audio saat ini": "Current audio status",
-          "Buka Quiz": "Open Quiz",
-          "Pulihkan audio ke default": "Reset audio to default",
-          "Buka Vocab": "Open Vocab",
-          "Lihat Statistik": "View stats",
-          "Tambah satu kosakata": "Add one word",
-          "Input massal": "Bulk input",
-          "Cadangan data": "Data backup",
-          "Kosakata buatan lu": "Your vocabulary",
-          "Simpan Kosakata": "Save word",
-          "Ekspor JSON": "Export JSON",
-          "Ekspor CSV": "Export CSV",
-          "20 soal": "20 questions",
-          "40 soal": "40 questions",
-          "60 soal": "60 questions",
-          "Semua kosakata dalam rentang": "All words in range",
-          "Semua kosakata": "All words",
-          "Sering salah / perlu latihan": "Often wrong / needs practice",
-          "Ulangi yang sering salah": "Retry often-wrong",
-          "Latihan lagi": "Practice again",
-          "Kembali ke beranda": "Back to home",
-          Kembali: "Back",
-          "TULIS DALAM HANGEUL": "WRITE IN HANGUL",
-          "DENGARKAN AUDIO": "LISTEN TO AUDIO",
-          "SESI CAMPURAN": "MIXED SESSION",
-          "KENALI TULISAN": "RECOGNIZE TEXT",
-          "INGAT ARTI": "RECALL MEANING",
-          "TULIS HANGEUL": "WRITE HANGUL",
-          "Continue →": "Continue →",
-          "Akhiri sesi": "End session",
-          "Dashboard Memory Lab": "Memory Lab dashboard",
-          "Hari ini": "Today",
-          TERBUKA: "UNLOCKED",
-          TERKUNCI: "LOCKED",
-          "Langsung ke navigasi": "Skip to navigation",
-        },
-        ko: {
-          "Korean study toolkit": "한국어 학습 도구",
-          "Mendeteksi suara…": "음성 확인 중…",
-          "Memuat kosakata…": "단어 불러오는 중…",
-          "TOTAL KOSAKATA": "총 단어",
-          "REKOR TERBAIK": "최고 기록",
-          "Belum ada": "아직 없음",
-          "Mulai tes pertama": "첫 테스트를 시작하세요",
-          kata: "개",
-          " hari": "일",
-          "Progres lu hari ini": "오늘 진행",
-          "Langsung lihat kata yang perlu dikerjakan, bukan cuma total koleksi.":
-            "전체 개수가 아니라 지금 할 단어를 보세요.",
-          "Belajar Sekarang →": "지금 학습 →",
-          "Belum dipelajari": "미학습",
-          "Ulangi hari ini": "오늘 복습",
-          Penguasaan: "숙달도",
-          "Total kosakata": "총 단어",
-          "Bawaan + buatan lu": "기본 + 직접 추가",
-          "Tips cepat:": "빠른 팁:",
-          Tekan: "누르기",
-          "untuk memilih jawaban,": "답 선택,",
-          "untuk audio,": "오디오,",
-          "untuk hentikan suara.": "음성 중지.",
-          "Data hanya disimpan di browser ini — ekspor JSON secara berkala dari tab Vocab.":
-            "데이터는 이 브라우저에만 저장됩니다. Vocab 탭에서 JSON을 정기적으로 내보내세요.",
-          "Latihan pilihan ganda": "객관식 연습",
-          "Atur rentang kosakata dan arah pertanyaan sebelum mulai. Audio diatur di menu Pengaturan.":
-            "시작 전 단어 범위와 문제 방향을 설정하세요. 오디오는 설정에 있습니다.",
-          "Atur Sesi Belajar": "세션 설정",
-          "Tentukan materi yang ingin lu uji sebelum mulai.":
-            "시작 전 학습 내용을 고르세요.",
-          "Tentukan materi yang ingin diuji sebelum mulai.":
-            "시작 전 학습 내용을 고르세요.",
-          "Pulihkan Pengaturan": "기본값 복원",
-          "Jumlah soal": "문제 수",
-          "Rentang nomor kosakata": "단어 번호 범위",
-          "Dari nomor": "시작",
-          "Sampai nomor": "끝",
-          "Arah pertanyaan": "문제 방향",
-          "Korea → Indonesia": "한국어 → 인도네시아어",
-          "Indonesia → Korea": "인도네시아어 → 한국어",
-          "MULAI QUIZ →": "퀴즈 시작 →",
-          "Lihat Koleksi": "목록 보기",
-          "Buka Vocab": "단어 열기",
-          "Audio & kecepatan pelafalan diatur di menu": "오디오·발음 속도는",
-          Pengaturan: "설정",
-          "Pengaturan dan rekor disimpan di penyimpanan lokal browser ini. Tidak ada akun atau backend.":
-            "설정과 기록은 이 브라우저에만 저장됩니다. 계정·서버 없음.",
-          "SESI QUIZ": "퀴즈 세션",
-          "← Pengaturan": "← 설정",
-          Soal: "문제",
-          dari: "/",
-          "Skor:": "점수:",
-          "Pilih arti yang paling tepat": "가장 알맞은 뜻을 고르세요",
-          "Pilih kosakata Korea yang tepat": "알맞은 한국어 단어를 고르세요",
-          "Tekan speaker untuk mendengar pelafalan Korea.":
-            "스피커를 눌러 한국어 발음을 들으세요.",
-          "Continue": "다음 →",
-          "Selesai": "결과 보기 →",
-          Benar: "정답",
-          Sisa: "남음",
-          "↻ Reset & acak ulang": "↻ 초기화·섞기",
-          "■ Hentikan audio": "■ 오디오 중지",
-          "SESI SELESAI": "세션 종료",
-          "HASIL LATIHAN": "결과",
-          "Sesi selesai.": "세션이 끝났습니다.",
-          "Cek kata yang masih perlu diulang.":
-            "아직 복습이 필요한 단어를 확인하세요.",
-          "JAWABAN BENAR": "정답",
-          "JAWABAN SALAH": "오답",
-          "TOTAL SOAL": "총 문제",
-          "Ulangi jawaban salah": "틀린 문제 다시",
-          "Reset & acak ulang": "초기화·섞기",
-          "Sesi baru": "새 세션",
-          "Review jawaban": "답안 복습",
-          "Semua jawaban sesi ini": "이번 세션 전체 답안",
-          "DAFTAR MATERI": "학습 목록",
-          "Daftar kosakata Bab 1": "1과 단어 목록",
-          "Cari Korea, arti, atau nomor…": "한국어·뜻·번호 검색…",
-          "Mulai Typing →": "타이핑 시작 →",
-          "Mulai Listening →": "듣기 시작 →",
-          "Mulai Flash Card →": "플래시카드 시작 →",
-          "Periksa jawaban": "정답 확인",
-          Petunjuk: "힌트",
-          "Lewati →": "건너뛰기 →",
-          "Lewati kata →": "단어 건너뛰기 →",
-          "▶ Putar audio Korea": "▶ 한국어 재생",
-          "■ Hentikan": "■ 중지",
-          "BELAJAR SEKARANG →": "지금 학습 →",
-          "Hafal Kata Baru": "새 단어 학습",
-          "Flash Card santai": "편한 플래시카드",
-          "Lihat arti": "뜻 보기",
-          "Kartu berikutnya →": "다음 카드 →",
-          Lupa: "모름",
-          Sulit: "어려움",
-          Ingat: "기억남",
-          Mudah: "쉬움",
-          "Prioritas materi": "학습 우선순위",
-          "Urutan kartu": "카드 순서",
-          "Cara latihan": "연습 방식",
-          Acak: "랜덤",
-          "Berurutan (nomor kecil → besar)": "번호 순 (작은 번호 → 큰 번호)",
-          "Otomatis (rekomendasi sistem)": "자동 (시스템 추천)",
-          "Hanya kata baru": "새 단어만",
-          "Hanya yang perlu diulang hari ini": "오늘 복습만",
-          "Hanya yang sering salah": "자주 틀린 것만",
-          "Otomatis (skill terlemah)": "자동 (가장 약한 스킬)",
-          "Typing (tulis Hangeul)": "타이핑 (한글 쓰기)",
-          "Listening (dengar audio)": "듣기",
-          "Kenali tulisan Korea": "글자 인식",
-          "Ingat arti (tanpa pilihan)": "뜻 회상 (선택지 없음)",
-          "Acak semua cara": "모든 방식 랜덤",
-          "Jumlah kosakata per sesi": "세션당 단어 수",
-          "Semua dalam filter": "필터 전체",
-          "Rentang Nomor Kosakata": "단어 번호 범위",
-          "Pulihkan Rentang": "범위 초기화",
-          "Misi harian": "일일 미션",
-          Pencapaian: "업적",
-          "Kemampuan per skill": "스킬별 능력",
-          "Penguasaan tiap kosakata": "단어별 숙달",
-          "Bahasa antarmuka": "인터페이스 언어",
-          "Text-to-Speech (Korea)": "TTS (한국어)",
-          "Preferensi latihan": "학습 환경",
-          "Data & cadangan": "데이터·백업",
-          "Aktifkan Text-to-Speech": "TTS 사용",
-          "Suara bahasa Korea": "한국어 음성",
-          "Kecepatan pelafalan default": "기본 발음 속도",
-          "Lambat · 0,7×": "느림 · 0.7×",
-          "Sedang · 0,85×": "보통 · 0.85×",
-          "Normal · 1,0×": "기본 · 1.0×",
-          "↻ Muat ulang daftar suara": "↻ 음성 목록 새로고침",
-          "🔊 Coba suara Korea": "🔊 한국어 미리듣기",
-          "Arah quiz default": "기본 퀴즈 방향",
-          "Status audio saat ini": "현재 오디오 상태",
-          "Buka Quiz": "퀴즈 열기",
-          "Pulihkan audio ke default": "오디오 기본값",
-          "Lihat Statistik": "통계 보기",
-          "Tambah satu kosakata": "단어 하나 추가",
-          "Input massal": "일괄 입력",
-          "Cadangan data": "데이터 백업",
-          "Kosakata buatan lu": "직접 추가한 단어",
-          "Simpan Kosakata": "단어 저장",
-          "Ekspor JSON": "JSON 내보내기",
-          "Ekspor CSV": "CSV 내보내기",
-          "20 soal": "20문제",
-          "40 soal": "40문제",
-          "60 soal": "60문제",
-          "Semua kosakata dalam rentang": "범위 내 전체",
-          "Semua kosakata": "전체 단어",
-          "Sering salah / perlu latihan": "자주 틀림 / 연습 필요",
-          "Ulangi yang sering salah": "자주 틀린 것 다시",
-          "Latihan lagi": "다시 연습",
-          "Kembali ke beranda": "홈으로",
-          Kembali: "뒤로",
-          "TULIS DALAM HANGEUL": "한글로 쓰기",
-          "DENGARKAN AUDIO": "오디오 듣기",
-          "SESI CAMPURAN": "혼합 세션",
-          "KENALI TULISAN": "글자 인식",
-          "INGAT ARTI": "뜻 회상",
-          "TULIS HANGEUL": "한글 쓰기",
-          "Continue →": "계속 →",
-          "Akhiri sesi": "세션 종료",
-          "Dashboard Memory Lab": "메모리 랩 대시보드",
-          "Hari ini": "오늘",
-          TERBUKA: "해금",
-          TERKUNCI: "잠김",
-          "Langsung ke navigasi": "탐색으로 건너뛰기",
-        },
-        jv: {
-          "Korean study toolkit": "Piranti sinau Korea",
-          "Mendeteksi suara…": "Ndeteksi swara…",
-          "Memuat kosakata…": "Ngundhuh tembung…",
-          "TOTAL KOSAKATA": "TOTAL TEMBUNG",
-          "REKOR TERBAIK": "REKOR PALING APIK",
-          "Belum ada": "Durung ana",
-          "Mulai tes pertama": "Miwiti tes sepisanan",
-          kata: "tembung",
-          " hari": " dina",
-          "Progres lu hari ini": "Progresmu dina iki",
-          "Langsung lihat kata yang perlu dikerjakan, bukan cuma total koleksi.":
-            "Delengen tembung sing kudu digarap, aja mung total koleksi.",
-          "Belajar Sekarang →": "Sinau Saiki →",
-          "Belum dipelajari": "Durung sinau",
-          "Ulangi hari ini": "Baleni dina iki",
-          Penguasaan: "Penguasaan",
-          "Total kosakata": "Total tembung",
-          "Bawaan + buatan lu": "Bawaan + gaweanmu",
-          "Tips cepat:": "Tips cepet:",
-          Tekan: "Pencet",
-          "untuk memilih jawaban,": "kanggo milih jawaban,",
-          "untuk audio,": "kanggo audio,",
-          "untuk hentikan suara.": "kanggo mandhegake swara.",
-          "Data hanya disimpan di browser ini — ekspor JSON secara berkala dari tab Vocab.":
-            "Data mung disimpen ing browser iki — ekspor JSON kanthi rutin saka tab Vocab.",
-          "Latihan pilihan ganda": "Latihan pilihan ganda",
-          "Atur rentang kosakata dan arah pertanyaan sebelum mulai. Audio diatur di menu Pengaturan.":
-            "Atur rentang tembung lan arah pitakon sadurunge miwiti. Audio ana ing Setelan.",
-          "Atur Sesi Belajar": "Atur Sesi",
-          "Tentukan materi yang ingin lu uji sebelum mulai.":
-            "Tentukna materi sing arep diuji.",
-          "Tentukan materi yang ingin diuji sebelum mulai.":
-            "Tentukna materi sing arep diuji.",
-          "Pulihkan Pengaturan": "Balikake Setelan",
-          "Jumlah soal": "Jumlah soal",
-          "Rentang nomor kosakata": "Rentang nomer tembung",
-          "Dari nomor": "Saka nomer",
-          "Sampai nomor": "Nganti nomer",
-          "Arah pertanyaan": "Arah pitakon",
-          "MULAI QUIZ →": "MIWITI KUIS →",
-          "Lihat Koleksi": "Deleng Koleksi",
-          "Buka Vocab": "Bukak Vocab",
-          "Audio & kecepatan pelafalan diatur di menu":
-            "Audio & kacepetan wacana diatur ing",
-          Pengaturan: "Setelan",
-          "Pengaturan dan rekor disimpan di penyimpanan lokal browser ini. Tidak ada akun atau backend.":
-            "Setelan lan rekor disimpen lokal ing browser iki. Ora ana akun utawa backend.",
-          "SESI QUIZ": "SESI KUIS",
-          "← Pengaturan": "← Setelan",
-          Soal: "Soal",
-          dari: "saka",
-          "Skor:": "Skor:",
-          "Pilih arti yang paling tepat": "Pilih arti sing paling pas",
-          "Pilih kosakata Korea yang tepat": "Pilih tembung Korea sing pas",
-          "Tekan speaker untuk mendengar pelafalan Korea.":
-            "Pencet speaker kanggo ngrungokake pelafalan Korea.",
-          "Continue": "SOAL BANJUR →",
-          "Selesai": "DELENG HASIL →",
-          Benar: "Bener",
-          Sisa: "Isih",
-          "↻ Reset & acak ulang": "↻ Reset & acak maneh",
-          "■ Hentikan audio": "■ Mandhegake audio",
-          "SESI SELESAI": "SESI RAMPUNG",
-          "HASIL LATIHAN": "HASIL",
-          "Sesi selesai.": "Sesi rampung.",
-          "Cek kata yang masih perlu diulang.":
-            "Priksa tembung sing isih kudu dibaleni.",
-          "JAWABAN BENAR": "BENER",
-          "JAWABAN SALAH": "SALAH",
-          "TOTAL SOAL": "TOTAL",
-          "Ulangi jawaban salah": "Baleni jawaban salah",
-          "Reset & acak ulang": "Reset & acak maneh",
-          "Sesi baru": "Sesi anyar",
-          "Review jawaban": "Review jawaban",
-          "Semua jawaban sesi ini": "Kabeh jawaban sesi iki",
-          "DAFTAR MATERI": "DAFTAR MATERI",
-          "Daftar kosakata Bab 1": "Daftar tembung Bab 1",
-          "Cari Korea, arti, atau nomor…": "Goleki Korea, arti, utawa nomer…",
-          "Mulai Typing →": "Miwiti Nulis →",
-          "Mulai Listening →": "Miwiti Ngrungokake →",
-          "Mulai Flash Card →": "Miwiti Kartu →",
-          "Periksa jawaban": "Priksa jawaban",
-          Petunjuk: "Pitulung",
-          "Lewati →": "Liwati →",
-          "Lewati kata →": "Liwati tembung →",
-          "▶ Putar audio Korea": "▶ Puter audio Korea",
-          "■ Hentikan": "■ Mandheg",
-          "BELAJAR SEKARANG →": "SINAU SAIKI →",
-          "Hafal Kata Baru": "Hafal Tembung Anyar",
-          "Flash Card santai": "Kartu santai",
-          "Lihat arti": "Deleng arti",
-          "Kartu berikutnya →": "Kartu banjur →",
-          Lupa: "Lali",
-          Sulit: "Angel",
-          Ingat: "Eling",
-          Mudah: "Gampang",
-          "Prioritas materi": "Prioritas materi",
-          "Urutan kartu": "Urutan kartu",
-          "Cara latihan": "Cara latihan",
-          Acak: "Acak",
-          "Berurutan (nomor kecil → besar)": "Urut (nomer cilik → gedhe)",
-          "Otomatis (rekomendasi sistem)": "Otomatis (rekomendasi sistem)",
-          "Hanya kata baru": "Mung tembung anyar",
-          "Hanya yang perlu diulang hari ini":
-            "Mung sing kudu dibaleni dina iki",
-          "Hanya yang sering salah": "Mung sing kerep salah",
-          "Otomatis (skill terlemah)": "Otomatis (skill paling ringkih)",
-          "Typing (tulis Hangeul)": "Nulis (Hangeul)",
-          "Listening (dengar audio)": "Ngrungokake",
-          "Kenali tulisan Korea": "Kenali tulisan Korea",
-          "Ingat arti (tanpa pilihan)": "Eling arti (tanpa pilihan)",
-          "Acak semua cara": "Acak kabeh cara",
-          "Jumlah kosakata per sesi": "Jumlah tembung saben sesi",
-          "Semua dalam filter": "Kabeh ing filter",
-          "Rentang Nomor Kosakata": "Rentang Nomer Tembung",
-          "Pulihkan Rentang": "Balikake Rentang",
-          "Misi harian": "Misi harian",
-          Pencapaian: "Pencapaian",
-          "Kemampuan per skill": "Kemampuan saben skill",
-          "Penguasaan tiap kosakata": "Penguasaan saben tembung",
-          "Bahasa antarmuka": "Basa antarmuka",
-          "Preferensi latihan": "Preferensi latihan",
-          "Data & cadangan": "Data & cadangan",
-          "Aktifkan Text-to-Speech": "Aktifke Text-to-Speech",
-          "Suara bahasa Korea": "Swara basa Korea",
-          "Kecepatan pelafalan default": "Kacepetan wacana default",
-          "Lambat · 0,7×": "Alon · 0,7×",
-          "Sedang · 0,85×": "Sedheng · 0,85×",
-          "Normal · 1,0×": "Normal · 1,0×",
-          "↻ Muat ulang daftar suara": "↻ Muat maneh daftar swara",
-          "🔊 Coba suara Korea": "🔊 Coba swara Korea",
-          "Arah quiz default": "Arah kuis default",
-          "Status audio saat ini": "Status audio saiki",
-          "Buka Quiz": "Bukak Kuis",
-          "Pulihkan audio ke default": "Balikake audio default",
-          "Lihat Statistik": "Deleng Statistik",
-          "Tambah satu kosakata": "Tambah siji tembung",
-          "Input massal": "Input massal",
-          "Cadangan data": "Cadangan data",
-          "Kosakata buatan lu": "Tembung gaweanmu",
-          "Simpan Kosakata": "Simpen Tembung",
-          "Ekspor JSON": "Ekspor JSON",
-          "Ekspor CSV": "Ekspor CSV",
-          "20 soal": "20 soal",
-          "40 soal": "40 soal",
-          "60 soal": "60 soal",
-          "Semua kosakata dalam rentang": "Kabeh tembung ing rentang",
-          "Semua kosakata": "Kabeh tembung",
-          "Sering salah / perlu latihan": "Kerep salah / perlu latihan",
-          "Ulangi yang sering salah": "Baleni sing kerep salah",
-          "Latihan lagi": "Latihan maneh",
-          "Kembali ke beranda": "Bali menyang ngarep",
-          Kembali: "Bali",
-          "TULIS DALAM HANGEUL": "NULIS HANGEUL",
-          "DENGARKAN AUDIO": "NGRUNGOKAKE AUDIO",
-          "SESI CAMPURAN": "SESI CAMPURAN",
-          "KENALI TULISAN": "KENALI TULISAN",
-          "INGAT ARTI": "ELING ARTI",
-          "TULIS HANGEUL": "NULIS HANGEUL",
-          "Continue →": "Banjur →",
-          "Akhiri sesi": "Pungkasi sesi",
-          "Dashboard Memory Lab": "Dashboard Memory Lab",
-          "Hari ini": "Dina iki",
-          TERBUKA: "MBUKA",
-          TERKUNCI: "DIKUNCI",
-          "Langsung ke navigasi": "Langsung menyang navigasi",
-        },
-      };
 
-      function getUiLang() {
+            function getUiLang() {
         return "id";
       }
       function t(key) {
@@ -13109,69 +12331,7 @@
         return v !== undefined && v !== null && v !== "" ? v : "";
       }
 
-      function ensureOrigText(el) {
-        if (!el || el.nodeType !== 1) return;
-        if (el.dataset && el.dataset.i18nOrig === undefined) {
-          // Store original Indonesian (or current) text once
-          const txt =
-            el.childNodes.length === 1 && el.childNodes[0].nodeType === 3
-              ? el.textContent
-              : null;
-          if (txt !== null && txt.trim()) {
-            el.dataset.i18nOrig = txt;
-          }
-        }
-      }
-
-      function translateElementText(el, lang) {
-        if (!el || !el.dataset) return;
-        // Prefer data-i18n key
-        const key = el.getAttribute("data-i18n");
-        if (key) {
-          const val = t(key);
-          if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-            if (el.hasAttribute("placeholder")) el.placeholder = val;
-          } else {
-            // Keep child elements (e.g. icons) if any; if only text, replace
-            if (el.children.length === 0) el.textContent = val;
-            else {
-              // replace first text node only
-              for (const n of el.childNodes) {
-                if (n.nodeType === 3 && n.textContent.trim()) {
-                  n.textContent = val;
-                  break;
-                }
-              }
-            }
-          }
-          return;
-        }
-        // Phrase-map path for elements without keys
-        if (lang === "id") {
-          if (el.dataset.i18nOrig) el.textContent = el.dataset.i18nOrig;
-          return;
-        }
-        const map = PHRASE[lang];
-        if (!map) return;
-        ensureOrigText(el);
-        const orig = el.dataset.i18nOrig;
-        if (!orig) return;
-        const trimmed = orig.trim();
-        if (map[trimmed] !== undefined) {
-          el.textContent = map[trimmed];
-          return;
-        }
-        // Partial / contains replacement for longer strings
-        let out = orig;
-        // Sort longer keys first to avoid partial collisions
-        const keys = Object.keys(map).sort((a, b) => b.length - a.length);
-        for (const k of keys) {
-          if (out.includes(k)) out = out.split(k).join(map[k]);
-        }
-        if (out !== orig) el.textContent = out;
-      }
-
-      function applyI18n() {
+function applyI18n() {
         // Bahasa hanya Indonesia — sengaja no-op agar teks HTML tidak ditimpa key mentah.
       }
       function setUiLang(lang) {
@@ -13437,6 +12597,24 @@ $('skipQuestion')?.addEventListener('click', () => { if (typeof skipQuestionNav 
 var customStudySelected = window.customStudySelected instanceof Set ? window.customStudySelected : new Set();
 window.customStudySelected = customStudySelected;
 var customStudyCat = 'all';
+
+function getCustomStudySelectedCats() {
+  var box = document.getElementById('customStudyCats');
+  if (!box) return ['all'];
+  var checks = box.querySelectorAll('input[data-cs-cat]:checked');
+  var cats = [];
+  checks.forEach(function (el) {
+    var c = el.getAttribute('data-cs-cat');
+    if (c) cats.push(c);
+  });
+  if (!cats.length || cats.indexOf('all') >= 0) return ['all'];
+  return cats;
+}
+function syncCustomStudyCatState() {
+  var cats = getCustomStudySelectedCats();
+  customStudyCat = cats.indexOf('all') >= 0 ? 'all' : (cats[0] || 'all');
+}
+
 var customStudyShuffleOrder = false; // false = urut, true = acak
 var CUSTOM_PRESET_KEY = 'kvl.customStudyPreset.v1';
 
@@ -13449,8 +12627,13 @@ function getCustomStudyPool() {
   try {
     if (typeof vocabulary !== 'undefined' && Array.isArray(vocabulary)) list = vocabulary.slice();
   } catch (e) {}
-  if (customStudyCat && customStudyCat !== 'all') {
-    list = list.filter(function (v) { return v.category === customStudyCat; });
+  var selectedCats = (typeof getCustomStudySelectedCats === 'function')
+    ? getCustomStudySelectedCats()
+    : (customStudyCat ? [customStudyCat] : ['all']);
+  if (selectedCats.length && selectedCats.indexOf('all') < 0) {
+    list = list.filter(function (v) {
+      return selectedCats.indexOf(v.category) >= 0;
+    });
   }
   var searchEl = csEl('customStudySearch');
   var q = searchEl ? searchEl.value : '';
@@ -13631,11 +12814,21 @@ function wireCustomStudy() {
     if (!t) return;
     var chip = t.closest ? t.closest('[data-cs-cat]') : null;
     if (chip && csEl('customStudyPanel') && csEl('customStudyPanel').contains(chip)) {
-      e.preventDefault();
-      e.stopPropagation();
-      document.querySelectorAll('[data-cs-cat]').forEach(function (b) { b.classList.remove('active'); });
-      chip.classList.add('active');
-      customStudyCat = chip.getAttribute('data-cs-cat') || 'all';
+      var input = (chip.matches && chip.matches('input[data-cs-cat]'))
+        ? chip
+        : (chip.querySelector && chip.querySelector('input[data-cs-cat]'));
+      if (!input) return;
+      var cat = input.getAttribute('data-cs-cat');
+      var box = document.getElementById('customStudyCats');
+      if (box && cat === 'all' && input.checked) {
+        box.querySelectorAll('input[data-cs-cat]').forEach(function (el) {
+          if (el.getAttribute('data-cs-cat') !== 'all') el.checked = false;
+        });
+      } else if (box && cat !== 'all' && input.checked) {
+        var allBox = box.querySelector('input[data-cs-cat="all"]');
+        if (allBox) allBox.checked = false;
+      }
+      if (typeof syncCustomStudyCatState === 'function') syncCustomStudyCatState();
       renderCustomStudyList();
       return;
     }
@@ -13673,30 +12866,7 @@ function wireCustomStudy() {
       startCustomMemorySession();
       return;
     }
-    if (id === 'customStudySavePreset') {
-      e.preventDefault();
-      try {
-        localStorage.setItem(CUSTOM_PRESET_KEY, JSON.stringify(Array.from(customStudySelected)));
-        if (typeof toast === 'function') toast('Preset ke-save (' + customStudySelected.size + ' kata).', 'good');
-      } catch (err) {
-        if (typeof toast === 'function') toast('Gagal save preset.', 'bad');
-      }
-      return;
-    }
-    if (id === 'customStudyLoadPreset') {
-      e.preventDefault();
-      try {
-        var raw = localStorage.getItem(CUSTOM_PRESET_KEY);
-        var arr = raw ? JSON.parse(raw) : [];
-        customStudySelected = new Set(Array.isArray(arr) ? arr : []);
-        window.customStudySelected = customStudySelected;
-        renderCustomStudyList();
-        if (typeof toast === 'function') toast('Preset diload · ' + customStudySelected.size + ' kata.', 'good');
-      } catch (err) {
-        if (typeof toast === 'function') toast('Preset belum ada.', 'warning');
-      }
-      return;
-    }
+    
   }, true); // capture phase biar ga kalah sama handler lain
 
   var search = csEl('customStudySearch');
