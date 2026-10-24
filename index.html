@@ -906,13 +906,14 @@
         }
       }
       .vocab-line {
-        display: flex;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
-        justify-content: space-between;
-        gap: 12px;
+        column-gap: 12px;
+        row-gap: 6px;
         min-width: 0;
-        min-height: 64px;
-        padding: 14px 16px 14px 18px;
+        min-height: 74px;
+        padding: 16px 16px 16px 18px;
         background: linear-gradient(180deg, #121c2c 0%, #0f1826 100%);
         border: 1px solid rgba(58, 80, 106, 0.85);
         border-radius: 16px;
@@ -925,20 +926,17 @@
         background: linear-gradient(180deg, #152235 0%, #111b2b 100%);
       }
       .vocab-line-main {
-        flex: 1 1 auto;
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.15fr);
         align-items: center;
-        gap: 16px;
+        column-gap: 12px;
         min-width: 0;
       }
       .vocab-line-korean {
-        flex: 0 1 42%;
-        max-width: 42%;
         min-width: 0;
         margin: 0;
         padding: 0;
-        font-size: 24px;
+        font-size: clamp(20px, 2.4vw, 25px);
         font-weight: 800;
         letter-spacing: -0.02em;
         line-height: 1.3;
@@ -947,11 +945,10 @@
         word-break: keep-all;
       }
       .vocab-line-meaning {
-        flex: 1 1 50%;
         min-width: 0;
         margin: 0;
         padding: 0;
-        font-size: 18px;
+        font-size: clamp(15px, 1.8vw, 17px);
         font-weight: 600;
         line-height: 1.35;
         color: #d7e4f3;
@@ -960,14 +957,112 @@
       }
       .vocab-line .sound-button,
       .vocab-line .sound-button.small {
-        flex: 0 0 auto;
+        flex: none;
         width: 40px;
         height: 40px;
         min-width: 40px;
+        min-height: 40px;
         margin: 0;
         padding: 0;
         align-self: center;
       }
+      .vocab-line-actions {
+        display: grid;
+        grid-template-columns: minmax(5.4em, auto) 40px;
+        align-items: center;
+        column-gap: 10px;
+        flex: none;
+        justify-self: end;
+      }
+      .vocab-form-badge {
+        box-sizing: border-box;
+        min-width: 5.4em;
+        width: max-content;
+        max-width: 7em;
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 1px solid rgba(143, 186, 255, 0.28);
+        background: rgba(143, 186, 255, 0.08);
+        color: #b6d0ef;
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.04em;
+        text-align: center;
+        line-height: 1.2;
+        user-select: none;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+      }
+      .vocab-form-badge.is-active {
+        border-color: rgba(184, 243, 107, 0.45);
+        background: rgba(184, 243, 107, 0.1);
+        color: var(--accent);
+      }
+      .vocab-form-badge.is-fixed {
+        opacity: 0.72;
+        cursor: pointer;
+      }
+      .vocab-line.vocab-swipeable {
+        touch-action: pan-y;
+        cursor: grab;
+      }
+      .vocab-line.vocab-swipeable:active {
+        cursor: grabbing;
+      }
+      .vocab-line-korean.vocab-form-changed {
+        color: #c8e6ff;
+      }
+      .vocab-sep {
+        display: none; /* separators optional; grid handles spacing */
+      }
+      @media (max-width: 720px) {
+        .vocab-line {
+          min-height: 68px;
+          padding: 13px 12px 13px 14px;
+          column-gap: 8px;
+        }
+        .vocab-line-main {
+          grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+          column-gap: 8px;
+        }
+        .vocab-line-korean {
+          font-size: clamp(18px, 4.6vw, 22px);
+        }
+        .vocab-line-meaning {
+          font-size: clamp(14px, 3.6vw, 16px);
+        }
+        .vocab-line-actions {
+          grid-template-columns: minmax(5.2em, auto) 38px;
+          column-gap: 8px;
+        }
+        .vocab-form-badge {
+          min-width: 5.2em;
+          font-size: 9px;
+          padding: 5px 6px;
+        }
+        .vocab-line .sound-button,
+        .vocab-line .sound-button.small {
+          width: 38px;
+          height: 38px;
+          min-width: 38px;
+          min-height: 38px;
+        }
+      }
+      @media (max-width: 420px) {
+        .vocab-line-main {
+          grid-template-columns: auto minmax(0, 1fr);
+          grid-template-rows: auto auto;
+        }
+        .vocab-line-meaning {
+          grid-column: 1 / -1;
+        }
+        .vocab-line-actions {
+          align-self: start;
+        }
+      }
+
       .vocab-no {
         display: inline-block;
         font-size: 11px;
@@ -979,27 +1074,9 @@
         opacity: 0.9;
       }
       @media (max-width: 520px) {
+        /* layout handled by grid rules above; keep only light padding tweak */
         .vocab-line {
-          padding: 12px 12px 12px 14px;
-          min-height: 56px;
-          gap: 10px;
-        }
-        .vocab-line-main {
-          gap: 12px;
-        }
-        .vocab-line-korean {
-          flex: 0 1 40%;
-          max-width: 40%;
-          font-size: 20px;
-        }
-        .vocab-line-meaning {
-          font-size: 16px;
-        }
-        .vocab-line .sound-button,
-        .vocab-line .sound-button.small {
-          width: 36px;
-          height: 36px;
-          min-width: 36px;
+          padding: 12px 10px 12px 12px;
         }
       }
       .vocab-line .sound-button.small {
@@ -2418,6 +2495,272 @@
       .chapter-picker-list{display:grid;gap:4px;padding:4px 10px 12px;border-top:1px solid var(--line)}
       .chapter-picker-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:650;cursor:pointer;padding:6px 4px}
       .chapter-picker-item input{accent-color:var(--accent);width:16px;height:16px}
+
+
+/* Korean Vocab Lab: Vocab row — body (top + indicator) | audio (vertically centered). */
+.vocab-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+.vocab-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center; /* audio centered vs full row height */
+  column-gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
+  padding: 12px 12px 10px 14px;
+  background: #111c2b;
+  border: 1px solid #26384e;
+  border-radius: 15px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.025) inset;
+  transition: border-color .16s ease, background-color .16s ease;
+}
+.vocab-line:hover { border-color: #405774; background: #142135; }
+.vocab-line.vocab-swipeable { cursor: grab; touch-action: pan-y; }
+.vocab-line.vocab-swipeable:active { cursor: grabbing; }
+
+/* Left body: top fields + bottom-center form indicator */
+.vocab-line-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  min-width: 0;
+  overflow: visible;
+  height: auto;
+}
+
+.vocab-line-top {
+  display: grid;
+  /* Number | Hangul | Meaning — audio lives outside this grid */
+  grid-template-columns: 2.5rem 8px minmax(0, 1.15fr) 8px minmax(0, 1.1fr);
+  align-items: center;
+  column-gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+.vocab-line-top > .vocab-no {
+  display: block; min-width: 0; margin: 0; text-align: right;
+  color: #91a4bd; font-size: 12px; font-weight: 800;
+  font-variant-numeric: tabular-nums; letter-spacing: .01em;
+}
+.vocab-line-top > .vocab-sep {
+  display: grid; place-items: center; min-width: 0; margin: 0;
+  color: #7188a2; font-size: 13px; font-weight: 650; line-height: 1;
+  user-select: none; pointer-events: none;
+}
+.vocab-line-top > .vocab-line-korean {
+  display: block; min-width: 0; max-width: 100%; margin: 0; padding: 0;
+  color: #f0f5fc; font-size: clamp(19px, 2.3vw, 24px); font-weight: 800;
+  line-height: 1.35; letter-spacing: -.018em; text-align: center;
+  /* NEVER truncate Korean vocabulary — wrap fully when needed */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere; /* emergency wrap for long unbroken Hangul */
+  word-break: keep-all; /* prefer breaks between Korean words when spaces exist */
+  height: auto;
+  transition: color .12s ease, opacity .12s ease;
+}
+.vocab-line-top > .vocab-line-korean.vocab-form-changed { color: #c5e2ff; }
+/* is-long retained as harmless marker only — no truncation path */
+.vocab-line-top > .vocab-line-korean.is-long {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+.vocab-line-top > .vocab-line-meaning {
+  display: block; min-width: 0; margin: 0; padding: 0;
+  color: #c6d4e5; font-size: 14px; font-weight: 550;
+  line-height: 1.4; text-align: center;
+  overflow-wrap: anywhere; word-break: break-word;
+  font-variant: small-caps;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.02em;
+  max-width: 100%;
+}
+.vocab-line > .sound-button.small.vocab-audio-button {
+  display: inline-grid; place-items: center;
+  width: 42px; height: 42px;
+  min-width: 42px; min-height: 42px;
+  margin: 0; padding: 0;
+  border: 1px solid #354c66; border-radius: 12px; background: #1a2b41;
+  color: #d4e5fb; box-shadow: none;
+  justify-self: center; align-self: center;
+  transition: background-color .16s ease, border-color .16s ease, transform .12s ease;
+}
+.vocab-line > .sound-button.small.vocab-audio-button svg { display: block; width: 20px; height: 20px; }
+.vocab-line > .sound-button.small.vocab-audio-button:hover:not(:disabled) { background: #243b57; border-color: #7ca6d4; }
+.vocab-line > .sound-button.small.vocab-audio-button:active:not(:disabled) { transform: scale(.96); }
+.vocab-line > .sound-button.small.vocab-audio-button:disabled { opacity: .4; cursor: not-allowed; }
+.vocab-line > .sound-button.small.vocab-audio-button:focus-visible {
+  outline: 3px solid #8fbaff; outline-offset: 2px;
+}
+
+/* Bottom-center form indicator — compact, copyright-like typography */
+.vocab-form-badge {
+  appearance: none; -webkit-appearance: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; align-self: center;
+  margin: 0 auto; padding: 2px 10px 4px;
+  min-height: 22px; max-width: 100%;
+  border: 0; border-radius: 999px;
+  background: transparent;
+  font-family: Inter, "Noto Sans Cuneiform", "Segoe UI Historic", "Segoe UI Symbol", sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.2px; line-height: 1.4;
+  /* Conjugatable Base Form: brighter neutral, looks interactive */
+  color: #c5d4e8;
+  cursor: pointer;
+  user-select: none;
+  transition: color .12s ease, opacity .12s ease, background-color .12s ease;
+}
+.vocab-form-badge .vocab-form-icon {
+  display: inline-block; flex: none;
+  font-size: 12px; line-height: 1;
+  font-family: "Noto Sans Cuneiform", "Segoe UI Historic", "Segoe UI Symbol", "Noto Sans", sans-serif;
+  color: currentColor;
+  opacity: 0.95;
+  transform: translateY(0.5px);
+}
+.vocab-form-badge .vocab-form-label {
+  font-family: Inter, sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.05em; line-height: inherit;
+  text-transform: uppercase;
+  color: currentColor;
+}
+.vocab-form-badge:hover:not(:disabled) {
+  color: #e2ebf7;
+  background: rgba(255,255,255,0.05);
+}
+.vocab-form-badge:focus-visible {
+  outline: 2px solid #8fbaff; outline-offset: 2px;
+}
+/* Supported non-base form: green accent */
+.vocab-form-badge.is-active {
+  color: var(--accent, #b8f36b);
+  background: rgba(184, 243, 107, 0.1);
+}
+.vocab-form-badge.is-active .vocab-form-icon { opacity: 1; }
+/* Non-conjugatable: darker, disabled-like, still readable */
+.vocab-form-badge.is-fixed,
+.vocab-form-badge:disabled {
+  color: #5e6f86;
+  background: transparent;
+  opacity: 1;
+  cursor: default;
+  pointer-events: none;
+}
+.vocab-form-badge.is-fixed .vocab-form-icon,
+.vocab-form-badge:disabled .vocab-form-icon {
+  opacity: 0.75;
+}
+.vocab-form-badge.vocab-form-fading { opacity: 0.4; }
+
+.vocab-line > .vocab-line-korean.vocab-form-fading,
+.vocab-line-top > .vocab-line-korean.vocab-form-fading {
+  opacity: 0.35;
+}
+
+@media (max-width: 700px) {
+  .vocab-list { gap: 7px; }
+  .vocab-line { padding: 11px 11px 7px; border-radius: 13px; gap: 4px; }
+  .vocab-line {
+    grid-template-columns: minmax(0, 1fr) 38px;
+    column-gap: 6px;
+    padding: 11px 10px 9px 12px;
+  }
+  .vocab-line-top {
+    grid-template-columns: 2.1rem 6px minmax(0, 1.15fr) 6px minmax(0, 1fr);
+    column-gap: 4px;
+  }
+  .vocab-line-top > .vocab-no { font-size: 11px; }
+  .vocab-line-top > .vocab-sep { font-size: 12px; }
+  .vocab-line-top > .vocab-line-korean { font-size: clamp(17px, 4.6vw, 21px); }
+  .vocab-line-top > .vocab-line-meaning { font-size: clamp(13px, 3.2vw, 14px); }
+  .vocab-line > .sound-button.small.vocab-audio-button {
+    width: 36px; height: 36px; min-width: 36px; min-height: 36px; border-radius: 10px;
+  }
+  .vocab-line > .sound-button.small.vocab-audio-button svg { width: 18px; height: 18px; }
+  .vocab-form-badge { font-size: 10px; min-height: 20px; padding: 1px 8px 3px; gap: 5px; }
+  .vocab-form-badge .vocab-form-icon { font-size: 11px; }
+  .vocab-form-badge .vocab-form-label { font-size: 10px; }
+}
+@media (max-width: 390px) {
+  .vocab-line {
+    grid-template-columns: minmax(0, 1fr) 34px;
+    column-gap: 5px;
+    padding: 10px 8px 8px 10px;
+  }
+  .vocab-line-top {
+    grid-template-columns: 1.7rem 5px minmax(0, 1.1fr) 5px minmax(0, .95fr);
+    column-gap: 3px;
+  }
+  .vocab-line-top > .vocab-line-korean { font-size: 16px; letter-spacing: -.025em; }
+  .vocab-line-top > .vocab-line-meaning { font-size: 12px; line-height: 1.35; }
+  .vocab-line > .sound-button.small.vocab-audio-button {
+    width: 32px; height: 32px; min-width: 32px; min-height: 32px;
+  }
+  .vocab-line > .sound-button.small.vocab-audio-button svg { width: 16px; height: 16px; }
+}
+
+
+
+/* CRITICAL: never truncate Korean vocabulary headwords in the Vocab list */
+.vocab-line .vocab-line-korean,
+.vocab-line-top > .vocab-line-korean,
+.vocab-list .vocab-line-korean {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  max-height: none !important;
+  height: auto !important;
+}
+
+/* Force immediate, unambiguous indicator colors (overrides legacy badge rules). */
+.vocab-line .vocab-form-badge.is-active {
+  color: var(--accent, #b8f36b) !important;
+  background: rgba(184, 243, 107, 0.1) !important;
+  border-color: transparent !important;
+}
+.vocab-line .vocab-form-badge.is-active .vocab-form-label,
+.vocab-line .vocab-form-badge.is-active .vocab-form-icon {
+  color: inherit !important;
+}
+.vocab-line .vocab-form-badge.is-fixed,
+.vocab-line .vocab-form-badge:disabled {
+  color: #5e6f86 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+.vocab-line .vocab-form-badge:not(.is-active):not(.is-fixed):not(:disabled) {
+  color: #c5d4e8 !important;
+  background: transparent !important;
+}
+
+/* Lightweight interaction feedback; preserve lower-cost transitions and keyboard focus. */
+.view { animation-duration: .18s; }
+.nav-btn, .btn, .chip-btn, .icon-btn { transition: background-color .14s ease, border-color .14s ease, color .14s ease, transform .12s ease; }
+.nav-btn:active:not(:disabled), .btn:active:not(:disabled), .chip-btn:active:not(:disabled), .icon-btn:active:not(:disabled) { transform: translateY(1px) scale(.99); }
+@media (prefers-reduced-motion: reduce) {
+  .view { animation: none !important; }
+  .vocab-line,
+  .vocab-line-top > .vocab-line-korean,
+  .vocab-form-badge,
+  .vocab-line-top > .sound-button.small.vocab-audio-button,
+  .nav-btn, .btn, .chip-btn, .icon-btn { transition: none !important; }
+  .vocab-line-top > .vocab-line-korean.vocab-form-fading,
+  .vocab-form-badge.vocab-form-fading { opacity: 1 !important; }
+}
+
 </style>
   </head>
   <body>
@@ -2982,7 +3325,7 @@
                 <option value="Bab 2">Bab 2</option>
                   <option value="Bab 3">Bab 3</option>
                   <option value="Bab 4">Bab 4</option>
-                  <option value="Bab 5">Bab 5</option></select><input
+                  <option value="Bab 5">Bab 5</option><option value="Bab 6">Bab 6</option></select><input
                 class="control"
                 id="reviewSearch"
                 type="search"
@@ -3744,6 +4087,7 @@
                   <option value="Bab 3">Bab 3</option>
                   <option value="Bab 4">Bab 4</option>
                   <option value="Bab 5">Bab 5</option>
+                  <option value="Bab 6">Bab 6</option>
                 </select>
               </div>
               <div class="field">
@@ -4027,7 +4371,7 @@
                   <span class="hint">Berurutan untuk hafalan bertahap. Acak lebih menantang.</span>
                 </div>
                 <div class="field">
-                  <label for="memorySkillMode">Cara latihan</label>
+                  <label id="memorySkillModeLabel" for="memorySkillMode">Cara latihan</label>
                   <select id="memorySkillMode" class="control">
                     <option value="auto" selected>Otomatis (skill terlemah)</option>
                     <option value="write">Typing (tulis Hangeul)</option>
@@ -4036,7 +4380,14 @@
                     <option value="recall">Ingat arti (tanpa pilihan)</option>
                     <option value="random">Acak semua cara</option>
                   </select>
-                  <span class="hint">Bentuk soal: nulis, dengar, kenali, atau campuran.</span>
+                  <select id="customStudyPracticeMode" class="control hidden" aria-label="Mode latihan Custom Study">
+                    <option value="quiz">Quiz</option>
+                    <option value="write">Typing</option>
+                    <option value="listening">Listening</option>
+                    <option value="flashcard">Flashcard</option>
+                    <option value="random" selected>Acak</option>
+                  </select>
+                  <span class="hint" id="memorySkillModeHint">Bentuk soal: nulis, dengar, kenali, atau campuran.</span>
                 </div>
               </div>
             </section>
@@ -4914,13 +5265,13 @@
         { no: 126, korean: "왼손", meaning: "tangan kiri", category: "Bab 1" },
         {
           no: 127,
-          korean: "오른 팔",
+          korean: "오른팔",
           meaning: "lengan kanan",
           category: "Bab 1",
         },
         {
           no: 128,
-          korean: "오른 손",
+          korean: "오른손",
           meaning: "tangan kanan",
           category: "Bab 1",
         },
@@ -5125,9 +5476,9 @@
         { no: 112, korean: "사용하다", meaning: "menggunakan", category: "Bab 2" },
         { no: 113, korean: "지 않다", meaning: "tidak", category: "Bab 2" },
         { no: 114, korean: "뿐만 아니라", meaning: "bukan hanya... tapi...", category: "Bab 2" },
-        { no: 115, korean: "가전 제품", meaning: "produk rumah tangga", category: "Bab 2" },
+        { no: 115, korean: "가전제품", meaning: "produk rumah tangga", category: "Bab 2" },
         { no: 116, korean: "가구", meaning: "mebel", category: "Bab 2" },
-        { no: 117, korean: "이르까지", meaning: "sampai", category: "Bab 2" },
+        { no: 117, korean: "이르기까지", meaning: "sampai", category: "Bab 2" },
         { no: 118, korean: "물건", meaning: "barang, benda", category: "Bab 2" },
         { no: 119, korean: "사다", meaning: "membeli", category: "Bab 2" },
         { no: 120, korean: "이러하다", meaning: "seperti ini", category: "Bab 2" },
@@ -5297,8 +5648,8 @@
         { no: 16, korean: "일하다", meaning: "bekerja", category: "Bab 4" },
         { no: 17, korean: "공부하다", meaning: "belajar", category: "Bab 4" },
         { no: 18, korean: "운동하다", meaning: "olahraga", category: "Bab 4" },
-        { no: 19, korean: "존화하다", meaning: "menelfon", category: "Bab 4" },
-        { no: 20, korean: "요리허다", meaning: "memasak", category: "Bab 4" },
+        { no: 19, korean: "전화하다", meaning: "menelfon", category: "Bab 4" },
+        { no: 20, korean: "요리하다", meaning: "memasak", category: "Bab 4" },
         { no: 21, korean: "쉬다", meaning: "istirahat", category: "Bab 4" },
         { no: 22, korean: "자다", meaning: "tidur", category: "Bab 4" },
         { no: 23, korean: "가다", meaning: "pergi", category: "Bab 4" },
@@ -5331,14 +5682,14 @@
         { no: 50, korean: "알맞은", meaning: "yang benar", category: "Bab 4" },
         { no: 51, korean: "쓰다", meaning: "menukis", category: "Bab 4" },
         { no: 52, korean: "도", meaning: "juga", category: "Bab 4" },
-        { no: 53, korean: "어서오세요", meaning: "selamat datang", category: "Bab 4" },
+        { no: 53, korean: "어서 오세요", meaning: "selamat datang", category: "Bab 4" },
         { no: 54, korean: "뭐 찾으세요", meaning: "cari apa", category: "Bab 4" },
         { no: 55, korean: "주세요", meaning: "tolong berikan", category: "Bab 4" },
         { no: 56, korean: "방", meaning: "kamar", category: "Bab 4" },
         { no: 57, korean: "마루", meaning: "lantai kayu", category: "Bab 4" },
         { no: 58, korean: "바닥", meaning: "lantai", category: "Bab 4" },
         { no: 59, korean: "앉다", meaning: "duduk", category: "Bab 4" },
-        { no: 60, korean: "식사를하다", meaning: "makan", category: "Bab 4" },
+        { no: 60, korean: "식사를 하다", meaning: "makan", category: "Bab 4" },
         { no: 61, korean: "휴식을 취하다", meaning: "istirahat, nyantai", category: "Bab 4" },
         { no: 62, korean: "가지다", meaning: "membawa, memiliki", category: "Bab 4" },
         { no: 63, korean: "이러하다", meaning: "seperti ini", category: "Bab 4" },
@@ -5346,7 +5697,7 @@
         { no: 65, korean: "가깝다", meaning: "dekat", category: "Bab 4" },
         { no: 66, korean: "친구", meaning: "teman", category: "Bab 4" },
         { no: 67, korean: "끼리", meaning: "antara, sesama", category: "Bab 4" },
-        { no: 68, korean: "함깨", meaning: "bersama", category: "Bab 4" },
+        { no: 68, korean: "함께", meaning: "bersama", category: "Bab 4" },
         { no: 69, korean: "소통하다", meaning: "komunikasi", category: "Bab 4" },
         { no: 70, korean: "유대감", meaning: "rasa ikatan", category: "Bab 4" },
         { no: 71, korean: "형성하다", meaning: "membentuk", category: "Bab 4" },
@@ -5382,15 +5733,15 @@
         { no: 101, korean: "파이프", meaning: "pipa", category: "Bab 4" },
         { no: 102, korean: "깔다", meaning: "menggelar, memasang", category: "Bab 4" },
         { no: 103, korean: "뜨겁다", meaning: "panas", category: "Bab 4" },
-        { no: 104, korean: "순한시키다", meaning: "mengalirkan", category: "Bab 4" },
+        { no: 104, korean: "순환시키다", meaning: "mengalirkan", category: "Bab 4" },
         { no: 105, korean: "사용되다", meaning: "digunakan", category: "Bab 4" },
-        { no: 106, korean: "빡", meaning: "luar", category: "Bab 4" },
+        { no: 106, korean: "밖", meaning: "luar", category: "Bab 4" },
         { no: 107, korean: "주로", meaning: "biasanya", category: "Bab 4" },
         { no: 108, korean: "의자", meaning: "kursi", category: "Bab 4" },
-        { no: 109, korean: "젊", meaning: "anak muda", category: "Bab 4" },
+        { no: 109, korean: "젊다", meaning: "anak muda", category: "Bab 4" },
         { no: 110, korean: "자주", meaning: "sering", category: "Bab 4" },
         { no: 111, korean: "쉬다", meaning: "istirahat", category: "Bab 4" },
-        { no: 112, korean: "기도하다", meaning: "terkadang", category: "Bab 4" },
+        { no: 112, korean: "기도 하다", meaning: "terkadang", category: "Bab 4" },
         { no: 1, korean: "날짜", meaning: "tanggal", category: "Bab 5" },
         { no: 2, korean: "요일", meaning: "hari", category: "Bab 5" },
         { no: 3, korean: "일요일", meaning: "hari minggu", category: "Bab 5" },
@@ -5423,12 +5774,12 @@
         { no: 30, korean: "가다", meaning: "pergi", category: "Bab 5" },
         { no: 31, korean: "한국어", meaning: "bahasa korea", category: "Bab 5" },
         { no: 32, korean: "지난달", meaning: "bulan lalu", category: "Bab 5" },
-        { no: 33, korean: "이번달", meaning: "bulan ini", category: "Bab 5" },
-        { no: 34, korean: "다음달", meaning: "bulan berikutnya", category: "Bab 5" },
+        { no: 33, korean: "이번 달", meaning: "bulan ini", category: "Bab 5" },
+        { no: 34, korean: "다음 달", meaning: "bulan berikutnya", category: "Bab 5" },
         { no: 35, korean: "월", meaning: "bulan", category: "Bab 5" },
         { no: 36, korean: "일", meaning: "tanggal", category: "Bab 5" },
         { no: 37, korean: "지난주", meaning: "minggu lalu", category: "Bab 5" },
-        { no: 38, korean: "이번주", meaning: "minggu ini", category: "Bab 5" },
+        { no: 38, korean: "이번 주", meaning: "minggu ini", category: "Bab 5" },
         { no: 39, korean: "다음 주", meaning: "minggu depan", category: "Bab 5" },
         { no: 40, korean: "숫자", meaning: "angka", category: "Bab 5" },
         { no: 41, korean: "작년", meaning: "tahun lalu", category: "Bab 5" },
@@ -5438,17 +5789,17 @@
         { no: 45, korean: "생일", meaning: "ulang tahun", category: "Bab 5" },
         { no: 46, korean: "케이크", meaning: "roti", category: "Bab 5" },
         { no: 47, korean: "미역국", meaning: "sup rumput laut", category: "Bab 5" },
-        { no: 48, korean: "몇월", meaning: "bulan berapa", category: "Bab 5" },
+        { no: 48, korean: "몇 월", meaning: "bulan berapa", category: "Bab 5" },
         { no: 49, korean: "며칠", meaning: "tanggal berapa", category: "Bab 5" },
         { no: 50, korean: "기숙사", meaning: "asrama", category: "Bab 5" },
         { no: 51, korean: "오다", meaning: "datang", category: "Bab 5" },
         { no: 52, korean: "먹다", meaning: "makan", category: "Bab 5" },
-        { no: 53, korean: "뭐드시겠어요?", meaning: "akan makan apa?", category: "Bab 5" },
+        { no: 53, korean: "뭐 드시겠어요?", meaning: "akan makan apa?", category: "Bab 5" },
         { no: 54, korean: "손님", meaning: "tamu, tuan, nyonya", category: "Bab 5" },
         { no: 55, korean: "비빔밥", meaning: "nasi campur", category: "Bab 5" },
         { no: 56, korean: "달력", meaning: "kalender", category: "Bab 5" },
         { no: 57, korean: "크다", meaning: "besar", category: "Bab 5" },
-        { no: 58, korean: "함깨", meaning: "bersama", category: "Bab 5" },
+        { no: 58, korean: "함께", meaning: "bersama", category: "Bab 5" },
         { no: 59, korean: "작다", meaning: "kecil", category: "Bab 5" },
         { no: 60, korean: "적히다", meaning: "tertulis", category: "Bab 5" },
         { no: 61, korean: "아/어 있다", meaning: "sedang dalam keadaan (tidak diartikan)", category: "Bab 5" },
@@ -5456,7 +5807,7 @@
         { no: 63, korean: "한", meaning: "yang di tetapkan", category: "Bab 5" },
         { no: 64, korean: "아직", meaning: "masih (jika diikuti kata +), belum (jika diikuti kata -)", category: "Bab 5" },
         { no: 65, korean: "표지하다", meaning: "menandai", category: "Bab 5" },
-        { no: 66, korean: "기때문에", meaning: "karena", category: "Bab 5" },
+        { no: 66, korean: "-기 때문에", meaning: "karena", category: "Bab 5" },
         { no: 67, korean: "아/어 주다", meaning: "memberi", category: "Bab 5" },
         { no: 68, korean: "회사", meaning: "perusahaan", category: "Bab 5" },
         { no: 69, korean: "학교", meaning: "sekolah", category: "Bab 5" },
@@ -5480,7 +5831,7 @@
         { no: 87, korean: "새해 첫날", meaning: "hari pertama tahun baru", category: "Bab 5" },
         { no: 88, korean: "그리고", meaning: "lalu, kemudian", category: "Bab 5" },
         { no: 89, korean: "개인", meaning: "pribadi", category: "Bab 5" },
-        { no: 90, korean: "종교", meaning: "agana", category: "Bab 5" },
+        { no: 90, korean: "종교", meaning: "agama", category: "Bab 5" },
         { no: 91, korean: "존중되다", meaning: "dihormati", category: "Bab 5" },
         { no: 92, korean: "예수님", meaning: "yesus", category: "Bab 5" },
         { no: 93, korean: "부처님", meaning: "buda gautama", category: "Bab 5" },
@@ -5502,7 +5853,124 @@
         { no: 109, korean: "받다", meaning: "mendapatkan, menerima", category: "Bab 5" },
         { no: 110, korean: "해프닝", meaning: "happening, kejadian tidak terduka", category: "Bab 5" },
         { no: 111, korean: "일어나다", meaning: "muncul, bangun, ada", category: "Bab 5" },
-        { no: 112, korean: "기도하다", meaning: "terkadang", category: "Bab 5" },
+        { no: 112, korean: "기도 하다", meaning: "terkadang", category: "Bab 5" },
+
+        { no: 1, korean: "하루 일과", meaning: "rutinitas harian", category: "Bab 6" },
+        { no: 2, korean: "몇", meaning: "berapa", category: "Bab 6" },
+        { no: 3, korean: "출근하다", meaning: "berangkat kerja", category: "Bab 6" },
+        { no: 4, korean: "시간", meaning: "waktu, jam lamanya", category: "Bab 6" },
+        { no: 5, korean: "관계/관련", meaning: "berhubungan, berkaitan", category: "Bab 6" },
+        { no: 6, korean: "일과", meaning: "kegiatan sehari hari", category: "Bab 6" },
+        { no: 7, korean: "어휘", meaning: "kosa kata", category: "Bab 6" },
+        { no: 8, korean: "직장인", meaning: "pekerja kantoran", category: "Bab 6" },
+        { no: 9, korean: "하루", meaning: "sehari", category: "Bab 6" },
+        { no: 10, korean: "말하다", meaning: "berbicara, menyebut", category: "Bab 6" },
+        { no: 11, korean: "묻다", meaning: "bertanya", category: "Bab 6" },
+        { no: 12, korean: "대답하다", meaning: "menjawab", category: "Bab 6" },
+        { no: 13, korean: "시", meaning: "satuan jam", category: "Bab 6" },
+        { no: 14, korean: "오전", meaning: "am", category: "Bab 6" },
+        { no: 15, korean: "오후", meaning: "pm", category: "Bab 6" },
+        { no: 16, korean: "반", meaning: "setengah", category: "Bab 6" },
+        { no: 17, korean: "분", meaning: "satuan menit", category: "Bab 6" },
+        { no: 18, korean: "아침", meaning: "pagi", category: "Bab 6" },
+        { no: 19, korean: "점심", meaning: "siang", category: "Bab 6" },
+        { no: 20, korean: "저녁", meaning: "petang, malam", category: "Bab 6" },
+        { no: 21, korean: "새벽", meaning: "subuh", category: "Bab 6" },
+        { no: 22, korean: "낮", meaning: "siang", category: "Bab 6" },
+        { no: 23, korean: "밤", meaning: "malam", category: "Bab 6" },
+        { no: 24, korean: "보통", meaning: "biasanya", category: "Bab 6" },
+        { no: 25, korean: "요즘", meaning: "akhir akhir ini", category: "Bab 6" },
+        { no: 26, korean: "그림을 보다", meaning: "melihat gambar", category: "Bab 6" },
+        { no: 27, korean: "대화", meaning: "percakapan", category: "Bab 6" },
+        { no: 28, korean: "기숙사", meaning: "asrama", category: "Bab 6" },
+        { no: 29, korean: "문장", meaning: "kalimat", category: "Bab 6" },
+        { no: 30, korean: "쓰다", meaning: "menulis", category: "Bab 6" },
+        { no: 31, korean: "보다", meaning: "melihat", category: "Bab 6" },
+        { no: 32, korean: "어디에", meaning: "dimana/kemana", category: "Bab 6" },
+        { no: 33, korean: "보기", meaning: "contoh", category: "Bab 6" },
+        { no: 34, korean: "집", meaning: "rumah", category: "Bab 6" },
+        { no: 35, korean: "제시되다", meaning: "disediakan", category: "Bab 6" },
+        { no: 36, korean: "표현", meaning: "ekspresi", category: "Bab 6" },
+        { no: 37, korean: "활용하다", meaning: "memanfaatkan", category: "Bab 6" },
+        { no: 38, korean: "일어나다", meaning: "bangun tidur", category: "Bab 6" },
+        { no: 39, korean: "씻다", meaning: "membasuh muka, mencuci muka", category: "Bab 6" },
+        { no: 40, korean: "이를 닦다", meaning: "menggosok gigi", category: "Bab 6" },
+        { no: 41, korean: "식사하다", meaning: "makan", category: "Bab 6" },
+        { no: 42, korean: "퇴근하다", meaning: "pulang kerja", category: "Bab 6" },
+        { no: 43, korean: "게임하다", meaning: "bermain game", category: "Bab 6" },
+        { no: 44, korean: "청소하다", meaning: "membersihkan", category: "Bab 6" },
+        { no: 45, korean: "장을 보다", meaning: "belanja bulanan", category: "Bab 6" },
+        { no: 46, korean: "산책하다", meaning: "jalan jalan", category: "Bab 6" },
+        { no: 47, korean: "샤워하다/목욕하다", meaning: "mandi", category: "Bab 6" },
+        { no: 48, korean: "친구를 만나다", meaning: "bertemu teman", category: "Bab 6" },
+        { no: 49, korean: "휴게실", meaning: "ruang istirahat", category: "Bab 6" },
+        { no: 50, korean: "매점", meaning: "toko", category: "Bab 6" },
+        { no: 51, korean: "공원", meaning: "taman", category: "Bab 6" },
+        { no: 52, korean: "사다", meaning: "membeli", category: "Bab 6" },
+        { no: 53, korean: "편의점", meaning: "toko 24jam", category: "Bab 6" },
+        { no: 54, korean: "과일", meaning: "buah", category: "Bab 6" },
+        { no: 55, korean: "사무실", meaning: "kantor", category: "Bab 6" },
+        { no: 56, korean: "거실", meaning: "ruang tamu", category: "Bab 6" },
+        { no: 57, korean: "부엌", meaning: "dapur", category: "Bab 6" },
+        { no: 58, korean: "영화관", meaning: "bioskop", category: "Bab 6" },
+        { no: 59, korean: "유용하다", meaning: "penting, berguna", category: "Bab 6" },
+        { no: 60, korean: "잘 먹겠습니다", meaning: "selamat makan", category: "Bab 6" },
+        { no: 61, korean: "많이 드세요", meaning: "makanlah yang banyak", category: "Bab 6" },
+        { no: 62, korean: "대부분", meaning: "biasanya", category: "Bab 6" },
+        { no: 63, korean: "일", meaning: "hal, masalah, tanggal, pekerjaan, hari", category: "Bab 6" },
+        { no: 64, korean: "시작하다", meaning: "mulai", category: "Bab 6" },
+        { no: 65, korean: "지하철", meaning: "kereta bawah tanah", category: "Bab 6" },
+        { no: 66, korean: "버스", meaning: "bis", category: "Bab 6" },
+        { no: 67, korean: "같다", meaning: "sama, seperti", category: "Bab 6" },
+        { no: 68, korean: "대중교통", meaning: "transportasi umum", category: "Bab 6" },
+        { no: 69, korean: "이용하다", meaning: "menggunakan", category: "Bab 6" },
+        { no: 70, korean: "기도 하다", meaning: "terkadang", category: "Bab 6" },
+        { no: 71, korean: "개인 승용차", meaning: "kendaraan pribadi", category: "Bab 6" },
+        { no: 72, korean: "출퇴근", meaning: "berangkat dan pulang kerja", category: "Bab 6" },
+        { no: 73, korean: "시간", meaning: "waktu", category: "Bab 6" },
+        { no: 74, korean: "교통", meaning: "transportasi", category: "Bab 6" },
+        { no: 75, korean: "매우", meaning: "sangat", category: "Bab 6" },
+        { no: 76, korean: "혼잡하다", meaning: "ramai, padat, rumit", category: "Bab 6" },
+        { no: 77, korean: "예기치 않다", meaning: "tidak terduka, mendadak", category: "Bab 6" },
+        { no: 78, korean: "어렵다", meaning: "sulit, susah", category: "Bab 6" },
+        { no: 79, korean: "겪다", meaning: "mengalami", category: "Bab 6" },
+        { no: 80, korean: "보통", meaning: "biasanya", category: "Bab 6" },
+        { no: 81, korean: "사이", meaning: "antara", category: "Bab 6" },
+        { no: 82, korean: "구내식당", meaning: "kantin", category: "Bab 6" },
+        { no: 83, korean: "근처", meaning: "sekitar", category: "Bab 6" },
+        { no: 84, korean: "부서", meaning: "devisi", category: "Bab 6" },
+        { no: 85, korean: "회사", meaning: "perusahaan", category: "Bab 6" },
+        { no: 86, korean: "업무", meaning: "tugas", category: "Bab 6" },
+        { no: 87, korean: "이야기", meaning: "cerita", category: "Bab 6" },
+        { no: 88, korean: "함께", meaning: "bersama", category: "Bab 6" },
+        { no: 89, korean: "경우", meaning: "kondisi, situasi, apabila", category: "Bab 6" },
+        { no: 90, korean: "많다", meaning: "banyak", category: "Bab 6" },
+        { no: 91, korean: "일부", meaning: "sebagian", category: "Bab 6" },
+        { no: 92, korean: "간단하다", meaning: "sederhana", category: "Bab 6" },
+        { no: 93, korean: "취미", meaning: "hobi", category: "Bab 6" },
+        { no: 94, korean: "활동", meaning: "kegiatan", category: "Bab 6" },
+        { no: 95, korean: "지만", meaning: "tetapi", category: "Bab 6" },
+        { no: 96, korean: "다", meaning: "semua", category: "Bab 6" },
+        { no: 97, korean: "끝나다", meaning: "selesai", category: "Bab 6" },
+        { no: 98, korean: "야근하다", meaning: "lembur, kerja malam", category: "Bab 6" },
+        { no: 99, korean: "후에", meaning: "setelah", category: "Bab 6" },
+        { no: 100, korean: "쌓인 피로", meaning: "kelelahan yg menumpuk", category: "Bab 6" },
+        { no: 101, korean: "스트레스를 풀다", meaning: "melepas stres", category: "Bab 6" },
+        { no: 102, korean: "팀워크", meaning: "tim kerja", category: "Bab 6" },
+        { no: 103, korean: "다지다", meaning: "mempererat, memadatkan", category: "Bab 6" },
+        { no: 104, korean: "기 위해", meaning: "untuk", category: "Bab 6" },
+        { no: 105, korean: "상사", meaning: "atasan", category: "Bab 6" },
+        { no: 106, korean: "동료", meaning: "tekan kerja", category: "Bab 6" },
+        { no: 107, korean: "회식을 하다", meaning: "makan makan", category: "Bab 6" },
+        { no: 108, korean: "어떤", meaning: "sebagian, beberapa, bagaimana", category: "Bab 6" },
+        { no: 109, korean: "전", meaning: "sebelum", category: "Bab 6" },
+        { no: 110, korean: "자신", meaning: "diri sendiri", category: "Bab 6" },
+        { no: 111, korean: "건강", meaning: "kesehatan", category: "Bab 6" },
+        { no: 112, korean: "을 위해", meaning: "untuk", category: "Bab 6" },
+        { no: 113, korean: "자기 개발", meaning: "mengembangkan diri", category: "Bab 6" },
+        { no: 114, korean: "외국어", meaning: "bahasa asing", category: "Bab 6" },
+        { no: 115, korean: "학원", meaning: "lembaga pendidikan", category: "Bab 6" },
+        { no: 116, korean: "다니다", meaning: "pergi.", category: "Bab 6" }
       ];
 
       const APP_DATA_KEY = "koreanVocabLab.v2"; // v3 UI, same data key for compatibility
@@ -5793,11 +6261,18 @@
           return fallback;
         }
       }
+      function kvlScrollBehavior() {
+        try {
+          return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth";
+        } catch (e) { return "smooth"; }
+      }
       function showView(id) {
         views.forEach((viewId) =>
           $(viewId).classList.toggle("active", viewId === id)
         );
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: kvlScrollBehavior() });
       }
       function setAudioStatus(message, state = "loading") {
         document
@@ -6402,36 +6877,34 @@
         );
       }
       function syncChapterSelects() {
-        const cats =
-          typeof listCategories === "function"
-            ? listCategories()
-            : ["Bab 1", "Bab 2", "Bab 3"];
-        const value = settings.chapter || "all";
-        [
-          "chapterFilter",
-          "quizChapter",
-          "memoryChapter",
-          "writeChapter",
-          "listenChapter",
-        ].forEach((id) => {
+        const cats = typeof listCategories === "function"
+          ? listCategories()
+          : ["Bab 1", "Bab 2", "Bab 3", "Bab 4", "Bab 5", "Bab 6"];
+        // settings.chapter is the one authoritative scope restored from the existing settings key.
+        const savedScope = String((settings && settings.chapter) || "all");
+        const value = (savedScope === "all" || savedScope === "Semua" || cats.includes(savedScope))
+          ? (savedScope === "Semua" ? "all" : savedScope)
+          : "all";
+        settings.chapter = value;
+        ["chapterFilter", "quizChapter", "memoryChapter", "writeChapter", "listenChapter", "flashChapter"].forEach((id) => {
           const el = $(id);
           if (!el) return;
-          const prev = el.value || value;
           el.replaceChildren();
-          const o0 = document.createElement("option");
-          o0.value = "all";
-          o0.textContent = "Semua bab";
-          el.append(o0);
-          cats.forEach((c) => {
-            const o = document.createElement("option");
-            o.value = c;
-            o.textContent = c;
-            el.append(o);
+          const allOption = document.createElement("option");
+          allOption.value = "all";
+          allOption.textContent = "Semua bab";
+          el.append(allOption);
+          cats.forEach((category) => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            el.append(option);
           });
-          el.value = [...el.options].some((o) => o.value === prev)
-            ? prev
-            : value;
+          // Do not preserve a stale DOM/default/browser-restored value over localStorage.
+          el.value = value;
+          if (el.value !== value) el.value = "all";
         });
+        if (savedScope !== value && typeof persistSettings === "function") persistSettings();
       }
       function onChapterChange(sourceId) {
         const el = $(sourceId);
@@ -6444,6 +6917,7 @@
           "memoryChapter",
           "writeChapter",
           "listenChapter",
+          "flashChapter",
         ].forEach((id) => {
           const x = $(id);
           if (x) x.value = settings.chapter;
@@ -7629,7 +8103,7 @@
         vocabulary.forEach((v) => {
           if (v.category) set.add(v.category);
         });
-        const preferred = ["Bab 1", "Bab 2", "Bab 3"];
+        const preferred = ["Bab 1", "Bab 2", "Bab 3", "Bab 4", "Bab 5", "Bab 6"];
         const rest = [...set]
           .filter((c) => !preferred.includes(c))
           .sort((a, b) => a.localeCompare(b, "id"));
@@ -8387,7 +8861,7 @@
         hideNotice("singleVocabNotice");
         $("vocabKorean").focus();
         $("vocabKorean").scrollIntoView({
-          behavior: "smooth",
+          behavior: kvlScrollBehavior(),
           block: "center",
         });
       }
@@ -8678,7 +9152,1019 @@
         );
       }
 
-      function renderVocabularyList(query = "") {
+      
+/* ===== Vocab form reference (swipe DASAR/FORMAL/INFORMAL/BANMAL) ===== */
+var VOCAB_FORM_ORDER = ["DASAR", "FORMAL", "INFORMAL", "BANMAL"];
+var VOCAB_FORM_LABELS = { DASAR: "DASAR", FORMAL: "FORMAL", INFORMAL: "INFORMAL", BANMAL: "BANMAL" };
+var __vocabFormState = Object.create(null); // uid -> index 0..3
+
+function hangulSyllableParts(ch) {
+  var code = String(ch || "").charCodeAt(0) - 0xac00;
+  if (code < 0 || code > 11171 || isNaN(code)) return null;
+  return {
+    cho: Math.floor(code / 588),
+    jung: Math.floor((code % 588) / 28),
+    jong: code % 28,
+  };
+}
+function assembleHangul(cho, jung, jong) {
+  return String.fromCharCode(0xac00 + cho * 588 + jung * 28 + (jong || 0));
+}
+function lastHangulHasBatchim(word) {
+  var s = String(word || "").trim();
+  if (!s) return false;
+  var parts = hangulSyllableParts(s.charAt(s.length - 1));
+  return !!(parts && parts.jong !== 0);
+}
+
+/** Curated irregular / high-frequency overrides (dictionary form → forms). */
+var VOCAB_FORM_OVERRIDES = {
+  "하다": { DASAR: "하다", FORMAL: "합니다", INFORMAL: "해요", BANMAL: "해" },
+  "되다": { DASAR: "되다", FORMAL: "됩니다", INFORMAL: "돼요", BANMAL: "돼" },
+  "있다": { DASAR: "있다", FORMAL: "있습니다", INFORMAL: "있어요", BANMAL: "있어" },
+  "없다": { DASAR: "없다", FORMAL: "없습니다", INFORMAL: "없어요", BANMAL: "없어" },
+  "가다": { DASAR: "가다", FORMAL: "갑니다", INFORMAL: "가요", BANMAL: "가" },
+  "오다": { DASAR: "오다", FORMAL: "옵니다", INFORMAL: "와요", BANMAL: "와" },
+  "먹다": { DASAR: "먹다", FORMAL: "먹습니다", INFORMAL: "먹어요", BANMAL: "먹어" },
+  "마시다": { DASAR: "마시다", FORMAL: "마십니다", INFORMAL: "마셔요", BANMAL: "마셔" },
+  "보다": { DASAR: "보다", FORMAL: "봅니다", INFORMAL: "봐요", BANMAL: "봐" },
+  "쓰다": { DASAR: "쓰다", FORMAL: "씁니다", INFORMAL: "써요", BANMAL: "써" },
+  "따르다": { DASAR: "따르다", FORMAL: "따릅니다", INFORMAL: "따라요", BANMAL: "따라" },
+  "치르다": { DASAR: "치르다", FORMAL: "치릅니다", INFORMAL: "치러요", BANMAL: "치러" },
+  "가볍다": { DASAR: "가볍다", FORMAL: "가볍습니다", INFORMAL: "가벼워요", BANMAL: "가벼워" },
+  "아름답다": { DASAR: "아름답다", FORMAL: "아름답습니다", INFORMAL: "아름다워요", BANMAL: "아름다워" },
+  "뜨겁다": { DASAR: "뜨겁다", FORMAL: "뜨겁습니다", INFORMAL: "뜨거워요", BANMAL: "뜨거워" },
+  "듣다": { DASAR: "듣다", FORMAL: "듣습니다", INFORMAL: "들어요", BANMAL: "들어" },
+  "걷다": { DASAR: "걷다", FORMAL: "걷습니다", INFORMAL: "걸어요", BANMAL: "걸어" },
+  "살다": { DASAR: "살다", FORMAL: "삽니다", INFORMAL: "살아요", BANMAL: "살아" },
+  "알다": { DASAR: "알다", FORMAL: "압니다", INFORMAL: "알아요", BANMAL: "알아" },
+  "만들다": { DASAR: "만들다", FORMAL: "만듭니다", INFORMAL: "만들어요", BANMAL: "만들어" },
+  "놀다": { DASAR: "놀다", FORMAL: "놉니다", INFORMAL: "놀아요", BANMAL: "놀아" },
+  "돕다": { DASAR: "돕다", FORMAL: "돕습니다", INFORMAL: "도와요", BANMAL: "도와" },
+  "춥다": { DASAR: "춥다", FORMAL: "춥습니다", INFORMAL: "추워요", BANMAL: "추워" },
+  "덥다": { DASAR: "덥다", FORMAL: "덥습니다", INFORMAL: "더워요", BANMAL: "더워" },
+  "쉽다": { DASAR: "쉽다", FORMAL: "쉽습니다", INFORMAL: "쉬워요", BANMAL: "쉬워" },
+  "어렵다": { DASAR: "어렵다", FORMAL: "어렵습니다", INFORMAL: "어려워요", BANMAL: "어려워" },
+  "가깝다": { DASAR: "가깝다", FORMAL: "가깝습니다", INFORMAL: "가까워요", BANMAL: "가까워" },
+  "반갑다": { DASAR: "반갑다", FORMAL: "반갑습니다", INFORMAL: "반가워요", BANMAL: "반가워" },
+  "작다": { DASAR: "작다", FORMAL: "작습니다", INFORMAL: "작아요", BANMAL: "작아" },
+  "크다": { DASAR: "크다", FORMAL: "큽니다", INFORMAL: "커요", BANMAL: "커" },
+  "좋다": { DASAR: "좋다", FORMAL: "좋습니다", INFORMAL: "좋아요", BANMAL: "좋아" },
+  "많다": { DASAR: "많다", FORMAL: "많습니다", INFORMAL: "많아요", BANMAL: "많아" },
+  "적다": { DASAR: "적다", FORMAL: "적습니다", INFORMAL: "적어요", BANMAL: "적어" },
+  "이다": { DASAR: "이다", FORMAL: "입니다", INFORMAL: "이에요", BANMAL: "이야" },
+  "아니다": { DASAR: "아니다", FORMAL: "아닙니다", INFORMAL: "아니에요", BANMAL: "아니야" },
+};
+
+/** Particles / function words that must not get fake speech-level variants. */
+var VOCAB_FIXED_WORDS = {
+  "은": 1, "는": 1, "이": 1, "가": 1, "을": 1, "를": 1, "의": 1, "에": 1, "에서": 1,
+  "으로": 1, "로": 1, "와": 1, "과": 1, "하고": 1, "도": 1, "만": 1, "부터": 1, "까지": 1,
+  "에게": 1, "한테": 1, "께": 1, "처럼": 1, "마다": 1, "밖에": 1,
+  "및": 1, "등": 1, "또": 1, "또는": 1, "그리고": 1, "그러나": 1, "그래서": 1,
+  "지만": 1, "는데": 1, "는 데": 1, "기때문에": 1, "기 때문에": 1, "-기 때문에": 1, "때문에": 1, "때문": 1,
+  "로/으로": 1, "로/으로 인해": 1, "라고/이라고": 1,
+  "뿐만 아니라": 1, "상관 없이": 1, "더 이상": 1, "기 위해": 1,
+  // Known particles, connectives, adverbs, and attributive forms from the built-in data.
+  "로": 1, "으로": 1, "게": 1, "여": 1, "인지": 1, "대한": 1, "대해": 1, "통해": 1,
+  "기준으로": 1, "이건": 1, "저건": 1, "그건": 1,
+  "같이": 1, "함께": 1, "주로": 1, "자주": 1, "종종": 1, "정기적으로": 1,
+  "아직": 1, "이렇게": 1, "이따": 1, "또한": 1, "가장": 1, "다만": 1,
+  "훨씬": 1, "여러": 1, "알맞은": 1, "세계적인": 1, "나누어 주는": 1,
+  "특정": 1, "매일": 1, "언제든지": 1, "진짜": 1,
+  "저": 1, "네": 1, "아니요": 1, "끼리": 1, "따라": 1, "며": 1, "한편": 1,
+  "공적인": 1, "효율적으로": 1, "이 외에": 1, "한": 1, "씨": 1, "이르기까지": 1,
+  "기 때문에": 1, "-기 때문에": 1,
+  // Chapter 6 context-sensitive adverbs, particles, and incomplete grammar fragments.
+  "어디에": 1, "보통": 1, "요즘": 1, "매우": 1, "대부분": 1,
+  "후에": 1, "다": 1, "전": 1, "을 위해": 1, "를 위해": 1, "위해": 1,
+};
+
+/**
+ * Grammar-pattern headwords (auxiliary / connective constructions).
+ * Forms conjugate the AUXILIARY predicate only; placeholder 아/어 is preserved.
+ * keyed by exact vocabulary.korean string as stored in the dataset.
+ */
+var VOCAB_GRAMMAR_PATTERNS = {
+  "아/어 있다": {
+    DASAR: "아/어 있다",
+    FORMAL: "아/어 있습니다",
+    INFORMAL: "아/어 있어요",
+    BANMAL: "아/어 있어",
+    variable: true,
+  },
+  "아/어 주다": {
+    DASAR: "아/어 주다",
+    FORMAL: "아/어 줍니다",
+    INFORMAL: "아/어 줘요",
+    BANMAL: "아/어 줘",
+    variable: true,
+  },
+  "아/어 지다": {
+    DASAR: "아/어 지다",
+    FORMAL: "아/어 집니다",
+    INFORMAL: "아/어 져요",
+    BANMAL: "아/어 져",
+    variable: true,
+  },
+  "아/었던": {
+    DASAR: "아/었던",
+    FORMAL: "아/었던",
+    INFORMAL: "아/었던",
+    BANMAL: "아/었던",
+    variable: false,
+  },
+  "지 않다": {
+    DASAR: "지 않다",
+    FORMAL: "지 않습니다",
+    INFORMAL: "지 않아요",
+    BANMAL: "지 않아",
+    variable: true,
+  },
+};
+
+/** Interrogatives / determiners — not noun+copula targets. */
+var VOCAB_INTERROGATIVES = {
+  "뭐": 1, "무엇": 1, "무슨": 1, "어디": 1, "언제": 1, "누구": 1, "왜": 1,
+  "어떻게": 1, "얼마": 1, "몇": 1, "어느": 1, "어떤": 1,
+};
+
+/** Whole-entry fixed greetings / set phrases. */
+var VOCAB_FIXED_PHRASES = {
+  "안녕하세요": 1,
+  "안녕하십니까": 1,
+  "안녕": 1,
+  "잘 부탁드립니다": 1,
+  "처음 뵙겠습니다": 1,
+  "내일 뵙겠습니다": 1,
+};
+
+function isMostlyHangul(str) {
+  var s = String(str || "").trim();
+  if (!s) return false;
+  var hangul = 0, total = 0;
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charCodeAt(i);
+    if (c <= 32) continue;
+    total++;
+    if ((c >= 0xac00 && c <= 0xd7a3) || c === 0x30fc) hangul++;
+  }
+  return total > 0 && hangul / total >= 0.7;
+}
+
+function looksAlreadyPolite(k) {
+  return /(습니다|ㅂ니다|겠습니다|십시오|세요|십니다|이에요|예요|입니다)\s*$/.test(k);
+}
+
+/**
+ * Classify a single token (no slash). Returns one of:
+ * verb | noun | particle | interrogative | fixed | other
+ */
+function classifyKoreanToken(token) {
+  var t = String(token || "").trim();
+  if (!t) return "other";
+  if (VOCAB_FIXED_WORDS[t] || VOCAB_FIXED_PHRASES[t]) return "particle";
+  if (VOCAB_INTERROGATIVES[t]) return "interrogative";
+  if (VOCAB_FORM_OVERRIDES[t]) return "verb";
+  if (looksAlreadyPolite(t)) return "fixed";
+  // Dictionary verb/adj: ends with 다, single-ish hangul word
+  if (t.endsWith("다") && isMostlyHangul(t) && t.indexOf(" ") < 0 && t.length >= 2) {
+    if (!/(습니다|ㅂ니다|아요|어요)$/.test(t)) return "verb";
+  }
+  // Noun-like: hangul, not ending 다, not particle
+  if (isMostlyHangul(t) && !t.endsWith("다") && t.indexOf("/") < 0) return "noun";
+  return "other";
+}
+
+function replaceLastHangulVowel(word, vowelIndex, finalIndex) {
+  var value = String(word || "");
+  if (!value) return value;
+  var last = value.charAt(value.length - 1);
+  var parts = hangulSyllableParts(last);
+  if (!parts) return value;
+  var jong = typeof finalIndex === "number" ? finalIndex : parts.jong;
+  return value.slice(0, -1) + assembleHangul(parts.cho, vowelIndex, jong);
+}
+
+/**
+ * Attach the present informal-polite / banmal ending to a dictionary stem.
+ * This is deliberately conservative: explicit lexical overrides are applied
+ * first for irregulars whose spelling depends on the word's meaning.
+ */
+function conjugateAeoStem(stem) {
+  var value = String(stem || "");
+  if (!value) return null;
+  var last = value.charAt(value.length - 1);
+  var p = hangulSyllableParts(last);
+  if (!p) return null;
+
+  // 르 irregular: add ㄹ to the preceding syllable and change 르 to 라/러.
+  // Lexical exceptions (따르다, 치르다) are handled by the override table.
+  if (p.cho === 5 && p.jung === 18 && p.jong === 0 && value.length > 1) {
+    var beforeReu = value.charAt(value.length - 2);
+    var beforeParts = hangulSyllableParts(beforeReu);
+    if (beforeParts) {
+      var useAAfterReu = beforeParts.jung === 0 || beforeParts.jung === 8;
+      var reuVowel = useAAfterReu ? 0 : 4;
+      var previousStem = value.slice(0, -2);
+      var priorJong = beforeParts.jong === 0 ? 8 : beforeParts.jong;
+      previousStem += assembleHangul(beforeParts.cho, beforeParts.jung, priorJong);
+      var reuStem = previousStem + assembleHangul(p.cho, reuVowel, 0);
+      return { INFORMAL: reuStem + "요", BANMAL: reuStem };
+    }
+  }
+
+  // ㅡ irregular: drop ㅡ and choose 아/어 from the preceding vowel.
+  if (p.jung === 18 && p.jong === 0) {
+    var previous = value.length > 1 ? hangulSyllableParts(value.charAt(value.length - 2)) : null;
+    var useAAfterEu = !!(previous && (previous.jung === 0 || previous.jung === 8));
+    var replacementVowel = useAAfterEu ? 0 : 4;
+    var euStem = replaceLastHangulVowel(value, replacementVowel, 0);
+    return { INFORMAL: euStem + "요", BANMAL: euStem };
+  }
+
+  // Common vowel contractions: ㅗ→ㅘ, ㅜ→ㅝ, ㅣ→ㅕ, ㅚ→ㅙ.
+  // Retain the initial consonant of the final syllable.
+  if (p.jong === 0 && p.jung === 8) {
+    var oStem = replaceLastHangulVowel(value, 9, 0);
+    return { INFORMAL: oStem + "요", BANMAL: oStem };
+  }
+  if (p.jong === 0 && p.jung === 13) {
+    var uStem = replaceLastHangulVowel(value, 14, 0);
+    return { INFORMAL: uStem + "요", BANMAL: uStem };
+  }
+  if (p.jong === 0 && p.jung === 20) {
+    var iStem = replaceLastHangulVowel(value, 6, 0);
+    return { INFORMAL: iStem + "요", BANMAL: iStem };
+  }
+  // ㅟ usually keeps its vowel before 어요: 쉬다→쉬어요, 바뀌다→바뀌어요.
+  if (p.jong === 0 && p.jung === 16) {
+    return { INFORMAL: value + "어요", BANMAL: value + "어" };
+  }
+  if (p.jong === 0 && p.jung === 11) {
+    var oeStem = replaceLastHangulVowel(value, 10, 0);
+    return { INFORMAL: oeStem + "요", BANMAL: oeStem };
+  }
+
+  // An open syllable already ending in a usable vowel takes 요 directly:
+  // 가→가요, 서→서요, 보내→보내요, 켜→켜요. A closed syllable takes 아요/어요.
+  if (p.jong === 0) return { INFORMAL: value + "요", BANMAL: value };
+  var useA = p.jung === 0 || p.jung === 8;
+  return {
+    INFORMAL: value + (useA ? "아요" : "어요"),
+    BANMAL: value + (useA ? "아" : "어"),
+  };
+}
+
+function conjugateVerbAdj(dict) {
+  var k = String(dict || "").trim();
+  if (VOCAB_FORM_OVERRIDES[k]) {
+    var o = VOCAB_FORM_OVERRIDES[k];
+    return {
+      DASAR: o.DASAR,
+      FORMAL: o.FORMAL,
+      INFORMAL: o.INFORMAL,
+      BANMAL: o.BANMAL,
+      variable: true,
+      kind: "verb",
+    };
+  }
+  if (!k.endsWith("다") || k.length < 2) return null;
+  if (/(습니다|ㅂ니다|아요|어요|예요|이에요|입니다|니다)$/.test(k)) return null;
+  if (/[\/?]/.test(k)) return null;
+
+  var stem = k.slice(0, -1);
+  if (k.endsWith("하다")) {
+    var base = k.slice(0, -2);
+    return {
+      DASAR: k,
+      FORMAL: base + "합니다",
+      INFORMAL: base + "해요",
+      BANMAL: base + "해",
+      variable: true,
+      kind: "verb",
+    };
+  }
+  if (k.endsWith("되다")) {
+    var baseD = k.slice(0, -2);
+    return {
+      DASAR: k,
+      FORMAL: baseD + "됩니다",
+      INFORMAL: baseD + "돼요",
+      BANMAL: baseD + "돼",
+      variable: true,
+      kind: "verb",
+    };
+  }
+
+  var last = stem.charAt(stem.length - 1);
+  var parts = hangulSyllableParts(last);
+  if (!parts) return null;
+
+  // Present formal polite: stems ending in ㄹ replace that ㄹ with ㅂ
+  // before 니다 (살다→삽니다, 만들다→만듭니다); other open stems also take ㅂ니다.
+  var formal;
+  if (parts.jong === 0 || parts.jong === 8) {
+    formal = replaceLastHangulVowel(stem, parts.jung, 17) + "니다";
+  } else {
+    formal = stem + "습니다";
+  }
+
+  var aeo = conjugateAeoStem(stem);
+  if (!aeo) return null;
+  return {
+    DASAR: k,
+    FORMAL: formal,
+    INFORMAL: aeo.INFORMAL,
+    BANMAL: aeo.BANMAL,
+    variable: true,
+    kind: "verb",
+  };
+}
+function nounCopulaForms(noun) {
+  var n = String(noun || "").trim();
+  if (!n || !isMostlyHangul(n)) return null;
+  if (/[\/?]/.test(n)) return null;
+  if (VOCAB_INTERROGATIVES[n] || VOCAB_FIXED_PHRASES[n] || VOCAB_FIXED_WORDS[n])
+    return null;
+  if (looksAlreadyPolite(n)) return null;
+  var compact = n.replace(/\s+/g, "");
+  var hasBatchim = lastHangulHasBatchim(compact);
+  return {
+    DASAR: n,
+    FORMAL: n + "입니다",
+    INFORMAL: n + (hasBatchim ? "이에요" : "예요"),
+    BANMAL: n + (hasBatchim ? "이야" : "야"),
+    variable: true,
+    kind: "noun",
+  };
+}
+
+function formSingleToken(token) {
+  var t = String(token || "").trim();
+  if (!t) return null;
+  var cls = classifyKoreanToken(t);
+  if (cls === "particle" || cls === "interrogative" || cls === "fixed") {
+    return {
+      DASAR: t,
+      FORMAL: t,
+      INFORMAL: t,
+      BANMAL: t,
+      variable: false,
+      kind: "fixed",
+      reason:
+        cls === "interrogative"
+          ? "Kata tanya — tidak memakai kopula sebagai bentuk dasar."
+          : "Partikel/frasa tetap — bentuk tuturan tidak diganti.",
+    };
+  }
+  if (cls === "verb") {
+    var verb = conjugateVerbAdj(t);
+    if (verb) return verb;
+  }
+  if (cls === "noun") {
+    var noun = nounCopulaForms(t);
+    if (noun) return noun;
+  }
+  // Fallback: try verb then noun
+  var v2 = conjugateVerbAdj(t);
+  if (v2) return v2;
+  var n2 = nounCopulaForms(t);
+  if (n2) return n2;
+  return {
+    DASAR: t,
+    FORMAL: t,
+    INFORMAL: t,
+    BANMAL: t,
+    variable: false,
+    kind: "fixed",
+    reason: "Tidak ada variasi tingkat tutur yang aman untuk komponen ini.",
+  };
+}
+
+function joinFormParts(parts, label, original) {
+  var transformed = parts.map(function (p) {
+    return p.variable ? p[label] || p.DASAR : p.DASAR;
+  });
+  if (!transformed.length) return "";
+  // Preserve each slash's exact surrounding whitespace from the original headword.
+  var separators = String(original || "").match(/\s*\/\s*/g) || [];
+  var output = transformed[0];
+  for (var i = 1; i < transformed.length; i++) {
+    output += (separators[i - 1] != null ? separators[i - 1] : "/") + transformed[i];
+  }
+  return output;
+}
+
+/** Slash-separated alternatives: conjugate each side independently. */
+function formsFromSlashEntry(k) {
+  var rawParts = k.split("/");
+  var parts = rawParts.map(function (p) {
+    return formSingleToken(p.trim());
+  });
+  if (!parts.length || parts.some(function (p) { return !p; })) return null;
+
+  // If every part is a greeting / polite / fixed → whole entry fixed
+  var allFixed = parts.every(function (p) { return !p.variable; });
+  if (allFixed) {
+    return {
+      DASAR: k,
+      FORMAL: k,
+      INFORMAL: k,
+      BANMAL: k,
+      variable: false,
+      kind: "fixed",
+      reason: "Alternatif slash tidak memiliki bentuk tuturan yang aman.",
+    };
+  }
+
+  // Avoid nonsense like 무슨입니다 when mix is mostly interrogative
+  var anyInterrog = rawParts.some(function (p) {
+    return classifyKoreanToken(p.trim()) === "interrogative";
+  });
+  var anyGreeting = rawParts.some(function (p) {
+    var t = p.trim();
+    return VOCAB_FIXED_PHRASES[t] || looksAlreadyPolite(t);
+  });
+  if (anyInterrog || anyGreeting) {
+    // Only keep variable forms for truly conjugatable sides; others stay
+    // but if majority fixed, freeze whole entry
+    var varCount = parts.filter(function (p) { return p.variable; }).length;
+    if (varCount === 0 || anyGreeting) {
+      return {
+        DASAR: k,
+        FORMAL: k,
+        INFORMAL: k,
+        BANMAL: k,
+        variable: false,
+        kind: "fixed",
+        reason: "Salam/kata tanya — tetap bentuk dasar.",
+      };
+    }
+  }
+
+  var kind = parts.every(function (p) { return !p.variable || p.kind === "verb"; })
+    ? "verb"
+    : parts.every(function (p) { return !p.variable || p.kind === "noun"; })
+    ? "noun"
+    : "mixed";
+  return {
+    DASAR: joinFormParts(parts, "DASAR", k),
+    FORMAL: joinFormParts(parts, "FORMAL", k),
+    INFORMAL: joinFormParts(parts, "INFORMAL", k),
+    BANMAL: joinFormParts(parts, "BANMAL", k),
+    variable: true,
+    kind: kind,
+  };
+}
+
+/**
+ * Multiword:
+ * 1) Final dictionary verb/adj → conjugate predicate only
+ * 2) All-noun phrase (e.g. 법정 공휴일) → noun+copula on whole phrase
+ * 3) Otherwise fixed
+ */
+function formsFromMultiword(k) {
+  var tokens = k.trim().split(/\s+/).filter(Boolean);
+  if (tokens.length < 2) return null;
+
+  if (
+    looksAlreadyPolite(k) ||
+    VOCAB_FIXED_PHRASES[k] ||
+    /^(안녕하세요|안녕하십니까|잘 부탁드립니다|처음 뵙겠습니다|내일 뵙겠습니다)/.test(k)
+  ) {
+    return {
+      DASAR: k,
+      FORMAL: k,
+      INFORMAL: k,
+      BANMAL: k,
+      variable: false,
+      kind: "fixed",
+      reason: "Frasa/kalimat tetap — tidak diganti tingkat tutur.",
+    };
+  }
+
+  var last = tokens[tokens.length - 1];
+  var head = tokens.slice(0, -1).join(" ");
+  var lastCls = classifyKoreanToken(last);
+
+  if (lastCls === "verb") {
+    var lastForms = conjugateVerbAdj(last);
+    if (lastForms && lastForms.variable) {
+      function withHead(label) {
+        return head + " " + (lastForms[label] || lastForms.DASAR);
+      }
+      return {
+        DASAR: withHead("DASAR"),
+        FORMAL: withHead("FORMAL"),
+        INFORMAL: withHead("INFORMAL"),
+        BANMAL: withHead("BANMAL"),
+        variable: true,
+        kind: "verb",
+      };
+    }
+  }
+
+  // Noun phrase: every token noun-like or short hangul modifier
+  var allNounish = tokens.every(function (tok) {
+    var c = classifyKoreanToken(tok);
+    return c === "noun" || (isMostlyHangul(tok) && !tok.endsWith("다") && c !== "verb");
+  });
+  if (allNounish) {
+    var nounPhrase = nounCopulaForms(k);
+    if (nounPhrase) return nounPhrase;
+  }
+
+  // Parenthetical dictionary form: 반가움 (반갑다)
+  var paren = k.match(/\(([^)]+)\)/);
+  if (paren) {
+    var inner = formSingleToken(paren[1].trim());
+    if (inner && inner.variable) {
+      return {
+        DASAR: k,
+        FORMAL: k.replace(paren[0], "(" + inner.FORMAL + ")"),
+        INFORMAL: k.replace(paren[0], "(" + inner.INFORMAL + ")"),
+        BANMAL: k.replace(paren[0], "(" + inner.BANMAL + ")"),
+        variable: true,
+        kind: inner.kind,
+      };
+    }
+  }
+
+  return {
+    DASAR: k,
+    FORMAL: k,
+    INFORMAL: k,
+    BANMAL: k,
+    variable: false,
+    kind: "fixed",
+    reason: "Frasa multiword tanpa predikat/nomina yang jelas.",
+  };
+}
+
+function getVocabSpeechForms(korean, meaning) {
+  var k = String(korean || "").trim();
+  var fixed = function (reason) {
+    return {
+      DASAR: k || "—",
+      FORMAL: k || "—",
+      INFORMAL: k || "—",
+      BANMAL: k || "—",
+      variable: false,
+      kind: "fixed",
+      reason: reason || "Kata ini tidak berubah menurut tingkat tutur.",
+    };
+  };
+  if (!k) return fixed("Kosong");
+
+  // 묻다 is meaning-sensitive: “bertanya” is ㄷ-irregular (물어요), while
+  // “mengubur” is regular (묻어요). Do not guess when no sense is supplied.
+  if (k === "묻다") {
+    var sense = String(meaning || "").toLowerCase();
+    if (/(bertanya|menanya|menanyakan|ask|inquir|question)/.test(sense)) {
+      return {
+        DASAR: k, FORMAL: "묻습니다", INFORMAL: "물어요", BANMAL: "물어",
+        variable: true, kind: "verb",
+      };
+    }
+    if (/(mengubur|menimbun|bury|burial)/.test(sense)) {
+      return {
+        DASAR: k, FORMAL: "묻습니다", INFORMAL: "묻어요", BANMAL: "묻어",
+        variable: true, kind: "verb",
+      };
+    }
+    return fixed("Bentuk 묻다 bergantung pada makna (bertanya atau mengubur); arti diperlukan agar tidak menebak bentuk yang salah.");
+  }
+
+  // Grammar-pattern auxiliaries (아/어 있다, 아/어 주다, …)
+  if (typeof VOCAB_GRAMMAR_PATTERNS !== "undefined" && VOCAB_GRAMMAR_PATTERNS[k]) {
+    var gp = VOCAB_GRAMMAR_PATTERNS[k];
+    var gpVar = gp.variable === true;
+    return {
+      DASAR: gp.DASAR,
+      FORMAL: gp.FORMAL,
+      INFORMAL: gp.INFORMAL,
+      BANMAL: gp.BANMAL,
+      variable: gpVar,
+      kind: "grammar",
+    };
+  }
+
+  // Exact fixed particles / function words / phrases
+  if (VOCAB_FIXED_WORDS[k] || VOCAB_FIXED_PHRASES[k])
+    return fixed("Partikel/frasa tetap — bentuk tuturan tidak diganti.");
+  if (VOCAB_INTERROGATIVES[k])
+    return fixed("Kata tanya — tidak memakai kopula sebagai bentuk dasar.");
+
+  // Explicit overrides (보다, irregulers, …)
+  if (VOCAB_FORM_OVERRIDES[k]) {
+    var o = VOCAB_FORM_OVERRIDES[k];
+    return {
+      DASAR: o.DASAR,
+      FORMAL: o.FORMAL,
+      INFORMAL: o.INFORMAL,
+      BANMAL: o.BANMAL,
+      variable: true,
+      kind: "verb",
+    };
+  }
+
+  // Slash-separated alternatives
+  if (k.indexOf("/") >= 0) {
+    var slashForms = formsFromSlashEntry(k);
+    if (slashForms) return slashForms;
+  }
+
+  // Multiword
+  if (/\s/.test(k)) {
+    return formsFromMultiword(k) || fixed("Frasa multiword.");
+  }
+
+  // Single token via classifier
+  return formSingleToken(k) || fixed("Tidak ada variasi tingkat tutur yang aman untuk kata ini.");
+}
+
+// Back-compat aliases used elsewhere
+function isConjugableKorean(korean, meaning) {
+  var f = getVocabSpeechForms(korean, meaning);
+  return !!(f && f.variable && f.kind === "verb");
+}
+function conjugateKoreanForms(dict, meaning) {
+  var f = getVocabSpeechForms(dict, meaning);
+  if (!f || !f.variable) return null;
+  return { DASAR: f.DASAR, FORMAL: f.FORMAL, INFORMAL: f.INFORMAL, BANMAL: f.BANMAL };
+}
+
+function vocabFormUid(item) {
+  return (item && (item.uid || ("base-" + item.no))) || "";
+}
+function getVocabFormIndex(uid) {
+  var n = __vocabFormState[uid];
+  return typeof n === "number" && n >= 0 && n < 4 ? n : 0;
+}
+function setVocabFormIndex(uid, idx) {
+  __vocabFormState[uid] = ((idx % 4) + 4) % 4;
+}
+
+/**
+ * Resolve a requested display mode into one canonical state for both the Hangul
+ * and its indicator. `variable` is supplied by the linguistic classifier; it
+ * is intentionally NOT inferred from whether generated strings differ.
+ */
+function resolveVocabFormState(item, requestedIdx, forms) {
+  var base = item && typeof item.korean === "string" && item.korean.trim()
+    ? item.korean.trim()
+    : (forms && typeof forms.DASAR === "string" ? forms.DASAR : "");
+  var computed = typeof getVocabSpeechForms === "function"
+    ? getVocabSpeechForms(base, item && item.meaning)
+    : null;
+  var source = computed || forms || {};
+  var modes = {
+    DASAR: base,
+    FORMAL: typeof source.FORMAL === "string" && source.FORMAL.length ? source.FORMAL : base,
+    INFORMAL: typeof source.INFORMAL === "string" && source.INFORMAL.length ? source.INFORMAL : base,
+    BANMAL: typeof source.BANMAL === "string" && source.BANMAL.length ? source.BANMAL : base,
+  };
+  var supportedKinds = { verb: true, noun: true, grammar: true, mixed: true };
+  var supported = source.variable === true && supportedKinds[source.kind] === true;
+  var n = Number(requestedIdx);
+  if (!isFinite(n)) n = 0;
+  n = ((n % 4) + 4) % 4;
+  var requestedMode = VOCAB_FORM_ORDER[n] || "DASAR";
+  var activeIndex = supported ? n : 0;
+  var activeMode = VOCAB_FORM_ORDER[activeIndex] || "DASAR";
+  return {
+    requestedMode: requestedMode,
+    displayedForm: supported ? modes[activeMode] : modes.DASAR,
+    supported: supported,
+    activeIndicator: VOCAB_FORM_LABELS[activeMode] || activeMode,
+    stateIndex: activeIndex,
+    kind: source.kind || "fixed",
+    reason: source.reason || (supported
+      ? "Bentuk tuturan tersedia untuk entri ini."
+      : "Entri ini tidak memiliki bentuk tingkat tutur yang aman; bentuk dasar dipertahankan."),
+    forms: modes,
+  };
+}
+
+function applyVocabFormToRow(row, item, forms, idx) {
+  if (!row) return null;
+  var base = item && typeof item.korean === "string" && item.korean.trim()
+    ? item.korean.trim()
+    : (row.dataset && row.dataset.koreanBase) || (forms && forms.DASAR) || "";
+  var stableItem = item || row.__kvlItem || { korean: base, uid: row.dataset && row.dataset.uid };
+  var state = resolveVocabFormState(stableItem, idx, forms);
+  var uid = (stableItem && (stableItem.uid || (stableItem.no != null ? "base-" + stableItem.no : ""))) ||
+    (row.dataset && row.dataset.uid) || "";
+  if (!state.supported && uid) setVocabFormIndex(uid, 0);
+
+  var kr = row.querySelector(".vocab-line-korean");
+  var badge = row.querySelector(".vocab-form-badge");
+  var prevForm = kr ? String(kr.textContent || "") : "";
+  var labelNode = badge && badge.querySelector ? badge.querySelector(".vocab-form-label") : null;
+  var prevBadge = labelNode
+    ? String(labelNode.textContent || "")
+    : badge
+    ? String(badge.textContent || "").trim()
+    : "";
+  var formChanged = prevForm !== state.displayedForm;
+  var badgeChanged = prevBadge !== state.activeIndicator;
+
+  /**
+   * Commit Hangul + indicator label + CSS classes in ONE synchronous pass.
+   * Color (is-active) must never wait for rAF, hover, or a second click.
+   */
+  function commitTexts() {
+    if (kr) {
+      kr.textContent = state.displayedForm;
+      kr.classList.toggle(
+        "vocab-form-changed",
+        state.stateIndex !== 0 && state.displayedForm !== state.forms.DASAR
+      );
+      // Full Hangul always rendered; is-long is optional styling only (no ellipsis).
+      var isLong = String(state.displayedForm || "").length > 12;
+      kr.classList.toggle("is-long", isLong);
+      if (kr.title !== undefined) kr.title = "";
+    }
+    if (badge) {
+      var labelEl = badge.querySelector(".vocab-form-label");
+      var iconEl = badge.querySelector(".vocab-form-icon");
+      if (iconEl) iconEl.textContent = "𒇫";
+      if (labelEl) {
+        labelEl.textContent = state.activeIndicator;
+      } else {
+        badge.textContent = "";
+        var ic = document.createElement("span");
+        ic.className = "vocab-form-icon";
+        ic.setAttribute("aria-hidden", "true");
+        ic.textContent = "𒇫";
+        var lb = document.createElement("span");
+        lb.className = "vocab-form-label";
+        lb.textContent = state.activeIndicator;
+        badge.appendChild(ic);
+        badge.appendChild(lb);
+      }
+      var isTransformed = !!(state.supported && state.stateIndex !== 0);
+      // Force classList write so green appears on the same click
+      if (isTransformed) {
+        badge.classList.add("is-active");
+      } else {
+        badge.classList.remove("is-active");
+      }
+      if (state.supported) {
+        badge.classList.remove("is-fixed");
+      } else {
+        badge.classList.add("is-fixed");
+      }
+      badge.disabled = !state.supported;
+      if (badge.setAttribute) {
+        badge.setAttribute("aria-disabled", state.supported ? "false" : "true");
+        badge.setAttribute(
+          "aria-pressed",
+          isTransformed ? "true" : "false"
+        );
+        badge.setAttribute(
+          "aria-label",
+          state.supported
+            ? "Bentuk kosakata: " + state.activeIndicator + ". Tekan untuk mengganti bentuk."
+            : "Bentuk dasar. Entri ini tidak dapat diubah menurut tingkat tutur."
+        );
+      }
+      badge.title = state.supported
+        ? "Geser kiri: bentuk berikutnya · Geser kanan: bentuk sebelumnya · Enter/Spasi pada indikator untuk mengganti"
+        : state.reason + " Bentuk dasar tetap aktif.";
+    }
+  }
+
+  // Always synchronous — no rAF deferral of is-active / label / Hangul.
+  commitTexts();
+
+  // Optional micro opacity pulse after state is already correct (does not delay classes).
+  var prefersReduced =
+    typeof window !== "undefined" &&
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ((formChanged || badgeChanged) && !prefersReduced && (kr || badge)) {
+    if (kr) kr.classList.add("vocab-form-fading");
+    if (badge) badge.classList.add("vocab-form-fading");
+    requestAnimationFrame(function () {
+      if (kr) kr.classList.remove("vocab-form-fading");
+      if (badge) badge.classList.remove("vocab-form-fading");
+    });
+  }
+
+  if (row.dataset) {
+    row.dataset.formIdx = String(state.stateIndex);
+    row.dataset.formVariable = state.supported ? "1" : "0";
+    row.dataset.formKind = state.kind;
+    row.dataset.koreanBase = base;
+  }
+  var btn = row.querySelector(".sound-button");
+  if (btn) {
+    if (btn.setAttribute) btn.setAttribute("aria-label", "Dengarkan " + state.displayedForm);
+    btn.title = "Dengarkan " + state.displayedForm;
+    btn.onclick = function (ev) {
+      if (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+      }
+      if (typeof speakKorean === "function") speakKorean(state.displayedForm, btn);
+    };
+  }
+  if (row.classList && row.classList.toggle) row.classList.toggle("vocab-swipeable", state.supported);
+  row.__kvlForms = Object.assign({}, state.forms, {
+    variable: state.supported,
+    kind: state.kind,
+    reason: state.reason,
+  });
+  row.__kvlItem = stableItem;
+  return state;
+}
+
+
+/**
+ * Unsupported entries do not advance. Supported entries cycle through four
+ * modes; every render resolves from the immutable base entry rather than the
+ * previously displayed Hangul.
+ */
+function cycleVocabForm(row, item, forms, delta) {
+  if (!row) return null;
+  var base = (item && typeof item.korean === "string" && item.korean.trim()) ||
+    (row.dataset && row.dataset.koreanBase) || (forms && forms.DASAR) || "";
+  var resolvedItem = item || row.__kvlItem || { korean: base, uid: row.dataset && row.dataset.uid };
+  var uid = (resolvedItem && (resolvedItem.uid || (resolvedItem.no != null ? "base-" + resolvedItem.no : ""))) ||
+    (row.dataset && row.dataset.uid) || base;
+  var live = typeof getVocabSpeechForms === "function"
+    ? getVocabSpeechForms(base, resolvedItem.meaning)
+    : forms || { DASAR: base, FORMAL: base, INFORMAL: base, BANMAL: base, variable: false, kind: "fixed" };
+  var current = resolveVocabFormState(resolvedItem, getVocabFormIndex(uid), live);
+  if (!current.supported) {
+    setVocabFormIndex(uid, 0);
+    return applyVocabFormToRow(row, resolvedItem, live, 0);
+  }
+  var change = Number(delta);
+  if (!isFinite(change)) change = 1;
+  change = Math.trunc(change);
+  var nextIndex = ((current.stateIndex + change) % 4 + 4) % 4;
+  setVocabFormIndex(uid, nextIndex);
+  return applyVocabFormToRow(row, resolvedItem, live, nextIndex);
+}
+
+/**
+ * Gesture + click wiring. Swipe navigation does NOT depend on forms.variable.
+ * Uses pointer events with touch fallback; badge tap always advances.
+ */
+function wireVocabRowSwipe(row, item, forms) {
+  if (!row) return;
+  // Always refresh stored refs even if already wired
+  row.__kvlForms = forms;
+  row.__kvlItem = item;
+  if (item) {
+    row.dataset.uid = (item.uid != null && item.uid !== "") ? String(item.uid) : (row.dataset.uid || vocabFormUid(item));
+    row.dataset.koreanBase = item.korean || row.dataset.koreanBase || "";
+  }
+  if (row.dataset.swipeWired === "1") return;
+  row.dataset.swipeWired = "1";
+  if (row.classList && row.classList.toggle) row.classList.toggle("vocab-swipeable", row.dataset.formVariable === "1");
+
+  var startX = 0,
+    startY = 0,
+    tracking = false,
+    locked = false,
+    pointerId = null;
+
+  function onDown(clientX, clientY, target, id) {
+    if (row.dataset.formVariable !== "1") return false;
+    if (target && target.closest && target.closest(".sound-button")) return false;
+    startX = clientX;
+    startY = clientY;
+    tracking = true;
+    locked = false;
+    pointerId = id;
+    return true;
+  }
+  function onMove(clientX, clientY) {
+    if (!tracking) return;
+    var dx = clientX - startX;
+    var dy = clientY - startY;
+    if (!locked) {
+      if (Math.abs(dy) > 14 && Math.abs(dy) > Math.abs(dx) * 1.05) {
+        tracking = false; // vertical list scroll
+        return;
+      }
+      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.05) locked = true;
+    }
+  }
+  function onUp(clientX, clientY) {
+    if (!tracking) return;
+    tracking = false;
+    if (!locked) return;
+    var dx = clientX - startX;
+    var dy = clientY - startY;
+    if (Math.abs(dx) < 28 || Math.abs(dx) < Math.abs(dy) * 1.05) return;
+    // left → advance (+1); right → back (-1)
+    cycleVocabForm(row, row.__kvlItem || item, row.__kvlForms || forms, dx > 0 ? -1 : 1);
+  }
+
+  if (typeof window !== "undefined" && window.PointerEvent) {
+    row.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (!onDown(e.clientX, e.clientY, e.target, e.pointerId)) return;
+      try {
+        row.setPointerCapture(e.pointerId);
+      } catch (err) {}
+    });
+    row.addEventListener("pointermove", function (e) {
+      if (!tracking || (pointerId !== null && e.pointerId !== pointerId)) return;
+      onMove(e.clientX, e.clientY);
+    });
+    row.addEventListener("pointerup", function (e) {
+      if (pointerId !== null && e.pointerId !== pointerId) return;
+      onUp(e.clientX, e.clientY);
+      pointerId = null;
+    });
+    row.addEventListener("pointercancel", function () {
+      tracking = false;
+      locked = false;
+      pointerId = null;
+    });
+    row.addEventListener("lostpointercapture", function () {
+      tracking = false;
+      locked = false;
+      pointerId = null;
+    });
+  } else {
+    row.addEventListener(
+      "touchstart",
+      function (e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        onDown(e.touches[0].clientX, e.touches[0].clientY, e.target, null);
+      },
+      { passive: true }
+    );
+    row.addEventListener(
+      "touchmove",
+      function (e) {
+        if (!tracking || !e.touches || e.touches.length !== 1) return;
+        onMove(e.touches[0].clientX, e.touches[0].clientY);
+      },
+      { passive: true }
+    );
+    row.addEventListener(
+      "touchend",
+      function (e) {
+        var t = e.changedTouches && e.changedTouches[0];
+        if (!t) return;
+        onUp(t.clientX, t.clientY);
+      },
+      { passive: true }
+    );
+  }
+
+  var badge = row.querySelector(".vocab-form-badge");
+  if (badge && badge.dataset.clickWired !== "1") {
+    badge.dataset.clickWired = "1";
+    badge.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      cycleVocabForm(row, row.__kvlItem || item, row.__kvlForms || forms, e.shiftKey ? -1 : 1);
+    });
+  }
+}
+
+/** List-level delegation: survives partial re-renders and missed per-row wiring. */
+function wireVocabListDelegation() {
+  if (window.__kvlVocabListDelegated) return;
+  window.__kvlVocabListDelegated = true;
+  document.addEventListener(
+    "click",
+    function (e) {
+      var badge = e.target && e.target.closest && e.target.closest(".vocab-form-badge");
+      if (!badge) return;
+      var row = badge.closest(".vocab-line");
+      if (!row) return;
+      // Prefer row-level handler; this is a safety net if clickWired missing
+      if (badge.dataset.clickWired === "1") return;
+      e.preventDefault();
+      e.stopPropagation();
+      cycleVocabForm(
+        row,
+        row.__kvlItem || { korean: row.dataset.koreanBase, uid: row.dataset.uid },
+        row.__kvlForms ||
+          (typeof getVocabSpeechForms === "function"
+            ? getVocabSpeechForms(row.dataset.koreanBase || "", (row.__kvlItem && row.__kvlItem.meaning) || "")
+            : null),
+        e.shiftKey ? -1 : 1
+      );
+    },
+    true
+  );
+}
+try {
+  wireVocabListDelegation();
+} catch (e) {}
+
+function renderVocabularyList(query = "") {
         const list = document.getElementById("vocabularyList");
         if (!list) return;
         list.replaceChildren();
@@ -8686,12 +10172,20 @@
           typeof normalizeText === "function"
             ? normalizeText(query)
             : String(query || "").toLowerCase();
-        const ch =
-          window.settings && settings.chapter
-            ? settings.chapter
-            : typeof settings !== "undefined" && settings.chapter
-            ? settings.chapter
+        const savedScope =
+          typeof settings !== "undefined" && settings && settings.chapter
+            ? String(settings.chapter)
             : "all";
+        const categories = typeof listCategories === "function" ? listCategories() : [];
+        const ch = (savedScope === "all" || savedScope === "Semua" || categories.includes(savedScope))
+          ? (savedScope === "Semua" ? "all" : savedScope)
+          : "all";
+        if (typeof settings !== "undefined" && settings.chapter !== ch) {
+          settings.chapter = ch;
+          if (typeof persistSettings === "function") persistSettings();
+        }
+        const chapterSelector = document.getElementById("chapterFilter");
+        if (chapterSelector && chapterSelector.value !== ch) chapterSelector.value = ch;
         let pool;
         if (typeof poolByChapter === "function") {
           pool = poolByChapter(ch);
@@ -8748,43 +10242,69 @@
           list.append(empty);
           return;
         }
-        matches.forEach((item, idx) => {
+        matches.forEach((item) => {
           const row = document.createElement("div");
           row.className = "vocab-line";
-          const main = document.createElement("div");
-          main.className = "vocab-line-main vocab-line-fmt";
-          // Format: NOMOR. | HANGEUL | ARTI
+
+          // Body (top fields + bottom indicator) | Audio (vertically centered on full row)
+          const body = document.createElement("div");
+          body.className = "vocab-line-body";
+
+          const top = document.createElement("div");
+          top.className = "vocab-line-top";
+
           const no = document.createElement("span");
           no.className = "vocab-no";
-          no.textContent = String(item.no) + ".";
-          const sep1 = document.createElement("span");
-          sep1.className = "vocab-sep";
-          sep1.textContent = "|";
-          sep1.setAttribute("aria-hidden", "true");
+          no.textContent = String(Number(item.no));
+          no.setAttribute("aria-label", "Nomor " + String(item.no));
+
+          const sepNumberHangul = document.createElement("span");
+          sepNumberHangul.className = "vocab-sep";
+          sepNumberHangul.textContent = "|";
+          sepNumberHangul.setAttribute("aria-hidden", "true");
+
           const kr = document.createElement("span");
           kr.className = "vocab-line-korean";
           kr.lang = "ko";
           kr.textContent = item.korean;
-          const sep2 = document.createElement("span");
-          sep2.className = "vocab-sep";
-          sep2.textContent = "|";
-          sep2.setAttribute("aria-hidden", "true");
+
+          const sepHangulMeaning = document.createElement("span");
+          sepHangulMeaning.className = "vocab-sep";
+          sepHangulMeaning.textContent = "|";
+          sepHangulMeaning.setAttribute("aria-hidden", "true");
+
           const meaning = document.createElement("span");
           meaning.className = "vocab-line-meaning";
           meaning.textContent = item.meaning;
-          main.append(no, sep1, kr, sep2, meaning);
+
+          const forms = typeof getVocabSpeechForms === "function"
+            ? getVocabSpeechForms(item.korean, item.meaning)
+            : { DASAR: item.korean, FORMAL: item.korean, INFORMAL: item.korean, BANMAL: item.korean, variable: false, kind: "fixed" };
+
+          top.append(no, sepNumberHangul, kr, sepHangulMeaning, meaning);
+
+          const badge = document.createElement("button");
+          badge.type = "button";
+          badge.className = "vocab-form-badge";
+          badge.innerHTML = '<span class="vocab-form-icon" aria-hidden="true">𒇫</span><span class="vocab-form-label">DASAR</span>';
+          badge.disabled = !forms.variable;
+
+          body.append(top, badge);
+
           const btn = document.createElement("button");
           btn.type = "button";
-          btn.className = "sound-button small";
-          btn.textContent = "🔊";
+          btn.className = "sound-button small vocab-audio-button";
+          btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 5 6 9H3v6h3l5 4V5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
           btn.title = "Dengarkan";
-          btn.disabled =
-            typeof canPlayTts === "function" ? !canPlayTts() : false;
-          btn.addEventListener("click", () => {
-            if (typeof speakKorean === "function")
-              speakKorean(item.korean, btn);
-          });
-          row.append(main, btn);
+          btn.disabled = typeof canPlayTts === "function" ? !canPlayTts() : false;
+
+          const uid = typeof vocabFormUid === "function" ? vocabFormUid(item) : item.uid;
+          const formIdx = typeof getVocabFormIndex === "function" ? getVocabFormIndex(uid) : 0;
+          row.dataset.uid = uid || "";
+          row.dataset.koreanBase = item.korean || "";
+          row.append(body, btn);
+          if (typeof applyVocabFormToRow === "function") applyVocabFormToRow(row, item, forms, formIdx);
+          if (typeof wireVocabRowSwipe === "function") wireVocabRowSwipe(row, item, forms);
           list.append(row);
         });
       }
@@ -9238,7 +10758,7 @@
         };
         renderWriteQuestion();
         $("writeSessionPanel").scrollIntoView({
-          behavior: "smooth",
+          behavior: kvlScrollBehavior(),
           block: "start",
         });
       }
@@ -9574,6 +11094,7 @@
         }
 
         if (!ttsIsEnabled()) {
+          window.__forceListenPool = null;
           toast(
             "TTS sedang dimatikan. Aktifkan Text-to-Speech di pengaturan audio dulu.",
             "warning",
@@ -9582,6 +11103,7 @@
           return;
         }
         if (!canPlayTts()) {
+          window.__forceListenPool = null;
           toast(
             "Audio tidak siap. Aktifkan TTS di Pengaturan (mode Auto/Online butuh internet).",
             "bad",
@@ -9675,7 +11197,7 @@
         };
         renderListenQuestion();
         $("listenSessionPanel").scrollIntoView({
-          behavior: "smooth",
+          behavior: kvlScrollBehavior(),
           block: "start",
         });
       }
@@ -10306,7 +11828,7 @@
         if (typeof snapshotMemorySessionConfig === "function") snapshotMemorySessionConfig();
         renderMemoryQuestion();
         $("memorySessionPanel").scrollIntoView({
-          behavior: "smooth",
+          behavior: kvlScrollBehavior(),
           block: "start",
         });
       }
@@ -10891,13 +12413,18 @@
         } catch (e) {}
       }
       function pickFlashcardPool() {
-        // Chapter from setup (fallback: settings.chapter / all).
-        var chEl = document.getElementById("flashChapter");
-        var ch = (chEl && chEl.value) || (settings && settings.chapter) || "all";
-        var list =
-          typeof poolByChapter === "function"
-            ? poolByChapter(ch)
-            : vocabulary.slice();
+        // Custom Study can supply a one-session pool; otherwise retain chapter setup behavior.
+        var customPool = Array.isArray(window.__flashCustomPool) ? window.__flashCustomPool.slice() : null;
+        window.__flashCustomPool = null;
+        var list;
+        if (customPool && customPool.length) {
+          list = customPool;
+        } else {
+          // Chapter from setup (fallback: settings.chapter / all).
+          var chEl = document.getElementById("flashChapter");
+          var ch = (chEl && chEl.value) || (settings && settings.chapter) || "all";
+          list = typeof poolByChapter === "function" ? poolByChapter(ch) : vocabulary.slice();
+        }
         if (!list || !list.length) list = vocabulary.slice();
         // Unique by uid
         var seen = {};
@@ -10956,7 +12483,7 @@
           () =>
             $("flashcardPanel") &&
             $("flashcardPanel").scrollIntoView({
-              behavior: "smooth",
+              behavior: kvlScrollBehavior(),
               block: "start",
             }),
           80
@@ -12530,6 +14057,7 @@ $('skipQuestion')?.addEventListener('click', () => { if (typeof skipQuestionNav 
               "memoryChapter",
               "writeChapter",
               "listenChapter",
+              "flashChapter",
             ].indexOf(t.id) === -1
           )
             return;
@@ -12542,6 +14070,7 @@ $('skipQuestion')?.addEventListener('click', () => { if (typeof skipQuestionNav 
             "memoryChapter",
             "writeChapter",
             "listenChapter",
+            "flashChapter",
           ].forEach(function (id) {
             const el = document.getElementById(id);
             if (el && el.value !== settings.chapter)
@@ -12597,6 +14126,35 @@ $('skipQuestion')?.addEventListener('click', () => { if (typeof skipQuestionNav 
 var customStudySelected = window.customStudySelected instanceof Set ? window.customStudySelected : new Set();
 window.customStudySelected = customStudySelected;
 var customStudyCat = 'all';
+
+function syncCustomStudyCategoryOptions() {
+  var box = document.getElementById('customStudyCats');
+  var listNode = box && box.querySelector('.chapter-picker-list');
+  if (!listNode) return;
+  var prior = new Set();
+  var priorChecks = listNode.querySelectorAll('input[data-cs-cat]');
+  priorChecks.forEach(function (input) {
+    if (input.checked) prior.add(input.getAttribute('data-cs-cat'));
+  });
+  var allSelected = prior.has('all') || prior.size === 0;
+  var cats = typeof listCategories === 'function' ? listCategories() : [];
+  listNode.replaceChildren();
+  function addCategory(value, label, checked) {
+    var wrapper = document.createElement('label');
+    wrapper.className = 'chapter-picker-item';
+    var input = document.createElement('input');
+    input.type = 'checkbox';
+    input.setAttribute('data-cs-cat', value);
+    input.checked = !!checked;
+    wrapper.appendChild(input);
+    wrapper.appendChild(document.createTextNode(label));
+    listNode.appendChild(wrapper);
+  }
+  addCategory('all', 'Semua bab', allSelected);
+  cats.forEach(function (category) {
+    addCategory(category, category, !allSelected && prior.has(category));
+  });
+}
 
 function getCustomStudySelectedCats() {
   var box = document.getElementById('customStudyCats');
@@ -12728,81 +14286,148 @@ function renderCustomStudyList() {
   updateCustomStudyCount();
 }
 
-function startCustomMemorySession() {
-  if (!customStudySelected.size) {
-    if (typeof toast === 'function') toast('Centang minimal 1 kata dulu ya.', 'warning');
-    return;
-  }
-  var items = [];
-  try {
-    items = vocabulary.filter(function (v) {
-      var uid = v.uid || ('base-' + v.no);
-      return customStudySelected.has(uid);
-    });
-  } catch (e) {
-    if (typeof toast === 'function') toast('Data kosakata belum siap. Refresh dulu.', 'bad');
-    return;
-  }
+var CUSTOM_STUDY_RANDOM_MODES = ["quiz", "write", "listening"];
+
+function pickCustomStudyRandomMode(randomFn) {
+  var fn = typeof randomFn === "function" ? randomFn : Math.random;
+  var value = Number(fn());
+  if (!isFinite(value)) value = 0;
+  value = Math.max(0, Math.min(0.999999999, value));
+  return CUSTOM_STUDY_RANDOM_MODES[Math.floor(value * CUSTOM_STUDY_RANDOM_MODES.length)];
+}
+
+function selectedCustomStudyItems() {
+  if (typeof vocabulary === "undefined" || !Array.isArray(vocabulary)) return [];
+  var selected = customStudySelected instanceof Set ? customStudySelected : new Set();
+  var items = vocabulary.filter(function (v) {
+    var uid = v.uid || ("base-" + v.no);
+    return selected.has(uid);
+  });
   if (customStudyShuffleOrder) {
-    items = items.slice().sort(function () { return Math.random() - 0.5; });
+    if (typeof shuffle === "function") items = shuffle(items.slice());
+    else {
+      items = items.slice();
+      for (var i = items.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = items[i]; items[i] = items[j]; items[j] = tmp;
+      }
+    }
   } else {
     items = items.slice().sort(function (a, b) {
       return (Number(a.globalNo || a.no) || 0) - (Number(b.globalNo || b.no) || 0);
     });
   }
-  var skillMode = (csEl('memorySkillMode') && csEl('memorySkillMode').value) || 'auto';
-  var SKILL_CYCLE = ['recognition', 'recall', 'write', 'listening'];
-  var queue = [];
-  items.forEach(function (item, i) {
-    var type;
-    if (['write', 'listening', 'recognition', 'recall'].indexOf(skillMode) >= 0) type = skillMode;
-    else if (skillMode === 'random') type = SKILL_CYCLE[Math.floor(Math.random() * SKILL_CYCLE.length)];
-    else type = SKILL_CYCLE[i % SKILL_CYCLE.length];
-    queue.push({
-      item: item,
-      type: type,
-      repeats: 0,
-      skipped: false,
-      answered: false,
-      userAnswer: null,
-      quality: null,
-      correct: null
-    });
-  });
-  if (!queue.length) {
-    if (typeof toast === 'function') toast('Gagal bikin soal dari pilihan ini.', 'warning');
+  return items;
+}
+
+function limitCustomStudyItems(items, countId, customCountId) {
+  var list = Array.isArray(items) ? items.slice() : [];
+  if (!list.length) return [];
+  var count = list.length;
+  try {
+    if (typeof resolveSessionCount === "function") {
+      var resolved = Number(resolveSessionCount(countId, customCountId, list.length));
+      if (isFinite(resolved) && resolved > 0) count = resolved;
+    } else {
+      var el = document.getElementById(countId);
+      if (el && el.value !== "all" && el.value !== "custom") {
+        var n = Number(el.value);
+        if (isFinite(n) && n > 0) count = n;
+      }
+    }
+  } catch (e) {}
+  return list.slice(0, Math.max(1, Math.min(list.length, Math.floor(count))));
+}
+
+function startCustomStudyQuiz(items) {
+  var chosen = limitCustomStudyItems(items, "questionCount", "quizCustomCount");
+  if (!chosen.length) return false;
+  var direction = (typeof settings !== "undefined" && settings.direction) || "ko-id";
+  if (typeof beginSession !== "function") {
+    if (typeof toast === "function") toast("Fungsi Quiz belum siap.", "bad");
+    return false;
+  }
+  // Questions come from the checked Custom Study list; distractors may use the full vocabulary pool.
+  beginSession(chosen, direction, "custom-study", (typeof vocabulary !== "undefined" && vocabulary.length) ? vocabulary : chosen);
+  if (typeof toast === "function") toast("Custom Study · Quiz · " + chosen.length + " soal", "good");
+  return true;
+}
+
+function startCustomStudyTyping(items) {
+  var chosen = limitCustomStudyItems(items, "writeCount", "writeCustomCount");
+  if (!chosen.length) return false;
+  if (typeof stopSpeech === "function") stopSpeech(false);
+  writeState = {
+    queue: chosen.map(function (v) { return { item: v, answered: false, skipped: false, userAnswer: "", correct: null, hintUsed: false }; }),
+    index: 0, correct: 0, wrong: 0, answers: [], hintUsed: false, checked: false, current: null, custom: true
+  };
+  window.__lastWritePool = chosen.slice();
+  var rp = document.getElementById("writeResultPanel");
+  if (rp) rp.classList.add("hidden");
+  var sp = document.getElementById("writeSessionPanel");
+  if (sp) sp.classList.remove("hidden");
+  if (typeof showModeSession === "function") showModeSession("write");
+  if (typeof showView === "function") showView("writeView");
+  if (typeof renderWriteQuestion === "function") renderWriteQuestion();
+  if (typeof toast === "function") toast("Custom Study · Typing · " + chosen.length + " soal", "good");
+  return true;
+}
+
+function startCustomStudyListening(items) {
+  var chosen = limitCustomStudyItems(items, "listenCount", "listenCustomCount");
+  if (!chosen.length) return false;
+  window.__listenCustomPool = chosen.slice();
+  if (typeof showView === "function") showView("listenView");
+  if (typeof startListening === "function") {
+    startListening();
+    return true;
+  }
+  window.__listenCustomPool = null;
+  if (typeof toast === "function") toast("Fungsi Listening belum siap.", "bad");
+  return false;
+}
+
+function startCustomStudyFlashcards(items) {
+  var chosen = limitCustomStudyItems(items, "flashCount", "flashCustomCount");
+  if (!chosen.length) return false;
+  window.__flashCustomPool = chosen.slice();
+  if (typeof startFlashcards === "function") {
+    startFlashcards("memoryView");
+    return true;
+  }
+  window.__flashCustomPool = null;
+  if (typeof toast === "function") toast("Fungsi Flashcard belum siap.", "bad");
+  return false;
+}
+
+function startCustomMemorySession() {
+  var items = selectedCustomStudyItems();
+  if (!items.length) {
+    if (typeof toast === "function") toast("Centang minimal 1 kata dulu ya.", "warning");
+    var hint = document.getElementById("customStudyEmptyHint");
+    if (hint) hint.classList.remove("hidden");
     return;
   }
-  if (typeof stopSpeech === 'function') stopSpeech(false);
-  if (typeof lastMemoryMode !== 'undefined') lastMemoryMode = 'custom';
-  if (csEl('memoryResultPanel')) csEl('memoryResultPanel').classList.add('hidden');
-  if (csEl('flashcardPanel')) csEl('flashcardPanel').classList.add('hidden');
-  if (csEl('memorySessionPanel')) csEl('memorySessionPanel').classList.remove('hidden');
-  if (typeof showModeSession === 'function') showModeSession('memory');
-  if (typeof resetRoastSession === 'function') resetRoastSession();
-  memoryState = {
-    queue: queue,
-    sessionLength: queue.length,
-    finished: false,
-    index: 0,
-    correct: 0,
-    wrong: 0,
-    skipped: 0,
-    answered: 0,
-    seen: new Set(),
-    results: [],
-    current: null,
-    checked: false,
-    hintUsed: false,
-    custom: true
-  };
-  renderMemoryQuestion();
-  if (csEl('memorySessionPanel')) csEl('memorySessionPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  if (typeof toast === 'function') toast('Custom Study · ' + queue.length + ' soal · ' + (customStudyShuffleOrder ? 'acak' : 'urut'), 'good');
-  if (typeof snapshotMemorySessionConfig === 'function') snapshotMemorySessionConfig();
+  var modeEl = document.getElementById("customStudyPracticeMode");
+  var requestedMode = (modeEl && modeEl.value) || "random";
+  var mode = requestedMode === "random" ? pickCustomStudyRandomMode() : requestedMode;
+  var knownModes = { quiz: true, write: true, listening: true, flashcard: true };
+  if (!knownModes[mode]) mode = pickCustomStudyRandomMode();
+  window.__lastCustomStudyMode = mode;
+  window.__lastCustomStudyUids = items.map(function (v) { return v.uid || ("base-" + v.no); });
+
+  var started = false;
+  if (mode === "quiz") started = startCustomStudyQuiz(items);
+  else if (mode === "write") started = startCustomStudyTyping(items);
+  else if (mode === "listening") started = startCustomStudyListening(items);
+  else if (mode === "flashcard") started = startCustomStudyFlashcards(items);
+  if (started && typeof snapshotMemorySessionConfig === "function" && memoryState && memoryState.custom) {
+    snapshotMemorySessionConfig();
+  }
 }
 
 function wireCustomStudy() {
+  try { syncCustomStudyCategoryOptions(); } catch (e) {}
   if (window.__kvlCustomStudyWired) {
     try { renderCustomStudyList(); } catch (e) {}
     return;
@@ -13388,7 +15013,7 @@ function showModeSession(mode) {
     res.classList.add('kvl-setup-hidden');
     res.style.display = 'none';
   }
-  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+  try { window.scrollTo({ top: 0, behavior: kvlScrollBehavior() }); } catch (e) {}
 }
 
 /** Tampilkan HANYA panel hasil — sembunyikan soal & setup */
@@ -13443,7 +15068,7 @@ function showModeResult(mode) {
       p = p.parentElement;
     }
   }
-  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+  try { window.scrollTo({ top: 0, behavior: kvlScrollBehavior() }); } catch (e) {}
 }
 
 function showModeSetup(mode) {
@@ -14159,11 +15784,15 @@ function refreshMemCustomHints() {
     if (typeof customStudySelected !== 'undefined' && customStudySelected)
       n = customStudySelected.size;
   } catch (e) {}
+  var practice = document.getElementById('customStudyPracticeMode');
+  var practiceLabel = practice && practice.options && practice.selectedIndex >= 0
+    ? String(practice.options[practice.selectedIndex].textContent || 'Acak')
+    : 'Acak';
   if (startHint) {
     if (mode === 'custom') {
       startHint.textContent = n
-        ? ('Mode: Custom Study — ' + n + ' kosakata dipilih. Tekan Belajar Sekarang untuk mulai.')
-        : 'Mode: Custom Study — centang kosakata dulu, baru tekan Belajar Sekarang.';
+        ? ('Mode: Custom Study — ' + n + ' kosakata · Latihan: ' + practiceLabel + '. Tekan Belajar Sekarang untuk mulai.')
+        : 'Mode: Custom Study — pilih mode latihan, centang kosakata, lalu tekan Belajar Sekarang.';
     } else {
       startHint.textContent = 'Mode: Otomatis — sistem memilih kosakata sesuai pengaturan di atas.';
     }
@@ -14171,6 +15800,23 @@ function refreshMemCustomHints() {
   if (emptyHint) {
     emptyHint.classList.toggle('hidden', mode !== 'custom' || n > 0);
   }
+}
+
+function syncCustomStudyPracticeUI(mode) {
+  var custom = mode === "custom";
+  var label = document.getElementById("memorySkillModeLabel");
+  var regularSelect = document.getElementById("memorySkillMode");
+  var customSelect = document.getElementById("customStudyPracticeMode");
+  var hint = document.getElementById("memorySkillModeHint");
+  if (regularSelect) regularSelect.classList.toggle("hidden", custom);
+  if (customSelect) customSelect.classList.toggle("hidden", !custom);
+  if (label) {
+    label.textContent = custom ? "Mode latihan Custom Study" : "Cara latihan";
+    label.htmlFor = custom ? "customStudyPracticeMode" : "memorySkillMode";
+  }
+  if (hint) hint.textContent = custom
+    ? "Acak hanya memilih Quiz, Typing, atau Listening. Flashcard tersedia jika dipilih langsung."
+    : "Bentuk soal: nulis, dengar, kenali, atau campuran.";
 }
 
 function setMemoryMaterialMode(mode, opts) {
@@ -14202,6 +15848,7 @@ function setMemoryMaterialMode(mode, opts) {
   }
 
   refreshMemCustomHints();
+  syncCustomStudyPracticeUI(mode);
 
   // Render list only when entering custom mode (or forced), never on every count update
   var shouldRender =
@@ -14222,6 +15869,11 @@ function setMemoryMaterialMode(mode, opts) {
 function wireMemoryMaterialMode() {
   if (window.__kvlMemModeWired) return;
   window.__kvlMemModeWired = true;
+  var practiceSelect = document.getElementById('customStudyPracticeMode');
+  if (practiceSelect && practiceSelect.dataset.customHintWired !== '1') {
+    practiceSelect.dataset.customHintWired = '1';
+    practiceSelect.addEventListener('change', function () { refreshMemCustomHints(); });
+  }
   document.addEventListener('click', function (e) {
     var t = e.target && e.target.closest && e.target.closest('[data-mem-mode]');
     if (!t) return;
