@@ -1,1 +1,0 @@
-FIX: Bab 8 missing comma after entry 키가 작다 caused a JavaScript syntax error. This prevented the main app script from initializing, making app features unresponsive. Added the missing comma. No learning logic or vocabulary meanings changed.
