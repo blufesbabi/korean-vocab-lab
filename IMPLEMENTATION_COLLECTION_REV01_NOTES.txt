@@ -1,0 +1,32 @@
+KOREAN VOCAB LAB / MERC MODE
+COLLECTION IMPLEMENTATION REV01
+================================
+
+BASE SOURCE
+- KVL_Merc_Mode_Bab_8_Corrections_20261029.zip
+- The existing index.html and original assets were retained as the base.
+
+PRESERVATION
+- Existing vocabulary, meanings, Bab 1-8 entries, scoring, XP, and practice logic
+  are retained.
+- UnGraphic Bold WOFF2/TTF and its license file remain in assets.
+- The existing Bab 8 entry 57 was missing a comma before entry 58; one comma was
+  added only to restore valid JavaScript syntax. No Bab 8 text or meaning changed.
+
+VALIDATION PERFORMED
+- All 8 inline JavaScript blocks pass `node --check`.
+- HTML parser check: all new view IDs exist; no new duplicate IDs found.
+- All referenced local assets resolve.
+- Bab 8 source entry count: 110.
+
+LIMITATION
+- Full visual browser QA could not be run in this execution environment because
+  system Chromium stalled even when opening about:blank. The package therefore
+  includes static/code validation, but must still be opened in Chrome on the
+  target device and visually checked before production deployment.
+
+DEPLOYMENT
+- Keep the supplied assets folder alongside index.html.
+- Do not upload index.html by itself; the new approved artwork and existing app
+  assets are required.
+- Test locally first. Replace the GitHub version only after local checks pass.

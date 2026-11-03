@@ -1,0 +1,8 @@
+KOREAN VOCAB LAB - UPDATE BAB 8
+================================
+- Menambahkan 109 entri kosakata ke kategori Bab 8.
+- Arti Bahasa Indonesia disalin sesuai daftar yang diberikan.
+- Ejaan Hangeul yang jelas salah diperbaiki, dan spasi frasa Korea dirapikan.
+- Duplikat persis "가족 / keluarga" dari daftar sumber dimasukkan satu kali agar tidak membuat kartu duplikat.
+- Bab 8 tersedia pada semua dropdown bab dan pilihan Custom Study.
+- Logika penilaian, XP, progress, dan UI mode latihan tidak diubah.
