@@ -1,0 +1,39 @@
+BUGFIX: MULTIPLE-CHOICE LABELS + ANSWER FEEDBACK
+
+Fixed:
+- Made A/B/C/D labels visible in Memory Lab's multiple-choice renderer (automatic Recognition/Listening and Custom Study Quiz/Listening). Quiz and main Listening labels are retained.
+- Restored high-contrast green state for the correct option, including when the user selected it.
+- Restored red state for an incorrect selected option while keeping the correct answer green.
+- Added visible ✓ and ✕ markers so feedback is not dependent on color alone.
+- Raised the relevant CSS selector priority so the global Merc Mode skin cannot override answer-state styles.
+- Kept feedback and selected answer state consistent when navigating away from and back to answered Quiz, Listening, and Memory questions.
+- Listening feedback is reconstructed from the active question's saved result instead of depending only on cached HTML.
+
+Interaction checks run in Chromium:
+- Quiz: correct, incorrect, and back/forward restoration.
+- Listening: correct, incorrect, and back/forward restoration.
+- Memory automatic: Recognition and Listening answer feedback; Recognition answer restoration.
+- Memory Custom Study: Quiz and Listening answer feedback.
+- Responsive width checks included 320 px and 390 px viewports; the document did not overflow horizontally in the checked Quiz/Memory/Listening views.
+- All 7 inline JavaScript blocks passed Node syntax checking after the change; tested interaction flows produced no browser page errors.
+
+No changes were made to answer scoring, XP calculation, vocabulary data, distractor selection, or session counts as part of this fix.
+
+MOBILE CINEMATIC FEEDBACK LAYOUT + FONT FIX
+
+Fixed:
+- Removed the detached mobile vocabulary strip that appeared below the artwork and made the word/meaning look like they had escaped the template.
+- Preserved each artwork's intrinsic aspect ratio on narrow screens and overlaid live Hangeul/meaning within the empty intel panel using the existing template-specific coordinates.
+- Added a locally bundled Korean WOFF2 font and license notice for consistent vocabulary rendering across mobile and desktop. The active feedback font no longer depends on an external Google Fonts request.
+- Tuned small-screen font sizes for longer Hangul words and Indonesian meanings while keeping the overlays inside the artwork.
+
+Responsive layout checks from the preceding mobile-fix revision were run in Chromium at widths 320, 360, 375, 390, 430, 768, and 1280 px. The current font-only update preserves those layout rules.
+- For this font revision: all 7 inline JavaScript blocks passed Node syntax checking; required asset references resolve; WOFF2 opens successfully and contains all glyphs checked (생활용품, 몇, 학교, 시간).
+- A fresh visual preview was generated using the bundled UnGraphic Bold TTF source at mobile and desktop template widths.
+- This is a presentation-only fix; no answer scoring, XP, distractor, session, or vocabulary logic was changed in this mobile pass.
+
+FONT UPDATE — 2026-10-28
+- Replaced the Korean feedback overlay brush font with UnGraphic Bold.
+- Bundled locally as assets/merc-hangul-ungraphic-bold.woff2, converted from the included assets/UnGraphicBold.ttf source.
+- Kept the existing mobile/desktop text positions and dynamic vocabulary behavior unchanged.
+- UnFonts license and copyright notice remain included in assets/FONT-LICENSE-UNFONT.txt.

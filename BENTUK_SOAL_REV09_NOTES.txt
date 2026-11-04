@@ -1,0 +1,19 @@
+REV09 - BENTUK SOAL (Dasar / Formal / Informal / Banmal)
+
+Pengaturan
+- Halaman Pengaturan: kartu "Bentuk soal" (global). Layar setup Quiz, Typing, Listening, Flashcard, Memory: override per fitur
+  ("Ikut pengaturan global" menghapus override).
+- Disimpan di settings.formPref (STORAGE.settings, ikut backup JSON). Default: hanya DASAR, label nyala.
+- Minimal 1 chip aktif. Beberapa chip = diacak per kata, tiap kata satu bentuk per sesi (cache per uid pada state sesi).
+- Hanya DASAR terpilih (default) = tidak ada badge, tampilan identik REV08.
+- Kata tidak bisa berubah (supported=false) tetap masuk pool, tampil dasar, badge TETAP.
+- Typing: label bentuk selalu tampil saat bentuk non-DASAR dipakai (mengabaikan toggle).
+- Memory otomatis: bentuk non-DASAR hanya untuk kata yang isStrong(); Custom Study mengikuti chip.
+- Skor/XP/SRS tetap per kata (recordLearningResult menerima item asli).
+
+Kode
+- Engine dipakai ulang: resolveVocabFormState. Tidak ada logic konjugasi baru.
+- Modul baru: <script id="kvl-form-question"> + <style id="kvl-form-question-style"> (sebelum kvl-flashcard-skin).
+- Perubahan kecil di loadSettings, resetSettings, renderQuestion/selectAnswer, renderWriteQuestion/checkWriteAnswer/hint,
+  renderListenQuestion/playListenAudio/answerListening, renderFlashcard/audio, renderMemoryQuestion/checkMemoryWrite/
+  memoryFeedback/memoryHint/audio, dan roman di skin flashcard (membaca teks yang tampil).
