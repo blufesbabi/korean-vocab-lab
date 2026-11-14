@@ -1,0 +1,185 @@
+BUGFIX: MULTIPLE-CHOICE LABELS + ANSWER FEEDBACK
+
+Fixed:
+- Made A/B/C/D labels visible in Memory Lab's multiple-choice renderer (automatic Recognition/Listening and Custom Study Quiz/Listening). Quiz and main Listening labels are retained.
+- Restored high-contrast green state for the correct option, including when the user selected it.
+- Restored red state for an incorrect selected option while keeping the correct answer green.
+- Added visible ✓ and ✕ markers so feedback is not dependent on color alone.
+- Raised the relevant CSS selector priority so the global Merc Mode skin cannot override answer-state styles.
+- Kept feedback and selected answer state consistent when navigating away from and back to answered Quiz, Listening, and Memory questions.
+- Listening feedback is reconstructed from the active question's saved result instead of depending only on cached HTML.
+
+Interaction checks run in Chromium:
+- Quiz: correct, incorrect, and back/forward restoration.
+- Listening: correct, incorrect, and back/forward restoration.
+- Memory automatic: Recognition and Listening answer feedback; Recognition answer restoration.
+- Memory Custom Study: Quiz and Listening answer feedback.
+- Responsive width checks included 320 px and 390 px viewports; the document did not overflow horizontally in the checked Quiz/Memory/Listening views.
+- All 7 inline JavaScript blocks passed Node syntax checking after the change; tested interaction flows produced no browser page errors.
+
+No changes were made to answer scoring, XP calculation, vocabulary data, distractor selection, or session counts as part of this fix.
+
+MOBILE CINEMATIC FEEDBACK LAYOUT + FONT FIX
+
+Fixed:
+- Removed the detached mobile vocabulary strip that appeared below the artwork and made the word/meaning look like they had escaped the template.
+- Preserved each artwork's intrinsic aspect ratio on narrow screens and overlaid live Hangeul/meaning within the empty intel panel using the existing template-specific coordinates.
+- Added a locally bundled Korean WOFF2 font and license notice for consistent vocabulary rendering across mobile and desktop. The active feedback font no longer depends on an external Google Fonts request.
+- Tuned small-screen font sizes for longer Hangul words and Indonesian meanings while keeping the overlays inside the artwork.
+
+Responsive layout checks from the preceding mobile-fix revision were run in Chromium at widths 320, 360, 375, 390, 430, 768, and 1280 px. The current font-only update preserves those layout rules.
+- For this font revision: all 7 inline JavaScript blocks passed Node syntax checking; required asset references resolve; WOFF2 opens successfully and contains all glyphs checked (생활용품, 몇, 학교, 시간).
+- A fresh visual preview was generated using the bundled UnGraphic Bold TTF source at mobile and desktop template widths.
+- This is a presentation-only fix; no answer scoring, XP, distractor, session, or vocabulary logic was changed in this mobile pass.
+
+FONT UPDATE — 2026-10-28
+- Replaced the Korean feedback overlay brush font with UnGraphic Bold.
+- Bundled locally as assets/merc-hangul-ungraphic-bold.woff2, converted from the included assets/UnGraphicBold.ttf source.
+- Kept the existing mobile/desktop text positions and dynamic vocabulary behavior unchanged.
+- UnFonts license and copyright notice remain included in assets/FONT-LICENSE-UNFONT.txt.
+
+REMOVE DESKTOP NOTE BOARD + REMOVE ROAST TEXT (2026-11-05)
+
+Fixed / removed:
+- Desktop (MacBook) only: removed the "evidence board" panel at the bottom of the right column that showed the sticky-note image "JANGAN LUPA: KAMU BISA LEBIH BAIK." together with its metal frame. Removed the --mg-note CSS variable, the .merc-right-column::after panel rule, its max-width:1100px hide rule, and the frame (border-image) override for that panel.
+- Mobile / narrow screens: unchanged (the panel was already hidden there).
+- Removed all insult lines from const ROASTS (id: [] is now empty). Wrong-answer feedback uses only assets/merc-feedback-target-lost.webp.
+- pickRoast() now returns an empty string safely when the list is empty; the existing streak bookkeeping and all callers are untouched.
+
+Not changed: scoring, XP, vocabulary data, correct-answer template (merc-feedback-contract-confirmed.webp), other frames and blood/grunge decorations.
+Checks: all inline scripts pass Node syntax check; CSS braces balanced; no remaining references to --mg-note or the insult words.
+
+[2026-11-05] Bottom navigation mobile (hanya <=640px)
+- Menu utama (.app > .main-nav) pindah ke bawah layar: fixed, horizontal, bisa digeser, snap, tanpa bingkai/tekstur.
+- 9 item, +-4,5 terlihat (22vw), ikon di atas label; aktif = merah terang opacity 1, non-aktif opacity .55.
+- Ruang konten + toast digeser lewat variabel --nav-h; safe-area iOS lewat viewport-fit=cover.
+- JS: blok kecil terpisah (MutationObserver) men-scroll item aktif ke tengah; logika showView tidak diubah.
+- Di atas 640px tidak ada perubahan (diverifikasi: computed style desktop 1280px identik dengan versi sebelumnya).
+
+[2026-11-05] Perbaikan mobile (HANYA @media max-width 640px, blok baru di akhir CSS)
+- Konten semua halaman full-width: .app tanpa margin, kolom grid tunggal, #flashcardView tanpa padding samping; padding dalam card tetap 13px.
+- footer-portrait disembunyikan (display:none) di mobile; file aset tidak dihapus.
+- Background cinematic: gambar 100% auto, center top, no-repeat, di atas warna dasar #0a0809; fixed + pointer-events none dipertahankan.
+- Di atas 640px tidak ada perubahan (computed style 1280px dan 800px identik dengan versi sebelumnya). JS dan bottom nav tidak diubah.
+- Penanda versi: judul halaman diakhiri [MFIX2] (cek di daftar tab browser untuk memastikan file terbaru ter-deploy).
+
+COLLECTION: TAB SWITCH SPEED + PARTIKEL AUDIO BUTTON (FIX6)
+- Tab Kosakata/Partikel: daftar Partikel dibangun saat idle (bukan saat klik pertama); #vocabularyList dan #ptkList memakai content-visibility:auto sehingga pindah tab tidak me-layout ulang ribuan baris.
+- Tombol audio contoh di detail Partikel kini identik dengan tombol audio baris depan (42/36/32px sesuai breakpoint 700/390), diverifikasi di 320/390/430/1280px.
+- Tidak ada perubahan lain (data, Quiz, Memory, Flashcard, desktop).
+
+COLLECTION: ALL-BAB SPEED + HEADER SYNC (FIX7)
+- Daftar kosakata dirender bertahap: 100 baris pertama, sisanya dimuat otomatis saat scroll (IntersectionObserver). Mode "Semua bab" tidak lagi menaruh 1000+ baris di DOM, jadi pindah Kosakata<->Partikel ringan. Saat pindah ke Partikel, daftar yang sudah panjang dipangkas lagi ke 100 baris.
+- Judul "Daftar ... kosakata", pill bab, dan dropdown bab disinkronkan dari settings.chapter setiap masuk Collection dan setiap kembali ke tab Kosakata (sebelumnya hanya saat render, dan teks awal HTML tertulis "Bab 1").
+- Pencarian, filter bab, dan tombol audio tidak berubah.
+
+
+COLLECTION REV5 — ANNOTATED CARD FINISHING (2026-11-10)
+- Raised the Kosakata form marker by 7 CSS px; measured 10–11 px clear of the card bottom across 320/360/390/430/1280 px.
+- Removed the Partikel compact-card GRAMATIKA label and puzzle icon from the card renderer; category data/filter behavior remain.
+- Added 16–22 px inline safe padding to the Partikel explanatory legend so its text no longer sits against/under the left and right metal frame.
+- Tested Partikel count, search, detail formula, expand/collapse, audio handler, no horizontal overflow, and zero JS page errors. No screenshot files included.
+
+COLLECTION REV8 — PRECISION CONTROL + CARD TYPOGRAPHY + TAB SCALE (2026-11-11)
+
+Perbaikan:
+- Kontrol Collection untuk Kosakata dan Partikel (dropdown Semua bab/Semua bagian, kolom pencarian, dan count) disejajarkan ke tiga slot pada artwork panel. Teks kontrol dan placeholder berada di tengah horizontal/vertikal serta tetap berada di dalam area artwork.
+- Grid kartu Kosakata/Partikel disetel ulang mengikuti posisi divider bawaan frame. Hangeul dan arti dipusatkan vertikal, diberi inset dari divider, dan arti dijaga agar tidak terlalu dekat dengan tombol audio.
+- Badge Banmal/form digeser sedikit ke kanan untuk optical centering.
+- Ikon, label Kosakata/Partikel, dan chevron tab diperbesar serta dirapatkan mengikuti referensi tab yang diberikan. Referensi tersebut hanya diterapkan pada tab, bukan pada background panel atau hero.
+
+Validasi yang dijalankan dengan Chromium + Playwright melalui halaman inline:
+- Viewport 320, 360, 390, 430, dan 1280 px: document/body tidak mengalami horizontal overflow pada tab Kosakata maupun Partikel.
+- Posisi dropdown, search, dan count cocok dengan slot artwork; deviasi koordinat ternormalisasi maksimum yang terukur sekitar 0,16%.
+- Clearance kartu pada viewport 390 px: Hangeul berjarak 13,08 px dari divider kiri dan 9,37 px dari divider kanan; arti berjarak 6,63 px dari divider dan 19,42 px dari tombol audio. Pusat vertikal Hangeul/arti berbeda 2,5 px dari pusat kartu.
+- Data Partikel tetap 68 baris; pencarian 은/는 menghasilkan 2 hasil; badge GRAMATIKA pada kartu ringkas tidak muncul; detail tetap menampilkan bagian RUMUS saat dibuka.
+- Pencarian Kosakata 자기소개 menghasilkan 2 baris dan count berubah menjadi 2/1037 kata.
+- Sembilan menu navigasi bawah tetap tersedia dan dapat digeser horizontal (scrollWidth 817 px pada viewport 390 px).
+- Tidak ada JavaScript page error pada skenario pengujian.
+- Sebelas blok script inline lulus pemeriksaan sintaks Node.js; tidak ditemukan duplicate literal HTML ID.
+- Semua referensi aset yang digunakan tersedia di folder assets.
+
+Batas verifikasi:
+- Audio button/handler tersedia dan dapat diinteraksikan dalam pengujian, tetapi bunyi TTS aktual tidak divalidasi pada speaker perangkat fisik.
+- LocalStorage persistensi lintas sesi tidak diuji sebagai penyimpanan perangkat nyata dalam sandbox.
+- Tidak ada screenshot atau file hasil tangkapan layar di paket akhir.
+
+COLLECTION REV9 — FINISHING MOBILE + DESKTOP (2026-11-11)
+
+Perubahan UI:
+- Label kategori kosakata sekarang tampil sebagai "𒇫 Bentuk" pada satu baris di antara Hangeul dan arti Indonesia. Posisi nomor, Hangeul, arti, dan tombol audio tetap dipertahankan; penanda tetap berada di dalam frame kartu.
+- Mode bentuk yang sesungguhnya tetap disimpan pada data/atribut aksesibilitas dan title. Event pergantian bentuk tidak diganti dengan elemen dekoratif yang inert.
+- Judul dan deskripsi Kosakata/Partikel diposisikan tepat di atas tab. Judul memakai sans-serif tebal dengan finishing ivory/letterpress berkontras tinggi; deskripsi memakai sans-serif bersih.
+- Kontrol desktop (dropdown, pencarian, dan penghitung) disejajarkan ke slot artwork.
+- Kartu desktop/Mac memakai satu baris horizontal: nomor, Hangeul, kategori Bentuk bila tersedia, arti, dan audio. Baris Partikel juga tetap satu baris.
+- Ukuran ikon dan teks tab diperkecil sedikit; ikon dirapatkan dengan label dan chevron menempati rel paling kanan. Frame aktif merah dan nonaktif gunmetal tidak diubah.
+- Tombol HTML Kembali di area collection-hero dihapus, beserta listener khusus tombol tersebut. Navigasi kembali dan sembilan menu utama lainnya tidak dihapus.
+
+Pengujian yang dijalankan:
+- Chromium + Playwright pada viewport 320, 360, 390, 430, dan 1280 px.
+- Dokumen tidak mengalami horizontal overflow pada lima lebar uji. Tampilan Kosakata dan Partikel diuji pada lebar mobile 320/360/390/430; tata letak desktop Kosakata dan Partikel diuji pada 1280 px.
+- Pada lebar 320/360/390/430 px, penanda "𒇫 Bentuk" berada di antara Hangeul dan arti, dan semua elemen kartu tetap di dalam frame.
+- Pada 1280 px, kontrol dropdown/pencarian/count berada di slot artwork; kartu Kosakata dan Partikel tersusun horizontal dalam satu baris tanpa overlap.
+- Penghitung Kosakata awal 1037/1037; pencarian 자기소개 menghasilkan 2 baris; filter Bab 1 menghasilkan 130/130.
+- Partikel menampilkan 68 poin; filter bagian dan pencarian 은/는 diuji (pencarian menghasilkan 2 poin). Detail Partikel berhasil dibuka dan ditutup; detail memuat tiga tombol audio contoh.
+- Handler audio Kosakata dan audio contoh Partikel terpanggil dengan teks Korea yang benar pada pengujian. Bunyi TTS aktual tidak diuji melalui speaker fisik.
+- Sembilan tombol navigasi bawah tetap tersedia. Tombol Kembali pada hero Collection tidak lagi ada.
+- Tidak ada JavaScript page error pada skenario pengujian.
+- Sebelas blok JavaScript inline lulus `node --check`; stylesheet lulus parsing CSS; tidak ditemukan ID HTML duplikat.
+- Seluruh referensi aset lokal tersedia. Hash SHA-256 41 file di folder assets sama persis dengan file pada REV8.
+
+Batas verifikasi:
+- Pengujian browser dilakukan melalui halaman inline Playwright di sandbox; penyimpanan LocalStorage lintas sesi pada origin perangkat pengguna tidak divalidasi.
+- Pemutaran suara fisik tidak dapat dikonfirmasi di sandbox; yang diverifikasi adalah handler audio dan teks yang dikirim ke fungsi TTS.
+- Tidak ada screenshot, file log, atau folder uji yang disertakan dalam ZIP distribusi.
+
+
+COLLECTION REV10 — FORM MODE + AUDIO + TAB ALIGNMENT (2026-11-11)
+
+Perubahan:
+- Mengganti label generik “Bentuk” menjadi nama mode aktual dengan ikon dan spasi: dasar, formal, informal, banmal. Label mengikuti bentuk Hangeul aktif.
+- Memastikan urutan indeks mode tetap DASAR → FORMAL → INFORMAL → BANMAL. Swipe kiri bergerak ke indeks berikutnya; swipe kanan kembali ke indeks sebelumnya (wrap-around).
+- Entri yang diklasifikasikan tidak memiliki variasi tetap pada DASAR, berwarna lebih redup, disabled, dan tidak menerima swipe.
+- Indikator bentuk dipindahkan lebih ke bawah di area antara Hangeul dan arti, tanpa mengganti posisi kolom nomor, Hangeul, arti, maupun slot audio.
+- Tombol audio diberi ukuran terkontrol dan dipusatkan pada slot kanan kartu Kosakata dan Partikel; ukuran mobile disesuaikan dengan lebar slot.
+- Ikon + teks tab dipusatkan sebagai satu kelompok dengan jarak 8 px (sekitar 2x jarak rapat sebelumnya). Chevron tetap berada di tepi kanan tombol.
+
+Pemeriksaan yang dijalankan:
+- 11 blok JavaScript inline lolos `node --check`.
+- 24 blok stylesheet lolos parsing CSS `tinycss2`; tidak ada error parser.
+- Tidak ditemukan ID HTML duplikat.
+- Semua referensi aset yang ditemukan pada HTML memiliki file lokal.
+- Fungsi siklus mode diuji terhadap indeks: swipe kiri dari DASAR ke FORMAL; swipe kanan dari DASAR ke BANMAL; swipe kanan berikutnya dari BANMAL ke INFORMAL.
+- Struktur dan isi aset dibandingkan dengan paket REV9; seluruh aset dipertahankan tanpa modifikasi.
+
+Batas verifikasi:
+- Chromium tersedia tetapi navigasi browser otomatis diblokir oleh sandbox (`ERR_BLOCKED_BY_ADMINISTRATOR`); render visual REV10 pada viewport perangkat tidak dapat diverifikasi langsung di sesi ini.
+- Karena kendala tersebut, tidak ada klaim visual QA baru pada viewport 320/360/390/430/1280. CSS responsive dibatasi melalui selector Collection dan media query khusus ukuran layar.
+- TTS fisik dan persistensi LocalStorage lintas sesi tidak diuji ulang.
+
+REV11 — AUDIO ALIGNMENT, WARM TITLE, PARTIKEL MEANING BOUNDS
+- Tombol audio pada baris Kosakata dan Partikel dipusatkan pada rel audio di sisi kanan kartu. Ukuran tombol dan ikon menyesuaikan breakpoint mobile agar tetap berada di dalam template.
+- Judul dinamis Collection ("Daftar semua kosakata" / "Daftar partikel & tata bahasa") memakai warna warm ivory putih-kecoklatan dengan bayangan hangat agar menyatu dengan artwork, bukan hitam.
+- Kolom arti Indonesia pada baris Partikel diberi lebar fleksibel, pembungkusan teks, line-height, dan tinggi baris otomatis agar arti panjang tidak melewati batas atau mendekati tombol audio.
+- Teks dan contoh pada panel detail Partikel diberi batas lebar dan pembungkusan yang aman. Panel detail tetap dapat dibuka dan tidak terpotong oleh overflow baris.
+- Cakupan hanya CSS Collection. Data, terjemahan, isi materi, aset, event, filter, pencarian, TTS, LocalStorage, dan navigasi tidak diubah.
+
+
+COLLECTION REV12 — AUDIO SLOT + PARTIKEL DIVIDER ALIGNMENT (2026-11-11)
+Perbaikan fokus dari screenshot pengguna:
+- Slot audio mengikuti rel kanan 13% pada artwork. Sebelumnya REV11 memakai rail tetap 40 px, sehingga pusat kontrol bergeser terlalu dekat ke tepi luar template. Sekarang tombol audio Kosakata dan Partikel diletakkan di tengah rel yang sama dengan slot cetak artwork.
+- Ikon speaker menggunakan grid centering di dalam tombol, ukuran tombol dan SVG dibatasi pada breakpoint desktop/mobile/ponsel kecil, serta transform/inset dinetralkan agar tidak miring atau keluar dari kotak.
+- Kolom kartu Partikel diselaraskan dengan divider artwork: nomor 13%, Hangeul 60%, arti Indonesia 27% dari bidang konten kiri. Kolom arti dipusatkan horizontal dan vertikal, dibatasi pada kolomnya, dan boleh wrap agar tidak menabrak divider atau rel audio.
+- Audio Kosakata hanya menerima perbaikan posisi/ukuran; posisi teks dan badge Kosakata tidak disentuh.
+
+VALIDASI STATIS
+- Pemeriksaan dilakukan pada struktur selector/CSS baru dan preservasi blok JavaScript, data, serta aset.
+- Browser Chromium pada sandbox menolak navigasi lokal dan localhost dengan ERR_BLOCKED_BY_ADMINISTRATOR; inspeksi visual runtime pada perangkat 320/360/390/430/1280 px tidak dapat diselesaikan di sesi ini. Karena itu tidak diklaim sebagai visual QA perangkat yang lulus.
+
+COLLECTION REV13 — KOSAKATA MEANING SAFE INSET + PARTIKEL CATEGORY FILTER
+
+Perbaikan:
+- Arti Indonesia pada kartu Kosakata dipusatkan dalam bidang antara divider arti dan rel tombol audio, dengan inset horizontal yang konsisten agar teks tidak menempel pada garis pemisah atau terlalu dekat ke speaker.
+- Arti panjang tetap boleh membungkus ke baris berikutnya. Tinggi kartu mengikuti isi agar teks tetap berada di dalam artwork/background kartu.
+- Filter kategori Partikel kini benar-benar menyembunyikan item di luar kategori terpilih. Penyebabnya adalah CSS `display:grid !important` yang mengalahkan `element.style.display = "none"`; filter sekarang menggunakan prioritas inline yang sesuai.
+- Perubahan layout hanya menargetkan daftar Kosakata; kartu Partikel, data materi, logika pembelajaran, dan layout lain tidak diubah.
