@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" preserveAspectRatio="none">
+<defs>
+ <radialGradient id="pit" cx="34%" cy="27%" r="76%">
+  <stop offset="0" stop-color="#030304"/>
+  <stop offset=".50" stop-color="#0b0b0d"/>
+  <stop offset=".74" stop-color="#655657" stop-opacity=".78"/>
+  <stop offset="1" stop-color="#020203"/>
+ </radialGradient>
+ <g id="hole">
+  <circle r="19" fill="#020203" opacity=".84"/>
+  <circle r="15.2" fill="url(#pit)" stroke="#8e7778" stroke-opacity=".66" stroke-width="1.7"/>
+  <circle r="9.2" fill="#010102"/>
+  <ellipse cx="-4.5" cy="-6.5" rx="7.4" ry="3.1" fill="#e4d3cd" opacity=".22" transform="rotate(-28)"/>
+  <g fill="none" stroke-linecap="round">
+   <path d="M-7 -14L-16 -25L-19 -33 M5 -14L14 -24L17 -34 M14 -5L27 -9L34 -17 M12 8L24 18L31 20 M0 15L-3 28L-10 34 M-13 7L-26 14L-34 11 M-14 -3L-29 -7L-35 -4 M-3 -15L-5 -27" stroke="#d4c0bc" stroke-opacity=".74" stroke-width="1.65"/>
+   <path d="M-8 -11L-20 -18 M7 -10L13 -20 M12 5L22 12 M-12 8L-20 21 M-17 -1L-28 0" stroke="#170f11" stroke-width="3.2"/>
+  </g>
+ </g>
+</defs>
+
+<g fill="#4a0509" opacity=".86">
+ <path d="M0 0H255L231 25 207 20 190 48 167 37 145 80 124 62 101 104 77 91 54 137 32 124 0 172Z"/>
+ <path d="M1444 0H1600V233L1577 201 1582 164 1557 149 1562 105 1533 82 1538 47 1513 32 1510 0Z"/>
+ <path d="M0 608L28 631 33 677 57 693 65 740 88 754 99 805 125 820 140 900H0Z"/>
+ <path d="M1600 592L1571 611 1558 650 1533 663 1526 708 1500 726 1485 771 1457 789 1442 831 1414 851 1395 900H1600Z"/>
+ <path d="M0 837L80 861 166 850 233 880 310 900H0Z"/>
+ <path d="M1600 835L1515 859 1450 850 1378 884 1290 900H1600Z"/>
+</g>
+<g fill="#b3121f" opacity=".72">
+ <path d="M0 0H90L73 27 59 47 53 89 39 117 37 160 23 186 20 238 7 268 0 287Z"/>
+ <path d="M1600 0H1515L1530 28 1545 54 1550 93 1563 125 1568 161 1583 191 1586 236 1596 266 1600 284Z"/>
+ <path d="M0 650L24 674 31 718 53 740 70 775 83 815 113 840 135 900H0Z"/>
+ <path d="M1600 646L1577 673 1566 714 1541 737 1528 779 1506 811 1472 836 1450 900H1600Z"/>
+</g>
+<g fill="#8a0f1a" opacity=".78">
+ <path d="M34 0h10v62q-4 20-8 0Z"/><path d="M76 0h6v39q-3 14-6 0Z"/>
+ <path d="M116 0h8v92q-4 19-7 0Z"/><path d="M1525 0h9v55q-4 15-9 0Z"/>
+ <path d="M1562 0h7v83q-3 15-7 0Z"/><path d="M1588 0h5v45q-3 12-5 0Z"/>
+ <path d="M0 223h78q14 5 0 11H0Z"/><path d="M0 289h44q10 5 0 9H0Z"/>
+ <path d="M1600 280h-68q-12 5 0 10h68Z"/><path d="M1600 357h-40q-9 4 0 9h40Z"/>
+</g>
+<g fill="#b3121f" opacity=".76">
+ <circle cx="30" cy="187" r="13"/><circle cx="79" cy="234" r="5"/><circle cx="112" cy="285" r="8"/>
+ <circle cx="47" cy="356" r="4"/><circle cx="184" cy="65" r="6"/><circle cx="138" cy="121" r="3"/>
+ <circle cx="1544" cy="199" r="10"/><circle cx="1490" cy="252" r="4"/><circle cx="1557" cy="318" r="6"/>
+ <circle cx="1462" cy="104" r="4"/><circle cx="1520" cy="450" r="12"/><circle cx="1480" cy="515" r="4"/>
+ <circle cx="65" cy="610" r="12"/><circle cx="114" cy="680" r="5"/><circle cx="180" cy="788" r="7"/>
+ <circle cx="1430" cy="800" r="8"/><circle cx="1498" cy="846" r="13"/><circle cx="1340" cy="872" r="5"/>
+ <circle cx="250" cy="868" r="4"/><circle cx="95" cy="472" r="3"/><circle cx="1538" cy="566" r="7"/>
+</g>
+<g fill="none" stroke="#c61b2b" stroke-width="2.2" stroke-opacity=".68" stroke-linecap="round">
+ <path d="M0 180l42 17 17 30 24 5M0 371l57 -12 26 17 22 -5M0 742l60 -25 20 18 24 -4"/>
+ <path d="M1600 213l-40 22 -21 32 -25 4M1600 493l-43 20 -17 26 -31 11M1600 736l-50 -18 -24 23 -29 7"/>
+ <path d="M116 900l38 -30 34 4M1456 900l-30 -26 -27 2M20 548l61 -26 16 -24"/>
+</g>
+
+<g fill="#b3121f" opacity=".88">
+ <circle cx="332" cy="210" r="7"/><circle cx="349" cy="226" r="3"/><circle cx="318" cy="243" r="4"/>
+ <circle cx="475" cy="385" r="8"/><circle cx="493" cy="372" r="3"/><circle cx="456" cy="407" r="4"/>
+ <circle cx="625" cy="174" r="6"/><circle cx="641" cy="193" r="3"/><circle cx="606" cy="203" r="4"/>
+ <circle cx="780" cy="775" r="7"/><circle cx="800" cy="790" r="3"/><circle cx="761" cy="793" r="4"/>
+ <circle cx="1016" cy="355" r="7"/><circle cx="1032" cy="370" r="3"/><circle cx="1003" cy="376" r="4"/>
+ <circle cx="1190" cy="530" r="8"/><circle cx="1208" cy="546" r="3"/><circle cx="1174" cy="550" r="4"/>
+ <circle cx="742" cy="104" r="5"/><circle cx="758" cy="119" r="3"/><circle cx="733" cy="126" r="3"/>
+ <circle cx="510" cy="720" r="7"/><circle cx="528" cy="735" r="3"/><circle cx="496" cy="739" r="4"/>
+ <circle cx="1113" cy="179" r="6"/><circle cx="1130" cy="191" r="3"/><circle cx="1097" cy="199" r="4"/>
+</g>
+<g fill="none" stroke="#8a0f1a" stroke-width="4" stroke-linecap="round" stroke-opacity=".88">
+ <path d="M305 260l20 -14 13 -22 18 -9 M438 425l22 -12 16 -20 21 -7 M584 225l14 -12 8 -20 15 -9"/>
+ <path d="M746 812l18 -11 13 -22 21 -8 M981 399l20 -12 13 -22 20 -7 M1152 578l18 -12 12 -21 22 -8"/>
+ <path d="M704 145l13 -7 7 -17 15 -5 M482 776l16 -10 10 -15 16 -6 M1076 230l18 -11 8 -16 17 -5"/>
+</g>
+<g opacity=".82"><use href="#hole" transform="translate(38 60) rotate(15) scale(0.55)"/><use href="#hole" transform="translate(115 36) rotate(-15) scale(0.42)"/><use href="#hole" transform="translate(238 83) rotate(-22) scale(0.56)"/><use href="#hole" transform="translate(82 183) rotate(10) scale(0.72)"/><use href="#hole" transform="translate(178 302) rotate(0) scale(0.52)"/><use href="#hole" transform="translate(30 412) rotate(12) scale(0.72)"/><use href="#hole" transform="translate(208 525) rotate(-17) scale(0.59)"/><use href="#hole" transform="translate(72 686) rotate(4) scale(0.66)"/><use href="#hole" transform="translate(244 822) rotate(-22) scale(0.58)"/><use href="#hole" transform="translate(368 865) rotate(1) scale(0.42)"/><use href="#hole" transform="translate(402 30) rotate(17) scale(0.32)"/><use href="#hole" transform="translate(1038 30) rotate(-2) scale(0.33)"/><use href="#hole" transform="translate(1180 74) rotate(-14) scale(0.48)"/><use href="#hole" transform="translate(1390 50) rotate(-21) scale(0.55)"/><use href="#hole" transform="translate(1320 144) rotate(4) scale(0.72)"/><use href="#hole" transform="translate(1414 277) rotate(11) scale(0.56)"/><use href="#hole" transform="translate(1294 390) rotate(-19) scale(0.62)"/><use href="#hole" transform="translate(1410 510) rotate(-11) scale(0.69)"/><use href="#hole" transform="translate(1326 650) rotate(14) scale(0.59)"/><use href="#hole" transform="translate(1412 786) rotate(12) scale(0.7)"/><use href="#hole" transform="translate(1220 852) rotate(1) scale(0.55)"/><use href="#hole" transform="translate(1032 884) rotate(20) scale(0.4)"/><use href="#hole" transform="translate(608 875) rotate(19) scale(0.34)"/><use href="#hole" transform="translate(790 36) rotate(-11) scale(0.31)"/></g></svg>
