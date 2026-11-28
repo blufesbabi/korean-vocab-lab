@@ -1,0 +1,67 @@
+MASALAH / PERUBAHAN
+1. Kode lama menumpuk CSS/JS patch REV18 dan markup panel dengan banyak elemen dekoratif CSS. Semua dihapus; diganti satu blok REV19. Tidak ada sisa selector fcp-/flash-*.
+2. Estimasi zona di brief nabrak ikon baked (judul bab di 19% menimpa ikon buku; mode menimpa ikon orang). Digeser sesuai ukuran piksel.
+3. Panah/ikon mata/speaker tidak ditimpa; label tombol di antara ikon.
+4. Aset flashcard lama (flashcard-paper.webp, flashcard-photo.webp, flashcard-reference.png) dihapus karena tidak dipakai lagi.
+5. Item data memakai " / " dengan spasi; speaker memecah di "/" dan membaca berurutan.
+
+6. REV19.2: panel flashcard sebelumnya position:fixed (dulu inset:0 z-index 98, di REV19.1 fixed di area antara header dan nav hasil ukur JS). Sekarang section biasa
+   di dalam #flashcardView, alur dokumen normal. Dihapus: position:fixed/inset/z-index, placePanel() dan variabel --fc-top/left/right/bottom, html:has(#flashcardPanel...){overflow:hidden},
+   overflow:hidden pada panel, pembatas scroll (halaman dulu dikunci di scroll 0). Header app dan nav 9 fitur tampil seperti di fitur lain.
+7. REV19.2: card letterbox (min(100cqw, 100cqh*868/1536)) diganti width:100% container + aspect-ratio 868/1536. Tidak ada gap kiri-kanan di HP; di desktop lebar = kolom konten.
+8. REV19.2: scroll halaman jalan sampai footer. .fc-arti: overscroll-behavior:auto + touch-action:pan-y. Keydown Space/Enter tidak lagi preventDefault kalau fokus di luar flashcard.
+   Start sesi/ganti bab: scrollIntoView panel (menggulung header keluar layar) diganti gulung ke atas halaman.
+9. REV19.2: judul "Flash Card" + lead di atas setup disembunyikan saat kartu aktif (CSS :has) - leadnya masih menyebut penilaian ingatan yang sudah tidak ada. Hanya tampilan.
+10. REV19.2: struktur folder: font dipindah ke assets/ langsung (assets/roboto-condensed-700.woff, assets/roboto-condensed-700-italic.woff, assets/noto-sans-kr-900.woff),
+   subfolder font dihapus, template di assets/template_flashcard.png. Semua path (img, url() .fc-line-patch, 3 @font-face) diperbarui. Tidak ada file bentrok di assets/. Folder tanpa "s" tidak ada.
+
+LIMITASI (JUJUR)
+- Desktop/tablet: card 9:16 selebar kolom konten jadi sangat tinggi (1366x768: ~1139x2016px; 1920x1080: ~1401x2479px). Harus scroll untuk melihat seluruh kartu; tombol SEBELUMNYA/SELANJUTNYA ada di bawah kartu.
+  Tidak ada batas lebar desktop secara default (sesuai spesifikasi); pakai --fc-max kalau mau dibatasi (tapi itu menyisakan gap kiri-kanan di desktop).
+- Landscape HP: kartu selebar layar (tinggi >> layar), harus discroll; tidak ada mode muat-satu-layar lagi.
+- Header app + judul ikut tinggi halaman: kartu mulai di bawah header (HP 390: header ~160px), jadi awal kartu tidak langsung di puncak layar.
+- Console: satu error jaringan dari app lama (Google Fonts Permanent Marker, fonts.googleapis.com) karena lingkungan tes tanpa internet; bukan dari flashcard. Tidak ada error JS.
+- REGRESI FITUR: tombol penilaian Lupa/Sulit/Ingat/Mudah tidak ada di template, jadi dibuang. Flashcard TIDAK lagi memanggil recordLearningResult
+  (SRS/XP/jadwal ulang dari flashcard tidak tercatat). Kartu hanya dihitung "dilihat" saat SELANJUTNYA ditekan; sesi selesai dicatat lewat completeActivity.
+  Kalau SRS flashcard mau dipertahankan, butuh desain input penilaian (di luar template).
+- Romanisasi sederhana (tanpa asimilasi bunyi), digenerate, bukan dari data.
+- Font Hangeul = Noto Sans CJK KR Black yang di-subset (Hangul penuh), bukan Noto Sans KR dari Google (jaringan mati saat build). Bobot 900 sama.
+  Roboto Condensed diturunkan dari Roboto variable (wdth 75, wght 700). Font sampel asli (hasil generate AI) tidak identik.
+- Kalimat ekstrem: hangeul bisa mengecil <55% (sampai 40%), romanisasi ellipsis, arti scroll.
+- Patch garis romanisasi mengambil tekstur kertas ±11px di atas garis; di kertas yang sangat bertekstur bisa terlihat tipis seamnya.
+- Tes dilakukan di Chromium headless (360x640, 390x844, 768x1024, 1366x768, 1920x1080, landscape); TTS asli, Safari, dan Android tidak diuji.
+- tests/ dan INTEGRITY_SHA256.txt lama tidak disertakan (hash sudah tidak valid).
+
+VOKAB BAB 14 & 15 (update data)
+- Ditambah Bab 14 (80 kata) dan Bab 15 (92 kata) ke builtinVocabulary; total 1596. Daftar bab (select, picker Custom Study, urutan preferred) ikut ditambah.
+- Arti Indonesia dibiarkan persis dari kelas (termasuk typo Indo seperti "contih", "sepato"). Hanya hangeul yang diaudit: typo diperbaiki, spasi dirapikan, alternatif ditulis " / ".
+- Duplikat dalam bab dibuang: 근처 (Bab 14), 전통 (Bab 15).
+- 말씀 좀 여쭙겠습니다 tidak ada artinya di daftar; diisi "Permisi, boleh saya bertanya" (cek ulang sesuai kelas).
+- 알리려다 (Bab 15) dipertahankan sesuai buku, bukan diubah ke 알리다.
+
+
+11. Koreksi kosakata sesuai konfirmasi kelas: tiga ejaan dipertahankan sebagai bentuk dari guru (건너편, 건너가다, 단아하다). Entri lain dikembalikan persis ke daftar kelas: 이상일 (Bab 14), 실용적이어다 (Bab 15), 기여하이다 (Bab 15), dan 알리려다 (Bab 15). 이상 (Bab 7, arti "aneh") tidak diubah.
+
+12. REV20.1 — FULL KOREAN CONJUGATION AUDIT (28 NOVEMBER 2026)
+- Audit seluruh database Bab 1–16: 1.684 entri; 547 baris sumber berakhiran 다;
+  385 ekspresi unik.
+- Diperbaiki: Bab 16 #30 시끄럽다 (ㅂ 불규칙): 시끄럽어요/시끄럽어 →
+  시끄러워요/시끄러워. 시끄럽다 ditambahkan ke VOCAB_BIEUP_IRREGULARS.
+- Diperbaiki: Bab 16 #84 필수적이다: 필수적여요/필수적여 → 필수적이에요/
+  필수적이야. Ditambahkan override kopula khusus; tidak memakai aturan global
+  untuk setiap akhiran -이다 karena kata kerja seperti 모이다/붙이다/쓰이다
+  harus tetap melewati konjugasi verba leksikal.
+- Ditahan dari konjugasi otomatis (tanpa mengubah teks sumber): Bab 15 #71
+  실용적이어다, #75 기여하이다, dan #90 알리려다. Ketiganya perlu konfirmasi
+  sumber karena lema/konstruksinya belum dapat dipastikan.
+- resolveMeaningSensitiveVerbRule(): 닫다 tanpa konteks makna kini AMBIGUOUS;
+  닫다 “menutup” tetap reguler, sedangkan 닫다 “berlari cepat” diuji sebagai
+  ㄷ 불규칙. Pemisahan makna 묻다/걷다/굽다/이르다/누르다/곱다 juga diuji.
+- Regression test 55 fixture + 7 ambiguous-context guards lulus; swipe
+  handler simulation (kiri/kanan/klik badge) lulus; 11 inline script lolos
+  node --check tanpa syntax error.
+- Integritas: 1.684 entri mempertahankan korean/meaning/no/category persis
+  seperti ZIP sumber; 45 aset identik SHA-256; tidak ada redesign atau perubahan
+  fitur. Laporan lengkap dan CSV tersedia dalam paket hasil.
+- Catatan uji: Chromium headless tidak selesai (timeout) di lingkungan ini.
+  Karena itu runtime UI/TTS/Android belum diklaim lolos uji perangkat nyata.
